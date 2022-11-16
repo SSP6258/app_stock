@@ -54,6 +54,7 @@ def fn_web_handle(drv, act, typ, slp, by, val, key):
     else:
         assert False, f'Invalid web handle typ = {typ}'
 
+
     return 'NA'
 
 
