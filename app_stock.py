@@ -2,7 +2,6 @@
 import datetime
 import numpy as np
 import pandas as pd
-import random
 import requests
 import streamlit as st
 from collections import defaultdict

@@ -80,4 +80,3 @@ def fn_web_init(link, is_headless=True):
 
     return driver, action
 
-
