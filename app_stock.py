@@ -5,11 +5,6 @@ import pandas as pd
 import random
 import requests
 import streamlit as st
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.options import Options
 from collections import defaultdict
 from workalendar.asia import Taiwan
 from web_utils import *
