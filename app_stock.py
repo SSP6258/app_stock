@@ -58,7 +58,6 @@ def fn_get_stock_info(sid):
         # df['link'] = [link]
         driver.close()
 
-
     return df
 
 
