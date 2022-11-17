@@ -164,7 +164,6 @@ def fn_find_billion(df, stocks=None):
     st.write('')
     st.markdown(f'### 勝率分析: {df_all.shape[0]}檔')
     st.dataframe(df_all, use_container_width=True, width=1200)
-
     df_all.to_csv('stock.csv', encoding='utf-8-sig')
 
     df_all['篩選'] = 0
