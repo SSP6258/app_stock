@@ -116,7 +116,8 @@ def fn_fb_recommend_stock():
     for idx in df_smry.index:
         df_smry.at[idx, '策略數'] = str(int(sum([1 for _ in df_smry.loc[idx, :].values if '%' in str(_)])))
 
-    df_smry['日期'] = datetime.date.today()
+    tzone = datetime.timezone(datetime.timedelta(hours=8))
+    df_smry['日期'] = datetime.date.today(tzone=tzone)
     df_smry = df_smry.fillna("")
     # print(df_smry)
 
