@@ -110,7 +110,7 @@ def fn_fb_recommend_stock():
                     dic_sid[c] = [v_sel]
 
                 df_combined = pd.DataFrame(dic_sid)
-                df_smry = df_smry[df_smry[''] != sid]
+                df_smry = df_smry[df_smry['公司名稱'] != sid]
                 df_smry = pd.concat([df_smry, df_combined], axis=0, ignore_index=True)
 
     for idx in df_smry.index:
