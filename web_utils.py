@@ -57,7 +57,6 @@ def fn_web_handle(drv, act, typ, slp, by, val, key):
     return 'NA'
 
 
-
 def fn_web_init(link, is_headless=True):
     """
     要注意用selenium進行爬蟲的時候，
