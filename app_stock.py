@@ -99,6 +99,7 @@ def fn_fb_recommend_stock():
         for sid in df_smry['公司名稱'].unique():
             df_sid = df_smry[df_smry['公司名稱'] == sid ]
 
+
             if df_sid.shape[0] > 1:
                 dic_sid = {}
                 for c in df_sid.columns:
