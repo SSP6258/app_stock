@@ -1,5 +1,8 @@
 
 import datetime
+import os.path
+import time
+
 import numpy as np
 import pandas as pd
 import requests
@@ -63,7 +66,7 @@ def fn_get_stock_info(sid):
 
 def fn_make_clickable(x):
     name = x
-    sid = x.split(" ")[0]
+    sid = x if str(x).isnumeric() else x.split(" ")[0]
     url = rf'https://www.findbillion.com/twstock/{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
@@ -110,38 +113,94 @@ def fn_fb_recommend_stock():
                 df_smry = df_smry[df_smry[''] != sid]
                 df_smry = pd.concat([df_smry, df_combined], axis=0, ignore_index=True)
 
-        for idx in df_smry.index:
-            df_smry.at[idx, '策略數'] = str(int(sum([1 for _ in df_smry.loc[idx, :].values if '%' in str(_)])))
+    for idx in df_smry.index:
+        df_smry.at[idx, '策略數'] = str(int(sum([1 for _ in df_smry.loc[idx, :].values if '%' in str(_)])))
 
-        df_smry['日期'] = datetime.date.today()
-        df_smry = df_smry.fillna("")
-        # print(df_smry)
+    df_smry['日期'] = datetime.date.today()
+    df_smry = df_smry.fillna("")
+    # print(df_smry)
 
-        st.markdown(f'### Summary: {df_smry.shape[0]}檔')
-        st.dataframe(df_smry, use_container_width=True, width=1000)
+    # st.markdown(f'### Summary: {df_smry.shape[0]}檔')
+    # st.dataframe(df_smry, use_container_width=True, width=1000)
 
-        df_smry['公司名稱'] = df_smry['公司名稱'].apply(fn_make_clickable)
-        st.markdown(f'### Select: {df_smry.shape[0]}檔')
-        st.write(df_smry.to_html(escape=False, index=True), unsafe_allow_html=True)
+    df_show = df_smry.copy()
+    df_show['公司名稱'] = df_show['公司名稱'].apply(fn_make_clickable)
+    st.markdown(f'### Select: {df_show.shape[0]}檔')
+    st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
+
+    return df_smry
 
 
-def fn_find_billion():
-    stock_ids = ['2330', '0050']
+def fn_find_billion(df, stocks=None):
+    stock_ids = list(df['公司名稱'].apply(lambda x: str(x.split(" ")[0])))
 
-    df_all = pd.DataFrame()
+    if stocks is None:
+        stock_ids = list(set(stock_ids))
+    else:
+        stock_ids = list(set(stock_ids + stocks))
+
+    stock_file = 'stock.csv'
+    if os.path.exists(stock_file):
+        df_all = pd.read_csv(stock_file, na_filter=False, dtype=str, index_col=0)
+    else:
+        df_all = pd.DataFrame()
+
+    today = datetime.date.today()
     for sid in stock_ids:
-        df_sid = fn_get_stock_info(sid)
-        df_all = pd.concat([df_all, df_sid], axis=0, ignore_index=True)
+        is_bypass = False
+        if 'sid' in df_all.columns:
+            if sid in df_all['sid'].values.astype(str):
+                is_bypass = str(today) in df_all[df_all['sid'] == sid]['date'].values
 
-    print(df_all)
+        if is_bypass:
+            pass
+        else:
+            t = time.time()
+            df_sid = fn_get_stock_info(sid)
+            df_sid['耗時(秒)'] = int(time.time() - t)
+            df_sid = df_sid.astype(str)
+            df_all = pd.concat([df_all, df_sid], axis=0, ignore_index=True)
+
+    st.write('')
+    st.markdown(f'### 勝率分析: {df_all.shape[0]}檔')
     st.dataframe(df_all, use_container_width=True, width=1200)
+
+    df_all.to_csv('stock.csv', encoding='utf-8-sig')
+
+    df_all['篩選'] = 0
+    sel_win_rat = 50
+    sel_max_price = 500
+
+    for idx in df_all.index:
+        for c in df_all.columns:
+            if '勝率' in c:
+                v = df_all.loc[idx, c]
+                if v != '':
+                    if int(v) >= sel_win_rat:
+                        df_all.at[idx, '篩選'] = 1
+                        break
+
+    df_sel = df_all[df_all['篩選'] == 1]
+    df_sel = df_sel[df_sel['股價'].apply(lambda x: float(x) < sel_max_price if x != '' else True)]
+
+    df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and '耗時' not in c]]
+    df_sel.reset_index(drop=True, inplace=True)
+
+    st.write('')
+    st.markdown(f'### 由 {df_all.shape[0]}檔中 篩選 任一策略的勝率大於 {sel_win_rat}% 且 股價小於 {sel_max_price}元 的有: {df_sel.shape[0]}檔')
+
+    if df_sel.shape[0] > 0:
+        df_show = df_sel.copy()
+        df_show['sid'] = df_show['sid'].apply(fn_make_clickable)
+        st.write(df_show.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 
 def fn_main():
     st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto",
                        menu_items=None)
-    # fn_fb_recommend_stock()
-    fn_find_billion()
+    df = fn_fb_recommend_stock()
+    stocks = ['2454']
+    fn_find_billion(df, stocks)
 
 
 if __name__ == '__main__':
