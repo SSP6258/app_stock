@@ -199,7 +199,10 @@ def fn_main():
                        menu_items=None)
     df = fn_fb_recommend_stock()
     stocks = ['2454']
-    fn_find_billion(df, stocks)
+    try:
+        fn_find_billion(df, stocks)
+    except:
+        pass
 
 
 if __name__ == '__main__':
