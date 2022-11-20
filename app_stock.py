@@ -72,7 +72,7 @@ def fn_st_show_win_rate():
 
 
 def fn_main():
-    if fn_is_parsing():
+    if False:  # fn_is_parsing():
         df = fn_fb_recommend_stock()
         fn_find_billion(df, dic_cfg["stocks"])
 
