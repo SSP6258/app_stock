@@ -74,8 +74,8 @@ def fn_st_show_win_rate():
         df_show = df_show[show_cols_order]
         # ➡
         show_cols_renmae = {'date': '日期',
-                            '股票名稱': '股票<br>名稱',
-                            '股票代碼': '股票<br>代碼',
+                            '股票名稱': '名稱',
+                            '股票代碼': '代碼',
                             '大盤領先指標': '大盤<br>領先指標',
                             '產業領先指標': '產業<br>領先指標',
                             '勝率(%)_營收': '營收<br>勝率',
