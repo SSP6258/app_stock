@@ -88,7 +88,7 @@ def fn_st_show_win_rate():
         df_show.rename(columns=show_cols_renmae, inplace=True)
 
         for c in df_show.columns:
-            if '率' in c:
+            if '勝率' in c:
                 df_show[c] = df_show[c].apply(lambda x: str(x)+'%')
             if '相關性' in c:
                 df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
