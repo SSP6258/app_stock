@@ -82,8 +82,8 @@ def fn_st_show_win_rate():
                             '相關性_營收': '相關性<br>➡營收',
                             '勝率(%)_EPS': '勝率(%)<br>➡EPS',
                             '相關性_EPS': '相關性<br>➡EPS',
-                            '勝率(%)_殖利率': '勝率(%)<br>殖利率',
-                            '相關性_殖利率': '相關性<br>殖利率'}
+                            '勝率(%)_殖利率': '勝率(%)<br>➡殖利率',
+                            '相關性_殖利率': '相關性<br>➡殖利率'}
 
         df_show.rename(columns=show_cols_renmae, inplace=True)
 
