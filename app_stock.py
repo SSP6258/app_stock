@@ -6,10 +6,13 @@ from app_stock_fb import *
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
-    if str(x).isnumeric():
-        url = rf'https://www.findbillion.com/twstock/{sid}'
-    else:
-        url = rf'https://tw.stock.yahoo.com/quote/{sid}'
+    url = rf'https://www.findbillion.com/twstock/{sid}'
+
+    return '<a href="{}">{}</a>'.format(url, name)
+
+
+def fn_click_name(sid, name):
+    url = rf'https://tw.stock.yahoo.com/quote/{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
 
@@ -63,6 +66,8 @@ def fn_st_show_win_rate():
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
         df_show['sid'] = df_show['sid'].apply(fn_make_clickable)
         df_show['sid_name'] = df_show['sid_name'].apply(fn_make_clickable)
+
+        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
 
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
