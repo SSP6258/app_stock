@@ -71,6 +71,8 @@ def fn_st_show_win_rate():
                      '勝率(%)_殖利率', '相關性_殖利率']
 
         df_show = df_show[show_cols]
+        df_show.rename(columns={'date': '日期'})
+
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
