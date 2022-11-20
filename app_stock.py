@@ -70,7 +70,7 @@ def fn_st_show_win_rate():
     for _ in range(3):
         st.write('')
 
-    st.markdown(f'### {df_all["sid"].nunique()}檔 個股的 "勝率" 與 "合理價" 分析:')
+    st.markdown(f'### {df_all["sid"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
     st.dataframe(df_all, width=1200)
 
