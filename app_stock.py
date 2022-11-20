@@ -70,7 +70,7 @@ def fn_st_show_win_rate():
                      '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
                      '勝率(%)_殖利率', '相關性_殖利率']
 
-        df_show = df_show[[show_cols]]
+        df_show = df_show[show_cols]
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
