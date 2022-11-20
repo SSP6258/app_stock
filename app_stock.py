@@ -62,6 +62,7 @@ def fn_st_show_win_rate():
         df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
         df_show['sid'] = df_show['sid'].apply(fn_make_clickable)
+        df_show['sid_name'] = df_show['sid_name'].apply(fn_make_clickable)
 
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
