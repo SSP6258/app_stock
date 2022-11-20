@@ -6,7 +6,10 @@ from app_stock_fb import *
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
-    url = rf'https://www.findbillion.com/twstock/{sid}'
+    if str(x).isnumeric():
+        url = rf'https://www.findbillion.com/twstock/{sid}'
+    else:
+        url = rf'https://tw.stock.yahoo.com/quote/{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
 
