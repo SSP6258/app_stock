@@ -63,15 +63,28 @@ def fn_st_show_win_rate():
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
-        df_show['股票<br>代碼'] = df_show['sid'].apply(fn_make_clickable)
-        df_show['股票<br>名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
+        df_show['股票代碼'] = df_show['sid'].apply(fn_make_clickable)
+        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
 
-        show_cols = ['股票<br>名稱', '股票<br>代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
-                     '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
-                     '勝率(%)_殖利率', '相關性_殖利率']
+        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
+                           '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
+                           '勝率(%)_殖利率', '相關性_殖利率']
 
-        df_show = df_show[show_cols]
-        df_show.rename(columns={'date': '日期'},inplace=True)
+        df_show = df_show[show_cols_order]
+
+        show_cols_renmae = {'date': '日期',
+                            '股票名稱': '股票<br>名稱',
+                            '股票代碼': '股票<br>代碼',
+                            '大盤領先指標': '領先指標<br>大盤',
+                            '產業領先指標': '領先指標<br>產業',
+                            '勝率(%)_營收': '勝率(%)<br>營收',
+                            '相關性_營收': '相關性<br>營收',
+                            '勝率(%)_EPS': '勝率(%)<br>EPS',
+                            '相關性_EPS': '相關性<br>EPS',
+                            '勝率(%)_殖利率': '勝率(%)<br>殖利率',
+                            '相關性_殖利率': '相關性<br>殖利率'}
+
+        df_show.rename(columns=show_cols_renmae, inplace=True)
 
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
