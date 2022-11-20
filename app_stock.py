@@ -64,7 +64,7 @@ def fn_st_show_win_rate():
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
-        df_show['sid'] = df_show['sid'].apply(fn_make_clickable)
+        # df_show['sid'] = df_show['sid'].apply(fn_make_clickable)
 
         df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
 
