@@ -57,7 +57,7 @@ def fn_st_show_win_rate():
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
         c1, c2 = st.columns([2, 1])
-        c1.error(f'#### 篩選出{df_sel["sid"].nunique()}檔: {", ".join(list(df_sel["sid_name"].unique()))}')
+        c1.error(f'#### 👉 篩選出{df_sel["sid"].nunique()}檔: {", ".join(list(df_sel["sid_name"].unique()))}')
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
