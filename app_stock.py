@@ -40,7 +40,7 @@ def fn_st_show_win_rate():
                                                   '合理價差' not in c]]
     df_sel.reset_index(drop=True, inplace=True)
 
-    st.markdown(f'### 由 {df_all["sid"].nunique()}檔中 篩選 任一策略之勝率大於 {dic_cfg["sel_rat"]}% 且股價低於 {dic_cfg["sel_price"]}元')
+    st.markdown(f'### 由 {df_all["sid"].nunique()}檔台股中 篩選 任一策略之勝率大於 {dic_cfg["sel_rat"]}% 且股價低於 {dic_cfg["sel_price"]}元')
 
     if df_sel.shape[0] > 0:
 
@@ -72,9 +72,12 @@ def fn_st_show_win_rate():
 
 
 def fn_main():
-    if False:  # fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        try:
+            df = fn_fb_recommend_stock()
+            fn_find_billion(df, dic_cfg["stocks"])
+        except:
+            pass
 
     fn_st_init()
     fn_st_show_win_rate()
