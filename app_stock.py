@@ -86,6 +86,12 @@ def fn_st_show_win_rate():
 
         df_show.rename(columns=show_cols_renmae, inplace=True)
 
+        for c in df_show.columns:
+            if '%' in c:
+                df_show[c] = df_show[c].apply(lambda x: str(x)+'%')
+            if '相關性' in c:
+                df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
+
         st.write('')
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
