@@ -63,10 +63,10 @@ def fn_st_show_win_rate():
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
-        df_show['股票\n代碼'] = df_show['sid'].apply(fn_make_clickable)
-        df_show['股票\n名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
+        df_show['股票<br>代碼'] = df_show['sid'].apply(fn_make_clickable)
+        df_show['股票<br>名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
 
-        show_cols = ['股票\n代碼', '股票\n名稱', '股價', '大盤領先指標', '產業領先指標',
+        show_cols = ['股票<br>代碼', '股票<br>名稱', '股價', '大盤領先指標', '產業領先指標',
                      '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
                      '勝率(%)_殖利率', '相關性_殖利率']
 
