@@ -59,7 +59,7 @@ def fn_st_show_win_rate():
                      '合理價差' not in c]]
     df_sel.reset_index(drop=True, inplace=True)
 
-    st.markdown(f'#### 篩選自{df_all["sid"].nunique()}檔台股: 任一策略之 __勝率大於{dic_cfg["sel_rat"]}%__ 且 '
+    st.markdown(f'#### 篩選自{df_all["sid"].nunique()}檔台股: 任一策略之勝率大於 {dic_cfg["sel_rat"]}% 且 '
                 f'股價低於 {dic_cfg["sel_price"]}元 之個股')
 
     if df_sel.shape[0] > 0:
@@ -102,7 +102,7 @@ def fn_st_show_win_rate():
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
-        show_cols_renmae = {'date': '日期',
+        show_cols_rename = {'date': '日期',
                             '股票名稱': '名稱',
                             '股票代碼': '代碼',
                             '大盤領先指標': '大盤<br>領先指標',
@@ -114,13 +114,17 @@ def fn_st_show_win_rate():
                             '勝率(%)_殖利率': '殖利率<br>勝率',
                             '相關性_殖利率': '殖利率<br>相關性'}
 
-        df_show.rename(columns=show_cols_renmae, inplace=True)
+        df_show.rename(columns=show_cols_rename, inplace=True)
         fn_add_space(1)
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
     fn_add_space(3)
     st.markdown(f'#### {df_all["sid"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
+    show_cols_rename = {'date': '日期',
+                        'sid_name': '名稱',
+                        'sid': '代碼'}
+    df_all.rename(columns=show_cols_renmae, inplace=True)
     st.dataframe(df_all, width=1200)
 
 
