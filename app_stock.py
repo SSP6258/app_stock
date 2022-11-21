@@ -30,7 +30,7 @@ def fn_click_name(sid, name, url):
 
 
 def fn_st_init():
-    st.set_page_config(page_title='台股推薦', page_icon=None, layout='wide', initial_sidebar_state="auto", menu_items=None)
+    st.set_page_config(page_title='爬蟲練習', page_icon='🕷️', layout='wide', initial_sidebar_state="auto", menu_items=None)
 
 
 def fn_st_show_win_rate():
