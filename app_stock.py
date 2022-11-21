@@ -76,7 +76,7 @@ def fn_st_show_win_rate():
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
-        df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
+        df_show.sort_values(by=['sid_name', 'date'], ascending=False, inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
 
         dic_page = {
