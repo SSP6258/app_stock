@@ -63,11 +63,16 @@ def fn_st_show_win_rate():
     #             f'- 任一策略之勝率大於 {dic_cfg["sel_rat"]}% '
     #             f'- 股價低於 {dic_cfg["sel_price"]}元')
 
-    title = f'### 針對 {df_all["sid"].nunique()}檔推薦股票進行篩選' \
-            f'- 任一策略之勝率大於 {dic_cfg["sel_rat"]}%' \
-            f'- 股價低於 {dic_cfg["sel_price"]}元'
+    title = f'''
+     ### 針對 {df_all["sid"].nunique()}檔推薦股票進行篩選\
+     - 任一策略之勝率大於 {dic_cfg["sel_rat"]}%
+    
+    
+    '''
 
     st.markdown(title)
+
+
 
 
 
