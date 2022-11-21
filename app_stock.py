@@ -124,7 +124,7 @@ def fn_st_show_win_rate():
     show_cols_rename = {'date': '日期',
                         'sid_name': '名稱',
                         'sid': '代碼'}
-    df_all.rename(columns=show_cols_renmae, inplace=True)
+    df_all.rename(columns=show_cols_rename, inplace=True)
     st.dataframe(df_all, width=1200)
 
 
