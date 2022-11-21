@@ -3,16 +3,28 @@ import streamlit as st
 from app_stock_fb import *
 
 
+dic_url = {
+    'findbillion': 'https://www.findbillion.com/twstock/',
+    'yahoo': 'https://tw.stock.yahoo.com/quote/',
+    'cmoney': 'https://www.cmoney.tw/forum/stock/',
+}
+
+
+def fn_add_space(s):
+    for _ in range(s):
+        st.write('')
+
+
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
-    url = rf'https://www.findbillion.com/twstock/{sid}'
+    url = rf'{dic_url["cmoney"]}{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
 
 
-def fn_click_name(sid, name):
-    url = rf'https://tw.stock.yahoo.com/quote/{sid}'
+def fn_click_name(sid, name, url):
+    url = rf'{url}{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
 
@@ -64,14 +76,29 @@ def fn_st_show_win_rate():
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
+
+        dic_page = {
+            '營收': '/revenue',
+            'EPS': '/eps',
+            '殖利率': '/cash_dividend',
+        }
+
+        for c in df_show.columns:
+            if '勝率' in c:
+                df_show[c] = df_show[c].apply(lambda x: '不適用' if x == '' else str(x)+'%')
+                page = dic_page[c.split('_')[-1]]
+                df_show[c] = df_show.apply(lambda x: fn_click_name(x['sid']+page, x[c], dic_url['findbillion']), axis=1)
+            if '相關性' in c:
+                df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
+
         df_show['股票代碼'] = df_show['sid'].apply(fn_make_clickable)
-        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"]), axis=1)
+        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"], dic_url['yahoo']), axis=1)
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
                            '勝率(%)_殖利率', '相關性_殖利率']
 
-        df_show = df_show[show_cols_order]
+        df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
         show_cols_renmae = {'date': '日期',
                             '股票名稱': '名稱',
@@ -86,19 +113,10 @@ def fn_st_show_win_rate():
                             '相關性_殖利率': '殖利率<br>相關性'}
 
         df_show.rename(columns=show_cols_renmae, inplace=True)
-
-        for c in df_show.columns:
-            if '勝率' in c:
-                df_show[c] = df_show[c].apply(lambda x: str(x)+'%')
-            if '相關性' in c:
-                df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
-
-        st.write('')
+        fn_add_space(1)
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
-    for _ in range(3):
-        st.write('')
-
+    fn_add_space(3)
     st.markdown(f'### {df_all["sid"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
     st.dataframe(df_all, width=1200)
