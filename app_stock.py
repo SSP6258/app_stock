@@ -88,7 +88,7 @@ def fn_st_show_win_rate():
         def fn_sel(x):
             if x == '':
                 return '不適用'
-            elif x < dic_cfg['sel_rat']:
+            elif int(x) < dic_cfg['sel_rat']:
                 return str(x)+'%'
             else:
                 return str(x)+'% 👍'
