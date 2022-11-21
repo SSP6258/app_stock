@@ -93,12 +93,9 @@ def fn_st_show_win_rate():
             else:
                 return str(x)+'% 👍'
 
-
         for c in df_show.columns:
             if '勝率' in c:
-                # df_show[c] = df_show[c].apply(lambda x: '不適用' if x == '' else str(x)+'%' if x < dic_cfg['sel_rat'] else str(x)+'% 👍')
                 df_show[c] = df_show[c].apply(fn_sel)
-
                 page = dic_page[c.split('_')[-1]]
                 df_show[c] = df_show.apply(lambda x: fn_click_name(x['sid']+page, x[c], dic_url['findbillion']), axis=1)
             if '相關性' in c:
