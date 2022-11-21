@@ -125,7 +125,11 @@ def fn_st_show_win_rate():
                         'sid_name': '名稱',
                         'sid': '代碼'}
     df_all.rename(columns=show_cols_rename, inplace=True)
-    st.dataframe(df_all, width=1200)
+    col_order = ['名稱', '代碼']
+    col_order = col_order + [c for c in df_all.columns if c not in col_order]
+
+    df_all = df_all[col_order]
+    st.dataframe(df_all, width=1200, height=500)
 
 
 def fn_main():
