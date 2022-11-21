@@ -59,7 +59,7 @@ def fn_st_show_win_rate():
                      '合理價差' not in c]]
     df_sel.reset_index(drop=True, inplace=True)
 
-    st.markdown(f'#### 篩選自{df_all["sid"].nunique()}檔台股: 任一策略之勝率大於 {dic_cfg["sel_rat"]}% 且 '
+    st.markdown(f'#### 篩選自{df_all["sid"].nunique()}檔台股: 任一策略之 __勝率大於{dic_cfg["sel_rat"]}%__ 且 '
                 f'股價低於 {dic_cfg["sel_price"]}元 之個股')
 
     if df_sel.shape[0] > 0:
