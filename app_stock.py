@@ -70,7 +70,7 @@ def fn_st_show_win_rate():
         df_sel['max'] = df_sel[[c for c in df_sel.columns if '勝率' in c]].max(axis=1)
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
-        c1, c2 = st.columns([2, 1])
+        c1, c2 = st.columns([2.2, 1])
         c1.error(f'#### 👉 篩選出{df_sel["sid"].nunique()}檔: {", ".join(list(df_sel["sid_name"].unique()))}')
         fn_add_space(1)
 
