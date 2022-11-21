@@ -79,6 +79,8 @@ def fn_st_show_win_rate():
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
 
+        df_show['股價'] = df_show['股價'].apply(lambda x: str(x) if x == '' else str(x) + '🔺')
+
         dic_page = {
             '營收': '/revenue',
             'EPS': '/eps',
