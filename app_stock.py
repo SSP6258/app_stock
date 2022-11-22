@@ -47,6 +47,28 @@ def fn_color_map(x):
     return css
 
 
+def fn_stock_sel(df_all):
+
+    for idx in df_all.index:
+        for c in df_all.columns:
+            if '勝率' in c:
+                v = df_all.loc[idx, c]
+                corr = df_all.loc[idx, '相關性_'+c.split('_')[0]]
+                if v != '':
+                    if int(v) >= dic_cfg["sel_rat"] and float(corr) > 0.7:
+                        df_all.at[idx, "篩選"] = 1
+                        break
+
+    df_sel = df_all[df_all["篩選"] == 1]
+    df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
+    df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
+                     '耗時' not in c and
+                     '合理價差' not in c]]
+    df_sel.reset_index(drop=True, inplace=True)
+
+    return df_sel
+
+
 def fn_st_init():
     st.set_page_config(page_title='爬蟲練習', page_icon='🕷️', layout='wide', initial_sidebar_state="auto", menu_items=None)
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
@@ -60,26 +82,25 @@ def fn_st_show_win_rate():
         return
 
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-
     df_all["篩選"] = 0
-    for idx in df_all.index:
-        for c in df_all.columns:
-            if '勝率' in c:
-                v = df_all.loc[idx, c]
-                if v != '':
-                    if int(v) >= dic_cfg["sel_rat"]:
-                        df_all.at[idx, "篩選"] = 1
-                        break
 
-    df_sel = df_all[df_all["篩選"] == 1]
-    df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
-    df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
-                     '耗時' not in c and
-                     '合理價差' not in c]]
-    df_sel.reset_index(drop=True, inplace=True)
+    df_sel = fn_stock_sel(df_all)
 
-    # st.markdown(f'#### 篩選自{df_all["sid"].nunique()}檔台股: 任一策略之勝率大於 {dic_cfg["sel_rat"]}% 且 '
-    #             f'股價低於 {dic_cfg["sel_price"]}元 之個股')
+    # for idx in df_all.index:
+    #     for c in df_all.columns:
+    #         if '勝率' in c:
+    #             v = df_all.loc[idx, c]
+    #             if v != '':
+    #                 if int(v) >= dic_cfg["sel_rat"]:
+    #                     df_all.at[idx, "篩選"] = 1
+    #                     break
+    #
+    # df_sel = df_all[df_all["篩選"] == 1]
+    # df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
+    # df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
+    #                  '耗時' not in c and
+    #                  '合理價差' not in c]]
+    # df_sel.reset_index(drop=True, inplace=True)
 
     txt = f'''
            #### 👀 關注個股:
