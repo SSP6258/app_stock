@@ -88,9 +88,11 @@ def fn_st_show_win_rate():
 
     df_sel = fn_stock_sel(df_all)
 
+    fr = min(df_all['date'])
+    to = max(df_all['date'])
     txt = f'''
            #### 👀 關注個股:
-           * 篩選 __自{df_all["sid"].nunique()}檔__ 台股
+           * 篩選 __自{df_all["sid"].nunique()}檔__ 台股 ( {fr} ~ {to} )
            * 篩選 股價 __低於 {dic_cfg["sel_price"]}元__
            * 篩選 任一策略(營收 or EPS or 殖利率)之勝率 __大於 {dic_cfg["sel_rat"]}% 👍__
            * 篩選 所選策略之相關性 __大於 {dic_cfg["sel_corr"]}__
