@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 from app_stock_fb import *
 
-
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
     'Yahoo': 'https://tw.stock.yahoo.com/quote/',
@@ -36,7 +35,7 @@ def fn_click_name(sid, name, url):
 
 def fn_color_map(x):
     css = 'background-color: white; color: black'
-    css_h = 'background-color: white; color: black'
+    css_h = 'background-color: pink; color: black'
     if '%' in str(x) and '%%' not in str(x):
         if float(x.replace('%', '')) >= 50.0:
             css = css_h
@@ -121,15 +120,16 @@ def fn_st_show_win_rate():
             if x == '':
                 return '不適用'
             elif int(x) < dic_cfg['sel_rat']:
-                return str(x)+'%'
+                return str(x) + '%'
             else:
-                return str(x)+'% 👍'
+                return str(x) + '% 👍'
 
         for c in df_show.columns:
             if '勝率' in c:
                 df_show[c] = df_show[c].apply(fn_sel)
                 page = dic_page[c.split('_')[-1]]
-                df_show[c] = df_show.apply(lambda x: fn_click_name(x['sid']+page, x[c], dic_url['FindBillion']), axis=1)
+                df_show[c] = df_show.apply(lambda x: fn_click_name(x['sid'] + page, x[c], dic_url['FindBillion']),
+                                           axis=1)
             if '相關性' in c:
                 df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
 
@@ -212,7 +212,7 @@ def fn_st_show_win_rate():
         return sid if name == '' else name
 
     df_all['名稱'] = df_all.apply(lambda x: fn_rename(x['名稱'], x['代碼']), axis=1)
-    dic_sel['pick'] = [ c for c in list(df_all[df_all['篩選']==1]['名稱'].unique()) if c != '']
+    dic_sel['pick'] = [c for c in list(df_all[df_all['篩選'] == 1]['名稱'].unique()) if c != '']
     df_all = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
     st.dataframe(df_all, width=None, height=500)
 
