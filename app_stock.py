@@ -218,12 +218,12 @@ def fn_st_show_win_rate():
 
 
 def fn_main():
-    if fn_is_parsing():
-        try:
-            df = fn_fb_recommend_stock()
-            fn_find_billion(df, dic_cfg["stocks"])
-        except:
-            pass
+    # if fn_is_parsing():
+    #     try:
+    #         df = fn_fb_recommend_stock()
+    #         fn_find_billion(df, dic_cfg["stocks"])
+    #     except:
+    #         pass
 
     fn_st_init()
     fn_st_show_win_rate()
