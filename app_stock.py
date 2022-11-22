@@ -53,7 +53,7 @@ def fn_stock_sel(df_all):
         for c in df_all.columns:
             if '勝率' in c:
                 v = df_all.loc[idx, c]
-                corr = df_all.loc[idx, '相關性_'+c.split('_')[-1]]
+                corr = df_all.loc[idx, '相關性_'+c.split('_')[-1]].split(' ')[-1]
                 st.write(corr)
                 if v != '':
                     if int(v) >= dic_cfg["sel_rat"] and float(corr) > 0.7:
