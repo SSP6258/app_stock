@@ -88,27 +88,12 @@ def fn_st_show_win_rate():
 
     df_sel = fn_stock_sel(df_all)
 
-    # for idx in df_all.index:
-    #     for c in df_all.columns:
-    #         if '勝率' in c:
-    #             v = df_all.loc[idx, c]
-    #             if v != '':
-    #                 if int(v) >= dic_cfg["sel_rat"]:
-    #                     df_all.at[idx, "篩選"] = 1
-    #                     break
-    #
-    # df_sel = df_all[df_all["篩選"] == 1]
-    # df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
-    # df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
-    #                  '耗時' not in c and
-    #                  '合理價差' not in c]]
-    # df_sel.reset_index(drop=True, inplace=True)
-
     txt = f'''
            #### 👀 關注個股:
            * 篩選 __自{df_all["sid"].nunique()}檔__ 台股
            * 篩選 股價 __低於 {dic_cfg["sel_price"]}元__
            * 篩選 任一策略(營收 or EPS or 殖利率)之勝率 __大於 {dic_cfg["sel_rat"]}% 👍__
+           * 篩選 策略之相關性 __大於 {dic_cfg["sel_corr"]}__
            '''
 
     c1, c2 = st.columns([2.5, 1])
