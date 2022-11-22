@@ -1,49 +1,67 @@
 import datetime
 import os.path
+import time
+
 import pandas as pd
 import requests
 from web_utils import *
 
+
+dic_cfg = {
+    'get_txt_slp': 1,
+    'is_force': False,
+    'batch_size': 5,
+    'sel_rat': 50,
+    'sel_price': 500,
+    'stocks': ['5209', '0050', '3416', '6139', '2235'],
+    'stock_file': 'stock.csv',
+    'header': {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+        "X-Requested-With": "XMLHttpRequest",
+    },
+}
+
+
 dic_fb_main = {
     'page': '',
-    'sid_name': ['getText', 2, By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
-    '股價': ['getText', 2, By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
-    '大盤領先指標': ['getText', 2, By.XPATH,
+    'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
+    '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
+    '大盤領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
-    '產業領先指標': ['getText', 2, By.XPATH,
+    '產業領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
 }
 
 dic_fb_revenue = {
     'page': '/revenue',
-    '勝率(%)_營收': ['getText', 2, By.XPATH,
+    '勝率(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                  '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
-    '合理價差(%)_營收': ['getText', 2, By.XPATH,
+    '合理價差(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                    '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
-    '相關性_營收': ['getText', 2, By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]/text()'],
+    '相關性_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+               '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_eps = {
     'page': '/eps',
-    '勝率(%)_EPS': ['getText', 2, By.XPATH,
+    '勝率(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                   '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
-    '合理價差(%)_EPS': ['getText', 2, By.XPATH,
+    '合理價差(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                     '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
-    '相關性_EPS': ['getText', 2, By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]/text()'],
+    '相關性_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_cash_dividend = {
     'page': '/cash_dividend',
-    '勝率(%)_殖利率': ['getText', 2, By.XPATH,
+    '勝率(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                   '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
-    '合理價差(%)_殖利率': ['getText', 2, By.XPATH,
+    '合理價差(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                     '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
-    '相關性_殖利率': ['getText', 2, By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]/text()'],
+    '相關性_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
@@ -51,19 +69,6 @@ dic_fb_pick = {
     '月營收': r'https://www.findbillion.com/twstock/picking/result?type=0&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
     'EPS': 'https://www.findbillion.com/twstock/picking/result?type=1&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
     '現金股利': 'https://www.findbillion.com/twstock/picking/result?type=2&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
-}
-
-dic_cfg = {
-    'is_force': False,
-    'batch_size': 5,
-    'sel_rat': 50,
-    'sel_price': 500,
-    'stocks': ['5209'],
-    'stock_file': 'stock.csv',
-    'header': {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-        "X-Requested-With": "XMLHttpRequest",
-    },
 }
 
 
@@ -74,7 +79,7 @@ def fn_get_stock_info(sid):
     for dic in [dic_fb_main, dic_fb_revenue, dic_fb_eps, dic_fb_cash_dividend]:
         link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
         driver, action = fn_web_init(link, is_headless=True)
-
+        time.sleep(1)
         for k in dic.keys():
             if k != 'page':
                 typ, slp, by, val = dic[k]
