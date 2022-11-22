@@ -93,7 +93,7 @@ def fn_st_show_win_rate():
            * 篩選 __自{df_all["sid"].nunique()}檔__ 台股
            * 篩選 股價 __低於 {dic_cfg["sel_price"]}元__
            * 篩選 任一策略(營收 or EPS or 殖利率)之勝率 __大於 {dic_cfg["sel_rat"]}% 👍__
-           * 篩選 策略之相關性 __大於 {dic_cfg["sel_corr"]}__
+           * 篩選 所選策略之相關性 __大於 {dic_cfg["sel_corr"]}__
            '''
 
     c1, c2 = st.columns([2.5, 1])
