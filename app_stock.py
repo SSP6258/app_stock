@@ -244,6 +244,8 @@ def fn_st_stock_main():
            * 篩選 策略: 歷史股價 與 所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
            '''
 
+    st.title(f'👨‍💻 傑克潘的爬蟲練習')
+    fn_st_add_space(1)
     c1, c2 = st.columns([2.5, 1])
     c1.info(txt)
 
@@ -254,8 +256,7 @@ def fn_st_stock_main():
 
 def fn_st_init():
     st.set_page_config(page_title='爬蟲練習', page_icon='🕷️', layout='wide', initial_sidebar_state="auto", menu_items=None)
-    st.title(f'👨‍💻 傑克潘的爬蟲練習')
-    fn_st_add_space(2)
+
 
 
 def fn_main():
