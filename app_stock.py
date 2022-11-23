@@ -94,7 +94,7 @@ def fn_st_stock_sel(df_all):
         for i in range(sel_num):
             sid = sel_sid[i]
             df_sid = df_sel[df_sel['sid_name'] == sid]
-            price_old, price_new = df_sid['股價'].values[-1],  df_sid['股價'].values[0]
+            price_old, price_new = df_sid['股價'].values[0],  df_sid['股價'].values[-1]
             if str(price_old) != '' and str(price_new) != '':
                 diff = float(price_new) - float(price_old)
                 prof = int(round(100*diff/float(price_old), 0))
