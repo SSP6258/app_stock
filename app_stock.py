@@ -76,8 +76,8 @@ def fn_st_stock_sel(df_all):
     df_sel = fn_stock_sel(df_all)
 
     if df_sel.shape[0] > 0:
-        def f(sid, name):
-            return sid if name == '' else name
+        def f(s, name):
+            return s if name == '' else name
 
         df_sel['sid_name'] = df_sel.apply(lambda x: f(x.sid, x.sid_name), axis=1)
         df_sel['max'] = df_sel[[c for c in df_sel.columns if '勝率' in c]].max(axis=1)
@@ -97,7 +97,7 @@ def fn_st_stock_sel(df_all):
             price_old, price_new = df_sid['股價'].values[0],  df_sid['股價'].values[-1]
             if str(price_old) != '' and str(price_new) != '':
                 diff = float(price_new) - float(price_old)
-                prof = round(100*diff/float(price_old), 1)
+                prof = round(100*diff/float(price_old), 2)
 
                 df_sid['date'] = pd.to_datetime(df_sid['date'])
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
@@ -256,7 +256,6 @@ def fn_st_stock_main():
 
 def fn_st_init():
     st.set_page_config(page_title='爬蟲練習', page_icon='🕷️', layout='wide', initial_sidebar_state="auto", menu_items=None)
-
 
 
 def fn_main():
