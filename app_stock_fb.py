@@ -88,6 +88,8 @@ def fn_get_stock_info(sid):
 
                 if typ == 'getText':
                     try:
+                        if sid == '0050':
+                            val = '/html/body/div/div/main/div/div[3]/div/div[2]/div[1]/div[1]/div/span/strong'
                         read = fn_web_get_text(driver, val, slp, by)
                         read = '不適用' if '不適用' in read else read
                         df[k] = read.split(' ')[-1] if k == 'sid_name' else read
