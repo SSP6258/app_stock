@@ -229,19 +229,17 @@ def fn_st_stock_main():
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_all["篩選"] = 0
 
-    df_sel = fn_stock_sel(df_all)
-
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
     fr = min(df_all['date'])
     to = max(df_all['date'])
-    dl = max(df_all['date_dl']) - min(df_all['date_dl'])
+    dl = max(df_all['date_dt']) - min(df_all['date_dt'])
     df_all.drop(columns=['date_dt'], inplace=True)
 
     txt = f'''
            #### 👀 關注個股:
            * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
            * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
-           * 篩選 期間: {fr} ~ {to}, {dl.days}
+           * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
            * 篩選 策略: 營收, EPS, 殖利率 __任一勝率大於 {dic_cfg["sel_rat"]}% 👍__
            * 篩選 策略: 歷史股價與所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
            '''
