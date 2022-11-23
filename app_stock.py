@@ -241,7 +241,7 @@ def fn_st_stock_main():
            * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
            * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
            * 篩選 策略: 營收, EPS, 殖利率 __任一勝率大於 {dic_cfg["sel_rat"]}% 👍__
-           * 篩選 策略: 歷史股價與所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
+           * 篩選 策略: 歷史股價 與 所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
            '''
 
     c1, c2 = st.columns([2.5, 1])
