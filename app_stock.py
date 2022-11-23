@@ -97,7 +97,7 @@ def fn_st_stock_sel(df_all):
             price_old, price_new = df_sid['股價'].values[0],  df_sid['股價'].values[-1]
             if str(price_old) != '' and str(price_new) != '':
                 diff = float(price_new) - float(price_old)
-                prof = int(round(100*diff/float(price_old), 0))
+                prof = round(100*diff/float(price_old), 1)
 
                 df_sid['date'] = pd.to_datetime(df_sid['date'])
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
