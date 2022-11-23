@@ -137,7 +137,7 @@ def fn_st_stock_sel(df_all):
 
         df_show['股票代碼'] = df_show['sid'].apply(fn_make_clickable)
         df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"], dic_url['Yahoo']), axis=1)
-        df_show['股價'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["股價"], dic_url['FinLab']), axis=1)
+        df_show['股價'] = df_show.apply(lambda x: fn_click_name(x["sid"]+'/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
