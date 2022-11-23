@@ -89,7 +89,7 @@ def fn_st_stock_sel(df_all):
         c1.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
-        cs = st.columns(sel_num+2)
+        cs = st.columns(sel_num+4)
         j = 0
         for i in range(sel_num):
             sid = sel_sid[i]
