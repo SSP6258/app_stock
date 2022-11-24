@@ -93,7 +93,7 @@ def fn_st_stock_sel(df_all):
         cs = st.columns(sel_num+4)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
-        j = 1
+        # j = 1
         profs = []
         metrics = []
         for i in range(sel_num):
@@ -110,11 +110,11 @@ def fn_st_stock_sel(df_all):
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
                 days = delta_time.days
 
-                profs.append(prof)
+                profs.append(prof+0.000001*i)
                 metrics.append([f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天'])
 
                 # cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
-                j = j + 1
+                # j = j + 1
 
         profs_sort = sorted(profs, reverse=True)
 
