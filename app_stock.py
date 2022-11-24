@@ -239,9 +239,10 @@ def fn_st_stock_main():
     to = max(df_all['date'])
     dl = max(df_all['date_dt']) - min(df_all['date_dt'])
     df_all.drop(columns=['date_dt'], inplace=True)
+    #  👀 關注個股:
 
     txt = f'''
-           #### 👀 關注個股:
+           #### 🎯 篩選條件:
            * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
            * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
            * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
