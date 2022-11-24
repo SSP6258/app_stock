@@ -80,6 +80,7 @@ def fn_st_stock_sel(df_all):
             return s if name == '' else name
 
         df_sel['sid_name'] = df_sel.apply(lambda x: f(x.sid, x.sid_name), axis=1)
+        df_sel['sid_name'] = df_sel['sid_name'].apply(lambda x: x.replace('0050', '元大台灣50'))
         df_sel['max'] = df_sel[[c for c in df_sel.columns if '勝率' in c]].max(axis=1)
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
@@ -92,8 +93,10 @@ def fn_st_stock_sel(df_all):
         cs = st.columns(sel_num+4)
         j = 0
         for i in range(sel_num):
-            sid = sel_sid[i]
-            df_sid = df_sel[df_sel['sid_name'] == sid]
+            sid_name = sel_sid[i]
+
+            df_sid = df_sel[df_sel['sid_name'] == sid_name]
+            sid = df_sid['sid'].values[0]
             price_old, price_new = df_sid['股價'].values[0],  df_sid['股價'].values[-1]
             if str(price_old) != '' and str(price_new) != '':
                 diff = float(price_new) - float(price_old)
@@ -102,7 +105,7 @@ def fn_st_stock_sel(df_all):
                 df_sid['date'] = pd.to_datetime(df_sid['date'])
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
                 days = delta_time.days
-                cs[j].metric(f'{sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
+                cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
                 j = j + 1
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
