@@ -91,7 +91,8 @@ def fn_st_stock_sel(df_all):
         fn_st_add_space(1)
 
         cs = st.columns(sel_num+4)
-        j = 0
+        cs[0].markdown('# 👀')
+        j = 1
         for i in range(sel_num):
             sid_name = sel_sid[i]
 
