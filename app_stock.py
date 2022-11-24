@@ -66,8 +66,7 @@ def fn_stock_sel(df_all):
     df_sel_pick = pd.DataFrame()
     for sid in df_sel['sid'].unique():
         df_sid = df_sel[df_sel['sid'] == sid]
-        dates = df_sid['date']
-        df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [min(dates), max(dates)])]
+        df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [min(df_sid['date']), max(df_sid['date'])])]
         df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
 
     df_sel_pick.reset_index(drop=True, inplace=True)
