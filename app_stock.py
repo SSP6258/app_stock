@@ -43,12 +43,11 @@ def fn_color_map(x):
 
 
 def fn_stock_sel(df_all):
-
     for idx in df_all.index:
         for c in df_all.columns:
             if '勝率' in c:
                 v = df_all.loc[idx, c]
-                corr = df_all.loc[idx, '相關性_'+c.split('_')[-1]].split(' ')[-1]
+                corr = df_all.loc[idx, '相關性_' + c.split('_')[-1]].split(' ')[-1]
                 if v != '':
                     if int(v) >= dic_cfg["sel_rat"] and float(corr) > dic_cfg["sel_corr"]:
                         df_all.at[idx, "篩選"] = 1
@@ -72,7 +71,6 @@ def fn_st_add_space(s):
 
 
 def fn_st_stock_sel(df_all):
-
     df_sel = fn_stock_sel(df_all)
 
     if df_sel.shape[0] > 0:
@@ -90,7 +88,7 @@ def fn_st_stock_sel(df_all):
         c1.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
-        cs = st.columns(sel_num+4)
+        cs = st.columns(sel_num + 4)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
@@ -100,17 +98,19 @@ def fn_st_stock_sel(df_all):
             sid_name = sel_sid[i]
 
             df_sid = df_sel[df_sel['sid_name'] == sid_name]
+            df_sid['date'] = pd.to_datetime(df_sid['date'])
             sid = df_sid['sid'].values[0]
-            price_old, price_new = df_sid['股價'].values[0],  df_sid['股價'].values[-1]
+            price_old = df_sid[df_sid['date'] == min(df_sid['date'])]['股價'].values[0]
+            price_new = df_sid[df_sid['date'] == max(df_sid['date'])]['股價'].values[0]
+            # price_old, price_new = df_sid['股價'].values[0], df_sid['股價'].values[-1]
             if str(price_old) != '' and str(price_new) != '':
                 diff = float(price_new) - float(price_old)
-                prof = round(100*diff/float(price_old), 2)
+                prof = round(100 * diff / float(price_old), 2)
 
-                df_sid['date'] = pd.to_datetime(df_sid['date'])
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
                 days = delta_time.days
 
-                profs.append(prof+0.000001*i)
+                profs.append(prof + 0.000001 * i)
                 metrics.append([f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天'])
 
                 # cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
@@ -118,11 +118,11 @@ def fn_st_stock_sel(df_all):
 
         profs_sort = sorted(profs, reverse=True)
 
-        j=0
+        j = 0
         for p in profs:
             i = profs_sort.index(p)
-            cs[i+1].metric(*metrics[j], delta_color='inverse')
-            j+=1
+            cs[i + 1].metric(*metrics[j], delta_color='inverse')
+            j += 1
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
@@ -156,7 +156,8 @@ def fn_st_stock_sel(df_all):
 
         df_show['股票代碼'] = df_show['sid'].apply(fn_make_clickable)
         df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"], dic_url['Yahoo']), axis=1)
-        df_show['股價'] = df_show.apply(lambda x: fn_click_name(x["sid"]+'/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
+        df_show['股價'] = df_show.apply(
+            lambda x: fn_click_name(x["sid"] + '/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
