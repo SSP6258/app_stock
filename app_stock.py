@@ -94,6 +94,8 @@ def fn_st_stock_sel(df_all):
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         j = 1
+        profs = []
+        metrics = []
         for i in range(sel_num):
             sid_name = sel_sid[i]
 
@@ -107,8 +109,18 @@ def fn_st_stock_sel(df_all):
                 df_sid['date'] = pd.to_datetime(df_sid['date'])
                 delta_time = max(df_sid['date']) - min(df_sid['date'])
                 days = delta_time.days
-                cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
+
+                profs.append(prof)
+                metrics.append([f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天'])
+
+                # cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
                 j = j + 1
+
+        profs_sort = sorted(profs, reverse=True)
+
+        for p in profs:
+            i = profs_sort.index(p)
+            cs[i].metric(metrics[i][0], delta_color='inverse')
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
