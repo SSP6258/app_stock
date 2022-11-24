@@ -60,9 +60,20 @@ def fn_stock_sel(df_all):
     df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
                      '耗時' not in c and
                      '合理價差' not in c]]
+
     df_sel.reset_index(drop=True, inplace=True)
 
-    return df_sel
+    df_sel_pick = pd.DataFrame()
+    for sid in df_sel['sid'].unique():
+        df_sid = df_sel[df_sel['sid'] == sid]
+        sid_old = min(df_sid['date'])
+        sid_new = max(df_sid['date'])
+        df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [sid_old, sid_new])]
+        df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
+
+    df_sel_pick.reset_index(drop=True, inplace=True)
+
+    return df_sel_pick
 
 
 def fn_st_add_space(s):
