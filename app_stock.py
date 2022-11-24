@@ -92,7 +92,7 @@ def fn_st_stock_sel(df_all):
 
         cs = st.columns(sel_num+4)
         # cs[0].markdown('# 👀')
-        cs[0].metric('關注個股', '👀', '漲跌幅/觀察天數', delta_color='inverse')
+        cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         j = 1
         for i in range(sel_num):
             sid_name = sel_sid[i]
