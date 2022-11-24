@@ -118,9 +118,11 @@ def fn_st_stock_sel(df_all):
 
         profs_sort = sorted(profs, reverse=True)
 
+        j=0
         for p in profs:
             i = profs_sort.index(p)
-            cs[i+1].metric(*metrics[i], delta_color='inverse')
+            cs[i+1].metric(*metrics[j], delta_color='inverse')
+            j+=1
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
