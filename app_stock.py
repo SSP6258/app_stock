@@ -251,25 +251,25 @@ def fn_st_chart_bar(df):
     df_c = df_sids
 
     fn_st_add_space(3)
-    st.markdown(f'####依營收策略 選股 {df_r.shape[0]}檔')
+    st.markdown(f'#### 依營收策略 選股 {df_r.shape[0]}檔')
     st.bar_chart(data=df_r, x='策略選股', y=['績效(%)', '營收_勝率', '營收_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
 
     fn_st_add_space(3)
-    st.markdown(f'####依營收策略 選股 {df_eps.shape[0]}檔')
+    st.markdown(f'#### 依營收策略 選股 {df_eps.shape[0]}檔')
     st.bar_chart(data=df_eps, x='策略選股', y=['績效(%)', 'EPS_勝率', 'EPS_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
 
     fn_st_add_space(3)
-    st.markdown(f'####依營收策略 選股 {df_c.shape[0]}檔')
+    st.markdown(f'#### 依營收策略 選股 {df_c.shape[0]}檔')
     st.bar_chart(data=df_c, x='策略選股', y=['績效(%)', '殖利率_勝率', '殖利率_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
 
     fn_st_add_space(3)
-    st.markdown(f'####所有策略 選股 {df_sids.shape[0]}檔')
+    st.markdown(f'#### 所有策略 選股 {df_sids.shape[0]}檔')
     st.bar_chart(data=df_sids, x='策略選股', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c],
                  width=0, height=500,
                  use_container_width=True)
