@@ -225,7 +225,7 @@ def fn_st_chart_bar(df):
         dic_sid['天數'].append(dt.days)
 
         for c in df_sid.columns:
-            dic_sid[c].append(dic_sid.loc[0, c])
+            dic_sid[c].append(df_sid.loc[0, c])
 
     df_sids = pd.DataFrame(dic_sid)
     st.write(df_sids)
