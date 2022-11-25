@@ -239,7 +239,7 @@ def fn_st_chart_bar(df):
     def fn_add_digit(x):
         for i in range(3 - len(str(x))):
             x = '0' + str(x)
-        return x
+        return str(x)
     df_sids['index'] = df_sids['index'].apply(fn_add_digit)
     # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' - ' + df_sids['代碼']
