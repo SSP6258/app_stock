@@ -212,7 +212,7 @@ def fn_st_chart_bar(df):
 
     for c in df_pick.columns:
         if '勝率' in c:
-            df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', ''))/100, 2))
+            df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', '')) / 100, 2))
 
     dic_sid = defaultdict(list)
     for sid in df_pick['代碼'].unique():
@@ -235,11 +235,12 @@ def fn_st_chart_bar(df):
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效(%)'], inplace=True, ascending=False, ignore_index=True)
     df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
-    df_sids['股票'] = df_sids['正負'] +' '+ df_sids['代碼'] + ' - ' + df_sids['名稱'] + '- ' + df_sids['天數'] + '天'
+    df_sids['股票'] = df_sids['正負'] + ' ' + df_sids['代碼'] + ' - ' + df_sids['名稱']
     # st.write(df_sids)
 
     fn_st_add_space(3)
-    st.bar_chart(data=df_sids, x='股票', y=['績效(%)']+[c for c in df_sids.columns if '勝率' in c], width=0, height=0, use_container_width=True)
+    st.bar_chart(data=df_sids, x='股票', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c], width=0, height=0,
+                 use_container_width=True)
 
 
 def fn_st_stock_all(df_all):
