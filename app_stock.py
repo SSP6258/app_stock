@@ -210,6 +210,10 @@ def fn_st_chart_bar(df):
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
     df_pick['股價'] = df_pick['股價'].astype(float)
 
+    for c in df_pick.columns:
+        if '勝率' in c:
+            df_pick[c] = df_pick[c].apply(lambda x: round(float(x.replace('%', ''))/100,0))
+
     dic_sid = defaultdict(list)
     for sid in df_pick['代碼'].unique():
         df_sid = df_pick[df_pick['代碼'] == sid]
@@ -233,7 +237,7 @@ def fn_st_chart_bar(df):
     df_sids['股票'] = df_sids['代碼'] + ' - ' + df_sids['名稱']
     st.write(df_sids)
 
-    st.bar_chart(data=df_sids, x='股票', y=['績效(%)'], width=0, height=0, use_container_width=True)
+    st.bar_chart(data=df_sids, x='股票', y=['績效(%)']+[c for c in df_sids.columns if '勝率' in c], width=0, height=0, use_container_width=True)
 
 
 def fn_st_stock_all(df_all):
