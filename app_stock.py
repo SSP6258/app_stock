@@ -263,6 +263,7 @@ def fn_st_chart_bar(df):
 
     df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
 
+
     fn_st_add_space(3)
     df_win = df_r[df_r["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df_r.shape[0], 1)
