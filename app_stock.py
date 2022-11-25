@@ -59,12 +59,18 @@ def fn_stock_sel(df_all):
             if '勝率' in c:
                 v = df_all.loc[idx, c]
                 corr = df_all.loc[idx, '相關性_' + c.split('_')[-1]].split(' ')[-1]
-                if v != '':
+                if v != '' and corr != '':
                     if int(v) >= dic_cfg["sel_rat"] and float(corr) > dic_cfg["sel_corr"]:
                         df_all.at[idx, "篩選"] = 1
+                        break
                     elif int(v) >= dic_cfg["sel_rat_h"]:
                         df_all.at[idx, "篩選"] = 1
                         break
+
+    for s in df_all[df_all['篩選'] == 1]['sid'].unique():
+        for idx in df_all.index:
+            if df_all.loc[idx, 'sid'] == s and df_all.loc[idx, 'date'] == datetime.date.today():
+                df_all.at[idx, "篩選"] = 1
 
     df_sel = df_all[df_all["篩選"] == 1]
     df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
