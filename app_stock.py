@@ -230,10 +230,10 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效'], inplace=True, ascending=False, ignore_index=True)
-    df_sids['sid_name'] = df_sids['代碼'] + df_sids['名稱']
+    df_sids['股票'] = df_sids.index + df_sids['代碼'] +' - '+ df_sids['名稱']
     st.write(df_sids)
 
-    st.bar_chart(data=df_sids, x='sid_name', y='績效', width=0, height=0, use_container_width=True)
+    st.bar_chart(data=df_sids, x='股票', y='績效', width=0, height=0, use_container_width=True)
 
 
 
