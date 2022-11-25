@@ -206,7 +206,7 @@ def fn_st_stock_sel(df_all):
 
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
-    st.write(df_pick)
+    # st.write(df_pick)
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
     df_pick['股價'] = df_pick['股價'].astype(float)
 
@@ -230,6 +230,8 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
     st.write(df_sids)
+
+    st.bar_chart(data=df_sids, x='名稱', y='績效', width=0, height=0, use_container_width=True)
 
 
 
