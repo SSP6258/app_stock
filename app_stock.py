@@ -246,7 +246,8 @@ def fn_st_chart_bar(df):
     # st.write(df_sids)
 
     fn_st_add_space(3)
-    st.bar_chart(data=df_sids, x='策略選股', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c], width=0, height=300,
+    st.bar_chart(data=df_sids, x='策略選股', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c],
+                 width=0, height=300,
                  use_container_width=True)
 
 
