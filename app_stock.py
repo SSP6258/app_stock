@@ -251,13 +251,18 @@ def fn_st_chart_bar(df):
     df_c = df_sids
 
     fn_st_add_space(3)
-    st.markdown(f'#### 依營收 選股 {df_r.shape[0]}檔')
+    df_win = df_r[df_r["績效(%)"] > 0]
+    win_rate = round(10 * df_win.shape[0] / df_r.shape[0], 1)
+    st.markdown(f'#### 依營收選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_r.shape[0]}')
     st.bar_chart(data=df_r, x='策略選股', y=['績效(%)', '營收_勝率', '營收_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
 
     fn_st_add_space(3)
-    st.markdown(f'#### 依EPS 選股 {df_eps.shape[0]}檔')
+    df_win = df_eps[df_eps["績效(%)"] > 0]
+    win_rate = round(10 * df_win.shape[0] / df_eps.shape[0], 1)
+    st.markdown(f'#### 依EPS選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_eps.shape[0]}')
+
     st.bar_chart(data=df_eps, x='策略選股', y=['績效(%)', 'EPS_勝率', 'EPS_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
@@ -265,13 +270,17 @@ def fn_st_chart_bar(df):
     fn_st_add_space(3)
     df_win = df_c[df_c["績效(%)"] > 0]
     win_rate = round(10*df_win.shape[0]/df_c.shape[0], 1)
-    st.markdown(f'#### 依殖利率選股 勝率: {win_rate}成, {df_c[df_c["績效(%)"] > 0].shape[0]}/{df_c.shape[0]}')
+    st.markdown(f'#### 依殖利率選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_c.shape[0]}')
     st.bar_chart(data=df_c, x='策略選股', y=['績效(%)', '殖利率_勝率', '殖利率_合理價差'],
                  width=0, height=500,
                  use_container_width=True)
 
     fn_st_add_space(3)
-    st.markdown(f'#### 所有策略 選股 {df_sids.shape[0]}檔')
+
+    df_win = df_sids[df_sids["績效(%)"] > 0]
+    win_rate = round(10 * df_win.shape[0] / df_sids.shape[0], 1)
+    st.markdown(f'#### 所有策略選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_sids.shape[0]}')
+
     st.bar_chart(data=df_sids, x='策略選股', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c],
                  width=0, height=500,
                  use_container_width=True)
