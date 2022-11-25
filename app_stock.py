@@ -246,7 +246,7 @@ def fn_st_chart_bar(df):
     # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
-    st.write(dic_sel['pick'])
+    # st.write(dic_sel['pick'])
 
     # ['策略_營收', '策略_EPS', '策略_殖利率']
     df_r = df_sids[df_sids['策略_營收'].apply(lambda x: str(x) == '1')]
