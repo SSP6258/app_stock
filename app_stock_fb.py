@@ -9,11 +9,9 @@ from web_utils import *
 
 dic_cfg = {
     'get_txt_slp': 1,
-    'is_force': False,
+    'is_force': True,
     'batch_size': 5,
-    'sel_corr': 0.8,
     'sel_rat': 50,
-    'sel_rat_h': 90,
     'sel_price': 500,
     'stocks': ['1535'],
     'stock_file': 'stock.csv',
@@ -33,6 +31,7 @@ dic_fb_main = {
     '產業領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
 }
+
 
 dic_fb_revenue = {
     'page': '/revenue',
@@ -110,6 +109,12 @@ def fn_make_clickable(x):
 
     return '<a href="{}">{}</a>'.format(url, name)
 
+dic_s_rename = {
+    '月營收': '策略_營收',
+    'EPS': '策略_EPS',
+    '現金股利': '策略_殖利率',
+}
+
 
 def fn_fb_recommend_stock():
     df_smry = pd.DataFrame()
@@ -122,24 +127,27 @@ def fn_fb_recommend_stock():
             df = df[[c for c in df.columns if 'Unnamed' not in c]]
             df = df[['公司名稱', '收盤價', '合理價差']]
             df.rename(columns={'合理價差': f'合理價差_{k}'}, inplace=True)
+            for s in dic_fb_pick.keys():
+                df[dic_s_rename[s]] = 1 if s == k else 0
+
             df_smry = pd.concat([df_smry, df], axis=0)
 
-        for sid in df_smry['公司名稱'].unique():
-            df_sid = df_smry[df_smry['公司名稱'] == sid]
+    for sid in df_smry['公司名稱'].unique():
+        df_sid = df_smry[df_smry['公司名稱'] == sid]
 
-            if df_sid.shape[0] > 1:
-                dic_sid = {}
-                for c in df_sid.columns:
-                    v_sel = ''
-                    for v in df_sid[c].values:
-                        if str(v) != 'nan':
-                            v_sel = v
-                            break
-                    dic_sid[c] = [v_sel]
+        if df_sid.shape[0] > 1:
+            dic_sid = {}
+            for c in df_sid.columns:
+                v_sel = ''
+                for v in df_sid[c].values:
+                    if str(v) != 'nan':
+                        v_sel = v
+                        break
+                dic_sid[c] = [v_sel]
 
-                df_combined = pd.DataFrame(dic_sid)
-                df_smry = df_smry[df_smry['公司名稱'] != sid]
-                df_smry = pd.concat([df_smry, df_combined], axis=0, ignore_index=True)
+            df_combined = pd.DataFrame(dic_sid)
+            df_smry = df_smry[df_smry['公司名稱'] != sid]
+            df_smry = pd.concat([df_smry, df_combined], axis=0, ignore_index=True)
 
     for idx in df_smry.index:
         df_smry.at[idx, '策略數'] = str(int(sum([1 for _ in df_smry.loc[idx, :].values if '%' in str(_)])))
@@ -151,7 +159,10 @@ def fn_fb_recommend_stock():
 
 
 def fn_find_billion(df, stocks=None):
-    stock_ids = list(df['公司名稱'].apply(lambda x: str(x.split(" ")[0])))
+    df['sid'] = df['公司名稱'].apply(lambda x: str(x.split(" ")[0]))
+    # stock_ids = list(df['公司名稱'].apply(lambda x: str(x.split(" ")[0])))
+
+    stock_ids = list(df['sid'])
     stock_ids = list(set(stock_ids)) if stocks is None else list(set(stock_ids + stocks))
 
     stock_file = dic_cfg['stock_file']
@@ -165,6 +176,10 @@ def fn_find_billion(df, stocks=None):
     fr = 0
     stock_num = len(stock_ids)
     batch_num = dic_cfg['batch_size']
+
+    for s in ['策略_營收', '策略_EPS', '策略_殖利率']:
+        if s not in df_all.columns:
+            df_all[s] = 0
 
     while fr < stock_num:
         to = min(fr + batch_num, stock_num)
@@ -183,6 +198,12 @@ def fn_find_billion(df, stocks=None):
                 t = time.time()
                 df_sid = fn_get_stock_info(sid)
                 df_sid['耗時(秒)'] = int(time.time() - t)
+                for s in ['策略_營收', '策略_EPS', '策略_殖利率']:
+                    if sid in df['sid'].values:
+                        df_sid[s] = df[df['sid'] == sid][s].values[0]
+                    else:
+                        df_sid[s] = 0
+
                 df_sid = df_sid.astype(str)
                 df_all = pd.concat([df_all, df_sid], axis=0, ignore_index=True)
 
@@ -214,13 +235,39 @@ def fn_is_parsing(is_force=dic_cfg["is_force"]):
     return is_parsing
 
 
+def fn_test():
+    df = pd.read_csv(dic_cfg['stock_file'], na_filter=False, dtype=str, index_col=0)
+
+    # 策略_營收,策略_EPS,策略_殖利率
+
+    for c in ['策略_營收', '策略_EPS', '策略_殖利率']:
+        df_s = df[df[c] == '1']
+
+        for idx in df.index:
+            if df.loc[idx, 'sid'] in df_s['sid'].values:
+                df.at[idx, c] = '1'
+            else:
+                df.at[idx, c] = '0'
+
+    df.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
+
+
 def fn_main():
     t = time.time()
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
 
-    print(f"爬蟲耗時: {int(time.time() - t)}(秒)")
+    fn_test()
+
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
+
+    h, m, s = 0, 0, 0
+    dur = int(time.time() - t)
+    h = int(dur/3600)
+    m = int((dur - h*3600)/60)
+    s = int((dur - h*3600 - m*60))
+
+    print(f"爬蟲耗時: {dur} --> {h} hr {m} min {s} sec")
 
 
 if __name__ == '__main__':
