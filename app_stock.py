@@ -204,6 +204,17 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
+def fn_show_bar(df, stg=None, x=None, y=None):
+
+    fn_st_add_space(3)
+    df_win = df[df["績效(%)"] > 0]
+    win_rate = round(10 * df_win.shape[0] / df.shape[0], 1)
+    st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
+    st.bar_chart(data=df, x=x, y=y,
+                 width=0, height=500,
+                 use_container_width=True)
+
+
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     # st.write(df_pick)
@@ -246,7 +257,6 @@ def fn_st_chart_bar(df):
     # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
-    # st.write(dic_sel['pick'])
 
     # ['策略_營收', '策略_EPS', '策略_殖利率']
     df_r = df_sids[df_sids['策略_營收'].apply(lambda x: str(x) == '1')]
@@ -258,13 +268,15 @@ def fn_st_chart_bar(df):
 
     df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
 
-    fn_st_add_space(3)
-    df_win = df_r[df_r["績效(%)"] > 0]
-    win_rate = round(10 * df_win.shape[0] / df_r.shape[0], 1)
-    st.markdown(f'#### 依營收選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_r.shape[0]}')
-    st.bar_chart(data=df_r, x='策略選股', y=['績效(%)', '營收_勝率', '營收_合理價差'],
-                 width=0, height=500,
-                 use_container_width=True)
+    fn_show_bar(df_r, stg='營收', x='策略選股', y=['績效(%)', '營收_勝率', '營收_合理價差'])
+
+    # fn_st_add_space(3)
+    # df_win = df_r[df_r["績效(%)"] > 0]
+    # win_rate = round(10 * df_win.shape[0] / df_r.shape[0], 1)
+    # st.markdown(f'#### 依營收選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_r.shape[0]}')
+    # st.bar_chart(data=df_r, x='策略選股', y=['績效(%)', '營收_勝率', '營收_合理價差'],
+    #              width=0, height=500,
+    #              use_container_width=True)
 
     fn_st_add_space(3)
     df_win = df_eps[df_eps["績效(%)"] > 0]
