@@ -229,6 +229,7 @@ def fn_st_chart_bar(df):
             dic_sid[c].append(df_sid.loc[0, c])
 
     df_sids = pd.DataFrame(dic_sid)
+    df_sids.sort_values(by=['績效'], inplace=True, ascending=False)
     st.write(df_sids)
 
     st.bar_chart(data=df_sids, x='名稱', y='績效', width=0, height=0, use_container_width=True)
