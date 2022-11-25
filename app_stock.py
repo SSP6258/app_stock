@@ -208,6 +208,7 @@ def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     st.write(df_pick)
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
+    df_pick['股價'] = df_pick['股價'].astype(float)
 
     dic_sid = defaultdict(list)
     for sid in df_pick['代碼'].unique():
