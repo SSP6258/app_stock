@@ -245,7 +245,7 @@ def fn_st_chart_bar(df):
         return str(x)
     df_sids['index'] = df_sids['index'].apply(fn_add_digit)
     # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
-    df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' - ' + df_sids['代碼']
+    df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     # st.write(df_sids)
 
     fn_st_add_space(3)
