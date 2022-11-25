@@ -82,12 +82,6 @@ def fn_stock_sel(df_all):
 
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
 
-    # df_sel_pick = pd.DataFrame()
-    # for sid in df_sel['sid'].unique():
-    #     df_sid = df_sel[df_sel['sid'] == sid]
-    #     df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [min(df_sid['date']), max(df_sid['date'])])]
-    #     df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
-
     df_sel_pick.reset_index(drop=True, inplace=True)
 
     return df_sel_pick
@@ -251,6 +245,7 @@ def fn_st_chart_bar(df):
     df_sids['index'] = df_sids['index'].apply(fn_add_digit)
     # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
+    df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '👀' if x.split(' ')[-1] in dic_sel['pick'] else x)
     # st.write(df_sids)
 
     # ['策略_營收', '策略_EPS', '策略_殖利率']
