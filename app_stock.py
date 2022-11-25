@@ -42,6 +42,16 @@ def fn_color_map(x):
     return css
 
 
+def fn_pick_date(df_sel, col_pick, col_date):
+    df_sel_pick = pd.DataFrame()
+    for sid in df_sel[col_pick].unique():
+        df_sid = df_sel[df_sel[col_pick] == sid]
+        df_sid_pick = df_sid[df_sid[col_date].apply(lambda x: x in [min(df_sid[col_date]), max(df_sid[col_date])])]
+        df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
+
+    return df_sel_pick
+
+
 def fn_stock_sel(df_all):
     for idx in df_all.index:
         for c in df_all.columns:
@@ -63,11 +73,13 @@ def fn_stock_sel(df_all):
 
     df_sel.reset_index(drop=True, inplace=True)
 
-    df_sel_pick = pd.DataFrame()
-    for sid in df_sel['sid'].unique():
-        df_sid = df_sel[df_sel['sid'] == sid]
-        df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [min(df_sid['date']), max(df_sid['date'])])]
-        df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
+    df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
+
+    # df_sel_pick = pd.DataFrame()
+    # for sid in df_sel['sid'].unique():
+    #     df_sid = df_sel[df_sel['sid'] == sid]
+    #     df_sid_pick = df_sid[df_sid['date'].apply(lambda x: x in [min(df_sid['date']), max(df_sid['date'])])]
+    #     df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
 
     df_sel_pick.reset_index(drop=True, inplace=True)
 
@@ -191,6 +203,11 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
+def fn_st_chart_bar(df):
+    df_pick = fn_pick_date(df, '名稱', '日期')
+    st.write(df_pick)
+
+
 def fn_st_stock_all(df_all):
     st.markdown(f'#### 📡 {df_all["sid"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
@@ -247,6 +264,8 @@ def fn_st_stock_all(df_all):
     dic_sel['pick'] = [c for c in list(df_all[df_all['篩選'] == 1]['名稱'].unique()) if c != '']
     df_all = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
     st.dataframe(df_all, width=None, height=500)
+
+    fn_st_chart_bar(df_all)
 
 
 def fn_st_stock_main():
