@@ -14,6 +14,7 @@ dic_cfg = {
     'sel_rat': 50,
     'sel_price': 500,
     'sel_corr': 0.8,
+    'sel_rat_h': 90,
     'stocks': ['1535'],
     'stock_file': 'stock.csv',
     'header': {
