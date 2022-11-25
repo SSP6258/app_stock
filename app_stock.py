@@ -237,7 +237,7 @@ def fn_st_chart_bar(df):
     df_sids.reset_index(inplace=True)
 
     def fn_add_digit(x):
-        for i in 3 - len(str(x)):
+        for i in range(3 - len(str(x))):
             x = '0' + str(x)
         return x
     df_sids['index'] = df_sids['index'].apply(fn_add_digit)
