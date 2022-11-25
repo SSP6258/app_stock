@@ -221,7 +221,7 @@ def fn_st_chart_bar(df):
 
         dt = max(df_sid['日期']) - min(df_sid['日期'])
 
-        dic_sid['績效(%)'].append(gain_str)
+        dic_sid['績效(%)'].append(gain)
         dic_sid['績效_str'].append(gain_str)
         dic_sid['天數'].append(dt.days)
 
@@ -230,7 +230,7 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效(%)'], inplace=True, ascending=False, ignore_index=True)
-    st.write(df_sids)
+    # st.write(df_sids)
     df_sids['股票'] = df_sids['代碼'] + ' - ' + df_sids['名稱']
     st.write(df_sids)
 
