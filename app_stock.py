@@ -263,7 +263,6 @@ def fn_st_chart_bar(df):
 
     df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
 
-
     fn_st_add_space(3)
     df_win = df_r[df_r["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df_r.shape[0], 1)
@@ -292,7 +291,7 @@ def fn_st_chart_bar(df):
     df_win = df_o[df_o["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df_o.shape[0], 1)
     st.markdown(f'#### 其他策略選股 勝率: {win_rate}成, {df_win.shape[0]}/{df_o.shape[0]}')
-    st.bar_chart(data=df_o, x='策略選股', y=[c for c in df_o.columns if '勝率' in c or '合理' in c],
+    st.bar_chart(data=df_o, x='策略選股', y=['績效(%)'] + [c for c in df_o.columns if '勝率' in c or '合理' in c],
                  width=0, height=500,
                  use_container_width=True)
 
