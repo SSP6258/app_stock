@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 from app_stock_fb import *
+from collections import defaultdict
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -204,8 +205,32 @@ def fn_st_stock_sel(df_all):
 
 
 def fn_st_chart_bar(df):
-    df_pick = fn_pick_date(df, '名稱', '日期')
+    df_pick = fn_pick_date(df, '代碼', '日期')
     st.write(df_pick)
+    df_pick['日期'] = pd.to_datetime(df_pick['日期'])
+
+    dic_sid = defaultdict(list)
+    for sid in df_pick['代碼'].unique():
+        df_sid = df_pick[df_pick['代碼'] == sid]
+        df_sid.reset_index(drop=True, inplace=True)
+
+        gain = (df_sid['股價'].values[0] - df_sid['股價'].values[-1])/df_sid['股價'].values[-1]
+        gain = round(100*gain, 2)
+        gain_str = str(gain)+'%'
+
+        dt = max(df_sid['日期']) - min(df_sid['日期'])
+
+        dic_sid['績效'].append(gain)
+        dic_sid['績效_str'].append(gain_str)
+        dic_sid['天數'].append(dt.days)
+
+        for c in df_sid.columns:
+            dic_sid[c].append(dic_sid.loc[0, c])
+
+    df_sids = pd.DataFrame(dic_sid)
+    st.write(df_sids)
+
+
 
 
 def fn_st_stock_all(df_all):
