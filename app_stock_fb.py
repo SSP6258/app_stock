@@ -270,7 +270,6 @@ def fn_main():
         df = fn_fb_recommend_stock()
         fn_find_billion(df, dic_cfg["stocks"])
 
-    h, m, s = 0, 0, 0
     dur = int(time.time() - t)
     h = int(dur / 3600)
     m = int((dur - h * 3600) / 60)
