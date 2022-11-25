@@ -215,7 +215,7 @@ def fn_st_chart_bar(df):
             df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', '')) / 10, 1))
 
         if '合理價差' in c:
-            df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', '')) / 10, 1))
+            df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', '')) / 10, 2))
 
     dic_sid = defaultdict(list)
     for sid in df_pick['代碼'].unique():
