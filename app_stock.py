@@ -42,10 +42,10 @@ def fn_color_map(x):
     return css
 
 
-def fn_pick_date(df_sel, col_pick, col_date):
+def fn_pick_date(df, col_pick, col_date):
     df_sel_pick = pd.DataFrame()
-    for sid in df_sel[col_pick].unique():
-        df_sid = df_sel[df_sel[col_pick] == sid]
+    for sid in df[col_pick].unique():
+        df_sid = df[df[col_pick] == sid]
         df_sid_pick = df_sid[df_sid[col_date].apply(lambda x: x in [min(df_sid[col_date]), max(df_sid[col_date])])]
         df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
 
@@ -262,8 +262,8 @@ def fn_st_stock_all(df_all):
 
     df_all['名稱'] = df_all.apply(lambda x: fn_rename(x['名稱'], x['代碼']), axis=1)
     dic_sel['pick'] = [c for c in list(df_all[df_all['篩選'] == 1]['名稱'].unique()) if c != '']
-    df_all = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
-    st.dataframe(df_all, width=None, height=500)
+    df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
+    st.dataframe(df_all_show, width=None, height=500)
 
     fn_st_chart_bar(df_all)
 
