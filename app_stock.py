@@ -212,7 +212,7 @@ def fn_st_chart_bar(df):
 
     for c in df_pick.columns:
         if '勝率' in c:
-            df_pick[c] = df_pick[c].apply(lambda x: round(float(x.replace('%', ''))/100,0))
+            df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', ''))/100, 0))
 
     dic_sid = defaultdict(list)
     for sid in df_pick['代碼'].unique():
