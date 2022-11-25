@@ -261,7 +261,7 @@ def fn_st_chart_bar(df):
     def fn_other(r, e, ca):
         return str(r) != '1' and str(e) != '1' and str(ca) != '1'
 
-    df_o = df_sids[df_sids.apply(lambda x: fn_other(x[['策略_營收']], x[['策略_EPS']], x[['策略_殖利率']]))]
+    df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
 
     fn_st_add_space(3)
     df_win = df_r[df_r["績效(%)"] > 0]
