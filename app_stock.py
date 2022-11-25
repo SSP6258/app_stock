@@ -234,8 +234,15 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效(%)'], inplace=True, ascending=False, ignore_index=True)
-    df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
-    df_sids['策略選股'] = df_sids['正負'] + ' ' + df_sids['代碼'] + ' - ' + df_sids['名稱']
+    df_sids.reset_index(drop=True, inplace=True)
+
+    def fn_add_digit(x):
+        for i in 3 - len(str(x)):
+            x = '0' + str(x)
+        return x
+    df_sids['index'] = df_sids['index'].apply(fn_add_digit)
+    # df_sids['正負'] = df_sids['績效(%)'].apply(lambda x: '正' if x > 0 else '負')
+    df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' - ' + df_sids['代碼']
     # st.write(df_sids)
 
     fn_st_add_space(3)
