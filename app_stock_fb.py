@@ -6,7 +6,6 @@ import pandas as pd
 import requests
 from web_utils import *
 
-
 dic_cfg = {
     'get_txt_slp': 1,
     'is_force': True,
@@ -23,17 +22,17 @@ dic_cfg = {
     },
 }
 
-
 dic_fb_main = {
     'page': '',
-    'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
-    '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH, '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
+    'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+                 '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
+    '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+           '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
     '大盤領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
     '產業領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
 }
-
 
 dic_fb_revenue = {
     'page': '/revenue',
@@ -111,6 +110,7 @@ def fn_make_clickable(x):
 
     return '<a href="{}">{}</a>'.format(url, name)
 
+
 dic_s_rename = {
     '月營收': '策略_營收',
     'EPS': '策略_EPS',
@@ -142,9 +142,14 @@ def fn_fb_recommend_stock():
             for c in df_sid.columns:
                 v_sel = ''
                 for v in df_sid[c].values:
-                    if str(v) != 'nan':
-                        v_sel = v
-                        break
+                    if '策略_' in c:
+                        if str(v) != 'nan' and str(v) != '0':
+                            v_sel = v
+                            break
+                    else:
+                        if str(v) != 'nan':
+                            v_sel = v
+                            break
                 dic_sid[c] = [v_sel]
 
             df_combined = pd.DataFrame(dic_sid)
@@ -209,7 +214,7 @@ def fn_find_billion(df, stocks=None):
                 df_sid = df_sid.astype(str)
                 df_all = pd.concat([df_all, df_sid], axis=0, ignore_index=True)
 
-                print(f'({stock_ids.index(sid)+1}/{len(stock_ids)}): {sid} --> {df_sid["耗時(秒)"].values[0]}(秒)')
+                print(f'({stock_ids.index(sid) + 1}/{len(stock_ids)}): {sid} --> {df_sid["耗時(秒)"].values[0]}(秒)')
 
         # df_all = df_all[]
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
@@ -241,10 +246,12 @@ def fn_test():
     df = pd.read_csv(dic_cfg['stock_file'], na_filter=False, dtype=str, index_col=0)
 
     # 策略_營收,策略_EPS,策略_殖利率
+    df_r = fn_fb_recommend_stock()
+
+    df_r['sid'] = df_r['公司名稱'].apply(lambda x: str(x.split(" ")[0]))
 
     for c in ['策略_營收', '策略_EPS', '策略_殖利率']:
-        df_s = df[df[c] == '1']
-
+        df_s = df_r[df_r[c] == 1]
         for idx in df.index:
             if df.loc[idx, 'sid'] in df_s['sid'].values:
                 df.at[idx, c] = '1'
@@ -257,17 +264,17 @@ def fn_test():
 def fn_main():
     t = time.time()
 
-    fn_test()
+    # fn_test()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"])
 
     h, m, s = 0, 0, 0
     dur = int(time.time() - t)
-    h = int(dur/3600)
-    m = int((dur - h*3600)/60)
-    s = int((dur - h*3600 - m*60))
+    h = int(dur / 3600)
+    m = int((dur - h * 3600) / 60)
+    s = int((dur - h * 3600 - m * 60))
 
     print(f"爬蟲耗時: {dur} --> {h} hr {m} min {s} sec")
 
