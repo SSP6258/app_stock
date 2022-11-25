@@ -234,7 +234,7 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效(%)'], inplace=True, ascending=False, ignore_index=True)
-    df_sids.reset_index(drop=True, inplace=True)
+    df_sids.reset_index(inplace=True)
 
     def fn_add_digit(x):
         for i in 3 - len(str(x)):
