@@ -215,9 +215,9 @@ def fn_st_chart_bar(df):
         df_sid = df_pick[df_pick['代碼'] == sid]
         df_sid.reset_index(drop=True, inplace=True)
 
-        gain = (df_sid['股價'].values[0] - df_sid['股價'].values[-1])/df_sid['股價'].values[-1]
-        gain = round(100*gain, 2)
-        gain_str = str(gain)+'%'
+        gain = (df_sid['股價'].values[0] - df_sid['股價'].values[-1]) / df_sid['股價'].values[-1]
+        gain = round(100 * gain, 2)
+        gain_str = str(gain) + '%'
 
         dt = max(df_sid['日期']) - min(df_sid['日期'])
 
@@ -231,12 +231,11 @@ def fn_st_chart_bar(df):
     df_sids = pd.DataFrame(dic_sid)
     df_sids.sort_values(by=['績效'], inplace=True, ascending=False, ignore_index=True)
     df_sids.reset_index(inplace=True)
-    df_sids['股票'] = df_sids['index'] + ' ' + df_sids['代碼'] +' - '+ df_sids['名稱']
+    st.write(df_sids)
+    df_sids['股票'] = df_sids['index'] + ' ' + df_sids['代碼'] + ' - ' + df_sids['名稱']
     st.write(df_sids)
 
     st.bar_chart(data=df_sids, x='股票', y='績效', width=0, height=0, use_container_width=True)
-
-
 
 
 def fn_st_stock_all(df_all):
