@@ -68,8 +68,11 @@ def fn_stock_sel(df_all):
                         break
 
     for s in df_all[df_all['篩選'] == 1]['sid'].unique():
+        df_sid = df_all[df_all['sid'] == s]
+        s_date = df_sid[df_sid['篩選'] == 1]['date'].min()
+        st.write(s_date, type(s_date))
         for idx in df_all.index:
-            if df_all.loc[idx, 'sid'] == s: # and df_all.loc[idx, 'date'] == str(datetime.date.today()):
+            if df_all.loc[idx, 'sid'] == s and df_all.loc[idx, 'date'] > s_date:
                 df_all.at[idx, "篩選"] = 1
 
     df_sel = df_all[df_all["篩選"] == 1]
