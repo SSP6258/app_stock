@@ -74,6 +74,13 @@ dic_fb_pick = {
 }
 
 
+dic_s_rename = {
+    '月營收': '策略_營收',
+    'EPS': '策略_EPS',
+    '現金股利': '策略_殖利率',
+}
+
+
 def fn_get_stock_info(sid):
     df = pd.DataFrame()
     df['sid'] = [sid]
@@ -109,13 +116,6 @@ def fn_make_clickable(x):
     url = rf'https://www.findbillion.com/twstock/{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
-
-
-dic_s_rename = {
-    '月營收': '策略_營收',
-    'EPS': '策略_EPS',
-    '現金股利': '策略_殖利率',
-}
 
 
 def fn_fb_recommend_stock():
@@ -207,9 +207,15 @@ def fn_find_billion(df, stocks=None):
                 df_sid['耗時(秒)'] = int(time.time() - t)
                 for s in ['策略_營收', '策略_EPS', '策略_殖利率']:
                     if sid in df['sid'].values:
-                        df_sid[s] = df[df['sid'] == sid][s].values[0]
+                        # print(s, df[df['sid'] == sid][s], df[df['sid'] == sid][s].max())
+                        df_sid[s] = df[df['sid'] == sid][s].max()
+                    elif sid in df_all['sid'].values:
+                        # print(s, df_all[df_all['sid'] == sid][s], df_all[df_all['sid'] == sid][s].max())
+                        df_sid[s] = df_all[df_all['sid'] == sid][s].max()
                     else:
                         df_sid[s] = 0
+
+                    df_sid[s] = 0 if df_sid[s].values[0] == '' else df_sid[s].values[0]
 
                 df_sid = df_sid.astype(str)
                 df_all = pd.concat([df_all, df_sid], axis=0, ignore_index=True)
