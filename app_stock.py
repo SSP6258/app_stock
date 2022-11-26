@@ -279,9 +279,11 @@ def fn_st_chart_bar(df):
     fn_show_bar(df_eps, stg='EPS', y=['績效(%)', 'EPS_勝率', 'EPS_合理價差'])
     fn_show_bar(df_c, stg='殖利率', y=['績效(%)', '殖利率_勝率', '殖利率_合理價差'])
     fn_show_bar(df_o, stg='其他策略', y=['績效(%)'] + [c for c in df_o.columns if '勝率' in c or '合理' in c])
-    fn_show_bar(df_sids, stg='任一策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
-    fn_show_bar(df_a[df_a['績效(%)'] > 0], stg='所有策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
-    fn_show_bar(df_a[df_a['績效(%)'] <= 0], stg='所有策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
+    # fn_show_bar(df_sids, stg='任一策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
+    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg='任一策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
+    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg='任一策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
+
+    fn_show_bar(df_a, stg='所有策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
 
 
 def fn_st_stock_all(df_all):
