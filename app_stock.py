@@ -350,10 +350,8 @@ def fn_st_stock_all(df_all):
     df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
 
     fn_st_add_space(3)
-    st.markdown(f'#### 📡 {df_all["sid"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
+    st.markdown(f'#### 📡 {df_all["名稱"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     st.dataframe(df_all_show, width=None, height=500)
-
-
 
 
 def fn_st_stock_main():
