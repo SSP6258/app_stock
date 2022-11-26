@@ -205,7 +205,7 @@ def fn_st_stock_sel(df_all):
         fn_st_add_space(1)
 
         df_show = df_show.style.applymap(fn_color_map,
-                                            subset=[c for c in df_show.columns if '勝率' in c] + ['篩選', '名稱'])
+                                            subset=[c for c in df_show.columns if '勝率' in c])
 
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
