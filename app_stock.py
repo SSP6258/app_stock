@@ -211,7 +211,7 @@ def fn_show_bar(df, stg=None, x='策略選股', y=None):
     df_win = df[df["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df.shape[0], 1)
     # st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
-    st.markdown(f'#### 個股績效 與 "{stg}" 策略指標')
+    st.markdown(f'#### 觀察 個股績效 v.s. "{stg}" 策略指標')
     st.bar_chart(data=df, x=x, y=y,
                  width=0, height=500,
                  use_container_width=True)
