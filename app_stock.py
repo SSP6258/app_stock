@@ -210,7 +210,8 @@ def fn_show_bar(df, stg=None, x='策略選股', y=None):
     fn_st_add_space(3)
     df_win = df[df["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df.shape[0], 1)
-    st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
+    # st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
+    st.markdown(f'#### 個股績效 與 "{stg}" 策略指標')
     st.bar_chart(data=df, x=x, y=y,
                  width=0, height=500,
                  use_container_width=True)
@@ -285,8 +286,8 @@ def fn_st_chart_bar(df):
     cs = st.columns(4)
     sels = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
     watch = ['績效(%)'] + [w for w in watch if w.split('_')[0] in sels]
-    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg='任一策略', y=watch)
-    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg='任一策略', y=watch)
+    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(sels), y=watch)
+    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(sels), y=watch)
 
 
 def fn_st_stock_all(df_all):
