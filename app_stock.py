@@ -282,7 +282,7 @@ def fn_st_chart_bar(df):
     # fn_show_bar(df_a, stg='所有策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
-    sels = st.multiselect(options=['營收', 'EPS', '殖利率'], default=['營收'])
+    sels = st.multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
     watch = ['績效(%)'] + [w for w in watch if w.split('_')[0] in sels]
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg='任一策略', y=watch)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg='任一策略', y=watch)
