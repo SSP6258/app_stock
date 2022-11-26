@@ -69,7 +69,7 @@ def fn_stock_sel(df_all):
 
     for s in df_all[df_all['篩選'] == 1]['sid'].unique():
         for idx in df_all.index:
-            if df_all.loc[idx, 'sid'] == s and df_all.loc[idx, 'date'] == str(datetime.date.today()):
+            if df_all.loc[idx, 'sid'] == s: # and df_all.loc[idx, 'date'] == str(datetime.date.today()):
                 df_all.at[idx, "篩選"] = 1
 
     df_sel = df_all[df_all["篩選"] == 1]
