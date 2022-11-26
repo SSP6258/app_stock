@@ -317,7 +317,7 @@ def fn_st_stock_all(df_all):
     for k in ['營收', 'EPS', '殖利率']:
         k_cols[k] = []
         for c in col_order:
-            if k in c:
+            if k in c and '策略_' not in c:
                 k_cols[k].append(c)
 
         for d in k_cols[k]:
