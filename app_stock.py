@@ -206,12 +206,13 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar(df, stg=None, x='策略選股', y=None, num=None):
-    fn_st_add_space(3)
+def fn_show_bar(df, stg=None, x='策略選股', y=None, num=None, title=False):
+    # fn_st_add_space(3)
     df_win = df[df["績效(%)"] > 0]
     win_rate = round(10 * df_win.shape[0] / df.shape[0], 1)
     # st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
-    st.markdown(f'#### 📊 {num}檔個股的 績效 v.s. "{stg}" 策略指標')
+    if title:
+        st.markdown(f'#### 📊 {num}檔個股的 績效 v.s. "{stg}" 策略指標')
     st.bar_chart(data=df, x=x, y=y,
                  width=0, height=500,
                  use_container_width=True)
@@ -219,7 +220,6 @@ def fn_show_bar(df, stg=None, x='策略選股', y=None, num=None):
 
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
-    # st.write(df_pick)
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
     df_pick['股價'] = df_pick['股價'].astype(float)
 
@@ -260,20 +260,19 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
-    # ['策略_營收', '策略_EPS', '策略_殖利率']
-    df_r = df_sids[df_sids['策略_營收'].apply(lambda x: str(x) == '1')]
-    df_eps = df_sids[df_sids['策略_EPS'].apply(lambda x: str(x) == '1')]
-    df_c = df_sids[df_sids['策略_殖利率'].apply(lambda x: str(x) == '1')]
+    # df_r = df_sids[df_sids['策略_營收'].apply(lambda x: str(x) == '1')]
+    # df_eps = df_sids[df_sids['策略_EPS'].apply(lambda x: str(x) == '1')]
+    # df_c = df_sids[df_sids['策略_殖利率'].apply(lambda x: str(x) == '1')]
 
-    def fn_other(r, e, ca):
-        return str(r) != '1' and str(e) != '1' and str(ca) != '1'
-
-    df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
-
-    def fn_all(r, e, ca):
-        return str(r) == '1' and str(e) == '1' and str(ca) == '1'
-
-    df_a = df_sids[df_sids.apply(lambda x: fn_all(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
+    # def fn_other(r, e, ca):
+    #     return str(r) != '1' and str(e) != '1' and str(ca) != '1'
+    #
+    # df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
+    #
+    # def fn_all(r, e, ca):
+    #     return str(r) == '1' and str(e) == '1' and str(ca) == '1'
+    #
+    # df_a = df_sids[df_sids.apply(lambda x: fn_all(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
 
     # fn_show_bar(df_r, stg='營收', y=['績效(%)', '營收_勝率', '營收_合理價差'])
     # fn_show_bar(df_eps, stg='EPS', y=['績效(%)', 'EPS_勝率', 'EPS_合理價差'])
@@ -286,7 +285,7 @@ def fn_st_chart_bar(df):
     cs = st.columns(3)
     sels = cs[0].multiselect(f'選擇觀察策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
     watch = ['績效(%)'] + [w for w in watch if w.split('_')[0] in sels]
-    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(sels), y=watch, num=df_sids.shape[0])
+    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(sels), y=watch, num=df_sids.shape[0], title=True)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(sels), y=watch, num=df_sids.shape[0])
 
 
