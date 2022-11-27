@@ -257,7 +257,7 @@ def fn_st_chart_bar(df):
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in stra]
     kpi = cs[1].multiselect(f'選擇指標:', options=kpis, default=kpis, key='kpi')
-    order = cs[2].selectbox(f'選擇排序:', options=kpi, index=kpi.index('績效(%)'))
+    order = cs[2].selectbox(f'選擇排序:', options=kpi, index=kpi.index('績效(%)') if '績效(%)' in kpi else 0)
 
     df_sids.sort_values(by=[order], inplace=True, ascending=False, ignore_index=True)
     df_sids.reset_index(inplace=True)
@@ -272,11 +272,9 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
     fn_st_add_space(2)
-    try:
-        fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0], title=False)
-        fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0])
-    except:
-        pass
+    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0], title=False)
+    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0])
+
 
 
 def fn_st_stock_all(df_all):
