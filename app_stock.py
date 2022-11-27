@@ -274,6 +274,7 @@ def fn_st_chart_bar(df):
     kpi = cs[1].multiselect(f'選擇指標:', options=kpis, default=kpis, key='kpi')
     order = cs[2].selectbox(f'選擇排序:', options=kpi, index=kpi.index('績效(%)'))
 
+    fn_st_add_space(2)
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=watch, num=df_sids.shape[0], title=False)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=watch, num=df_sids.shape[0])
 
