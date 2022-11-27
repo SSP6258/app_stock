@@ -253,13 +253,27 @@ def fn_st_chart_bar(df):
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
 
     cs = st.columns([1, 3, 1])
-    stra = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'], key='stra')
-    watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
-    kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in stra]
-    kpi = cs[1].multiselect(f'選擇指標:', options=kpis, default=kpis, key='kpi')
-    order = cs[2].selectbox(f'選擇排序:', options=kpi, index=kpi.index('績效(%)') if '績效(%)' in kpi else 0)
 
-    df_sids.sort_values(by=[order], inplace=True, ascending=False, ignore_index=True)
+    if 'stra' not in st.session_state.keys():
+        st.session_state['stra'] = ['營收']
+
+    st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='stra')
+
+    watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
+    kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
+
+
+    if 'kpi' not in st.session_state.keys():
+        st.session_state['kpi'] = kpis
+
+    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=st.session_state['kpi'], key='kpi')
+
+    if 'order' not in st.session_state.keys():
+        st.session_state['order'] = kpis
+
+    st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=st.session_state['order'].index('績效(%)') if '績效(%)' in st.session_state['order'] else 0)
+
+    df_sids.sort_values(by=[st.session_state['order'][0]], inplace=True, ascending=False, ignore_index=True)
     df_sids.reset_index(inplace=True)
 
     def fn_add_digit(x):
@@ -274,7 +288,6 @@ def fn_st_chart_bar(df):
     fn_st_add_space(2)
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0], title=False)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0])
-
 
 
 def fn_st_stock_all(df_all):
@@ -377,6 +390,8 @@ def fn_st_stock_main():
 
 
 def fn_st_init():
+
+
     st.set_page_config(page_title='爬蟲練習', page_icon='🕷️', layout='wide', initial_sidebar_state="auto", menu_items=None)
 
 
