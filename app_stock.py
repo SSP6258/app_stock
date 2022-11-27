@@ -258,11 +258,12 @@ def fn_st_chart_bar(df):
         df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x) * 10)
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
-    kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
+
 
     if 'stra' not in st.session_state.keys():
         st.session_state['stra'] = ['營收']
 
+    kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
     if 'kpi' not in st.session_state.keys():
         st.session_state['kpi'] = [k for k in kpis if k != '天數']
 
