@@ -252,7 +252,7 @@ def fn_st_chart_bar(df):
 
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
 
-    cs = st.columns([1, 3, 1])
+    cs = st.columns([1.5, 3, 1])
 
     if 'stra' not in st.session_state.keys():
         st.session_state['stra'] = ['營收']
@@ -261,7 +261,6 @@ def fn_st_chart_bar(df):
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
-
 
     if 'kpi' not in st.session_state.keys():
         st.session_state['kpi'] = kpis
