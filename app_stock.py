@@ -278,24 +278,23 @@ def fn_st_chart_bar(df):
         dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in st.session_state['kpi'] else 0
         st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
 
-    df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
+        df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
 
-    df_sids.reset_index(inplace=True)
+        df_sids.reset_index(inplace=True)
 
-    def fn_add_digit(x):
-        for i in range(3 - len(str(x))):
-            x = '0' + str(x)
-        return str(x)
+        def fn_add_digit(x):
+            for i in range(3 - len(str(x))):
+                x = '0' + str(x)
+            return str(x)
 
-    df_sids['index'] = df_sids['index'].apply(fn_add_digit)
-    df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
-    df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
+        df_sids['index'] = df_sids['index'].apply(fn_add_digit)
+        df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
+        df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
-    st.write(f'y --> {st.session_state["kpi"]}')
 
-    fn_st_add_space(2)
-    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
-    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0])
+        fn_st_add_space(2)
+        fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
+        fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0])
 
 
 def fn_st_stock_all(df_all):
