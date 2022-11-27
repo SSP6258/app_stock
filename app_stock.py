@@ -257,7 +257,7 @@ def fn_st_chart_bar(df):
     if 'stra' not in st.session_state.keys():
         st.session_state['stra'] = ['營收']
 
-    st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='stra')
+    st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
@@ -266,7 +266,7 @@ def fn_st_chart_bar(df):
     if 'kpi' not in st.session_state.keys():
         st.session_state['kpi'] = kpis
 
-    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=st.session_state['kpi'], key='kpi')
+    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=st.session_state['kpi'], key='kpixxx')
 
     if 'order' not in st.session_state.keys():
         st.session_state['order'] = kpis
