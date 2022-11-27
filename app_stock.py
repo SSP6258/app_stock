@@ -263,7 +263,7 @@ def fn_st_chart_bar(df):
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
 
     if 'kpi' not in st.session_state.keys():
-        st.session_state['kpi'] = kpis
+        st.session_state['kpi'] = kpis.remove('天數')
 
     st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=st.session_state['kpi'], key='kpixxx')
 
