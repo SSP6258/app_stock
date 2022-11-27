@@ -263,13 +263,13 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
-    cs = st.columns(4)
+    cs = st.columns([1, 3, 1])
 
     stra = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'], key='stra')
 
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in stra]
-    kpis = cs[1].multiselect(f'選擇指標:', options=kpis, default=kpis, key='kpi')
-    order = cs[2].selectbox(f'選擇排序:', options=kpis, index=kpis.index('績效(%)'))
+    kpi = cs[1].multiselect(f'選擇指標:', options=kpis, default=kpis, key='kpi')
+    order = cs[2].selectbox(f'選擇排序:', options=kpi, index=kpi.index('績效(%)'))
 
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=watch, num=df_sids.shape[0], title=True)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=watch, num=df_sids.shape[0])
