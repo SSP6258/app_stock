@@ -262,33 +262,17 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
-    # df_r = df_sids[df_sids['策略_營收'].apply(lambda x: str(x) == '1')]
-    # df_eps = df_sids[df_sids['策略_EPS'].apply(lambda x: str(x) == '1')]
-    # df_c = df_sids[df_sids['策略_殖利率'].apply(lambda x: str(x) == '1')]
-
-    # def fn_other(r, e, ca):
-    #     return str(r) != '1' and str(e) != '1' and str(ca) != '1'
-    #
-    # df_o = df_sids[df_sids.apply(lambda x: fn_other(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
-    #
-    # def fn_all(r, e, ca):
-    #     return str(r) == '1' and str(e) == '1' and str(ca) == '1'
-    #
-    # df_a = df_sids[df_sids.apply(lambda x: fn_all(x['策略_營收'], x['策略_EPS'], x['策略_殖利率']), axis=1)]
-
-    # fn_show_bar(df_r, stg='營收', y=['績效(%)', '營收_勝率', '營收_合理價差'])
-    # fn_show_bar(df_eps, stg='EPS', y=['績效(%)', 'EPS_勝率', 'EPS_合理價差'])
-    # fn_show_bar(df_c, stg='殖利率', y=['績效(%)', '殖利率_勝率', '殖利率_合理價差'])
-    # fn_show_bar(df_o, stg='其他策略', y=['績效(%)'] + [c for c in df_o.columns if '勝率' in c or '合理' in c])
-    # fn_show_bar(df_sids, stg='任一策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
-    # fn_show_bar(df_a, stg='所有策略', y=['績效(%)'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c])
-
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
-    cs = st.columns(3)
-    sels = cs[0].multiselect(f'選擇觀察策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
-    watch = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in sels]
-    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(sels), y=watch, num=df_sids.shape[0], title=True)
-    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(sels), y=watch, num=df_sids.shape[0])
+    cs = st.columns(4)
+
+    stra = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
+
+    index = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in stra]
+    kpis = cs[1].multiselect(f'選擇指標:', options=index, default=['營收'])
+    order = cs[2].selectbox(f'選擇排序:', options=index, default=['績效(%)'])
+
+    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=watch, num=df_sids.shape[0], title=True)
+    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=watch, num=df_sids.shape[0])
 
 
 def fn_st_stock_all(df_all):
