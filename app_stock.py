@@ -259,7 +259,10 @@ def fn_st_chart_bar(df):
 
     st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
 
-    watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
+    for c in [c for c in df_sids.columns if '相關性' in c]:
+        df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x)*10)
+
+    watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
 
     if 'kpi' not in st.session_state.keys():
@@ -286,7 +289,6 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
-    st.write(df_sids)
     fn_st_add_space(2)
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0])
