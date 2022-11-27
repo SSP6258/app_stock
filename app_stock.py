@@ -259,7 +259,6 @@ def fn_st_chart_bar(df):
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
 
-
     if 'stra' not in st.session_state.keys():
         st.session_state['stra'] = ['營收']
 
@@ -269,7 +268,6 @@ def fn_st_chart_bar(df):
 
     if 'order' not in st.session_state.keys():
         st.session_state['order'] = '績效(%)'
-
 
     # ==========
 
@@ -313,6 +311,7 @@ def fn_st_chart_bar(df):
             # df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
             # df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
+        fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
