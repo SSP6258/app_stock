@@ -268,8 +268,8 @@ def fn_st_chart_bar(df):
     stra = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=['營收'], key='stra')
 
     index = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in stra]
-    kpis = cs[1].multiselect(f'選擇指標:', options=list(index), default=['營收'], key='kpi')
-    order = cs[2].selectbox(f'選擇排序:', options=list(index), default=['績效(%)'])
+    kpis = cs[1].multiselect(f'選擇指標:', options=index, default=index, key='kpi')
+    order = cs[2].selectbox(f'選擇排序:', options=index, default=['績效(%)'])
 
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=watch, num=df_sids.shape[0], title=True)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=watch, num=df_sids.shape[0])
