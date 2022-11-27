@@ -135,7 +135,7 @@ def fn_st_stock_sel(df_all):
                 days = delta_time.days
 
                 profs.append(prof + 0.000001 * i)
-                metrics.append([f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天'])
+                metrics.append([f'{sid_name} {sid} ⭐', f'{price_new}', f'{prof}% / {days}天'])
 
                 # cs[j].metric(f'{sid_name} {sid}', f'{price_new}', f'{prof}% / {days}天', delta_color='inverse')
                 # j = j + 1
