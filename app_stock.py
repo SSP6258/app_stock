@@ -272,8 +272,11 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
     fn_st_add_space(2)
-    fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0], title=False)
-    fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0])
+    try:
+        fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0], title=False)
+        fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(stra), y=kpi, num=df_sids.shape[0])
+    except:
+        pass
 
 
 def fn_st_stock_all(df_all):
