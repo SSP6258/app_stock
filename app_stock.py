@@ -223,6 +223,8 @@ def fn_st_chart_bar(df):
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
     df_pick['股價'] = df_pick['股價'].astype(float)
 
+    st.write(df_pick)
+
     for c in df_pick.columns:
         if '勝率' in c or '合理價差' in c:
             df_pick[c] = df_pick[c].apply(lambda x: 0 if x == '' else round(float(x.replace('%', '')) / 10, 1))
