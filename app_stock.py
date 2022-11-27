@@ -315,10 +315,10 @@ def fn_st_chart_bar(df):
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
-        c1, c2 = st.columns([1, 3])
+        c1, c2 = st.columns([1.5, 4])
         dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in \
                                                                               st.session_state['kpi'] else 0
-        st.session_state['order'] = c1.selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
+        st.session_state['order'] = c1.selectbox(f'選擇排序方式:', options=st.session_state['kpi'], index=dft_idx)
 
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
         df_sids.reset_index(inplace=True)
