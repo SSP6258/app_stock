@@ -223,7 +223,7 @@ def fn_st_chart_bar(df):
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
     df_pick['股價'] = df_pick['股價'].astype(float)
 
-    st.write(df_pick)
+    # st.write(df_pick)
 
     for c in df_pick.columns:
         if '勝率' in c or '合理價差' in c:
@@ -242,7 +242,7 @@ def fn_st_chart_bar(df):
 
         dic_sid['績效(%)'].append(gain)
         dic_sid['績效_str'].append(gain_str)
-        dic_sid['天數'].append(str(dt.days))
+        dic_sid['天數'].append(-1*dt.days)
 
         for c in df_sid.columns:
             df_sid_old = df_sid[df_sid['日期'] == min(df_sid['日期'])]
@@ -286,7 +286,7 @@ def fn_st_chart_bar(df):
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c]
     cs = st.columns(3)
     sels = cs[0].multiselect(f'選擇觀察策略:', options=['營收', 'EPS', '殖利率'], default=['營收'])
-    watch = ['績效(%)'] + [w for w in watch if w.split('_')[0] in sels]
+    watch = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in sels]
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(sels), y=watch, num=df_sids.shape[0], title=True)
     fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(sels), y=watch, num=df_sids.shape[0])
 
