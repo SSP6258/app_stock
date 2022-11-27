@@ -252,34 +252,66 @@ def fn_st_chart_bar(df):
 
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
 
-    cs = st.columns([1.5, 3, 1])
-
-    if 'stra' not in st.session_state.keys():
-        st.session_state['stra'] = ['營收']
-
-    st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
-
-    for c in [c for c in df_sids.columns if '相關性' in c]:
-        df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x)*10)
+    # ==========
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
 
+    if 'stra' not in st.session_state.keys():
+        st.session_state['stra'] = ['營收']
+
     if 'kpi' not in st.session_state.keys():
         st.session_state['kpi'] = [k for k in kpis if k != '天數']
-
-    dft_kpi = [k for k in st.session_state['kpi'] if k in kpis]
-    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=dft_kpi, key='kpixxx')
 
     if 'order' not in st.session_state.keys():
         st.session_state['order'] = '績效(%)'
 
+    # ==========
+
+    with st.form(key='Form1'):
+
+        cs = st.columns([1.5, 3, 1])
+
+        # if 'stra' not in st.session_state.keys():
+        #     st.session_state['stra'] = ['營收']
+
+        st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
+
+        for c in [c for c in df_sids.columns if '相關性' in c]:
+            df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x)*10)
+
+        # watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
+        # kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
+
+        # if 'kpi' not in st.session_state.keys():
+        #     st.session_state['kpi'] = [k for k in kpis if k != '天數']
+
+        dft_kpi = [k for k in st.session_state['kpi'] if k in kpis]
+        st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=dft_kpi, key='kpixxx')
+
+        # if 'order' not in st.session_state.keys():
+        #     st.session_state['order'] = '績效(%)'
+
+        if len(st.session_state['kpi']) > 0:
+            dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in st.session_state['kpi'] else 0
+            st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
+
+            # df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
+            # df_sids.reset_index(inplace=True)
+            #
+            # def fn_add_digit(x):
+            #     for i in range(3 - len(str(x))):
+            #         x = '0' + str(x)
+            #     return str(x)
+            #
+            # df_sids['index'] = df_sids['index'].apply(fn_add_digit)
+            # df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
+            # df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
+
+        submit = st.form_submit_button('選擇')
+
     if len(st.session_state['kpi']) > 0:
-        dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in st.session_state['kpi'] else 0
-        st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
-
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
-
         df_sids.reset_index(inplace=True)
 
         def fn_add_digit(x):
@@ -290,8 +322,6 @@ def fn_st_chart_bar(df):
         df_sids['index'] = df_sids['index'].apply(fn_add_digit)
         df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
-
-
         fn_st_add_space(2)
         fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
         fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0])
