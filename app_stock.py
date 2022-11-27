@@ -273,7 +273,7 @@ def fn_st_chart_bar(df):
 
     with st.form(key='Form1'):
 
-        cs = st.columns([1.5, 4])
+        cs = st.columns([1, 4])
 
         # if 'stra' not in st.session_state.keys():
         #     st.session_state['stra'] = ['營收']
@@ -315,7 +315,7 @@ def fn_st_chart_bar(df):
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
-        c1, c2 = st.columns([1.5, 4])
+        c1, c2 = st.columns([1, 4])
         dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in \
                                                                               st.session_state['kpi'] else 0
         st.session_state['order'] = c1.selectbox(f'選擇排序方式:', options=st.session_state['kpi'], index=dft_idx)
