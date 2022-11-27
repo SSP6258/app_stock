@@ -291,7 +291,8 @@ def fn_st_chart_bar(df):
     df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
     df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
 
-    st.write(df_sids)
+    for c in df_sids.columns:
+        st.write(f'{c} --> {type(df_sids[c])}')
 
     fn_st_add_space(2)
     fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
