@@ -273,7 +273,7 @@ def fn_st_chart_bar(df):
 
     st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=st.session_state['order'].index('績效(%)') if '績效(%)' in st.session_state['order'] else 0)
 
-    df_sids.sort_values(by=[st.session_state['order'][0]], inplace=True, ascending=False, ignore_index=True)
+    df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
     df_sids.reset_index(inplace=True)
 
     def fn_add_digit(x):
