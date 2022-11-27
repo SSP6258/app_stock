@@ -265,12 +265,14 @@ def fn_st_chart_bar(df):
     if 'kpi' not in st.session_state.keys():
         st.session_state['kpi'] = [k for k in kpis if k != '天數']
 
-    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=st.session_state['kpi'], key='kpixxx')
+    dft_kpi = [k for k in st.session_state['kpi'] if k in kpis]
+    st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=dft_kpi, key='kpixxx')
 
     if 'order' not in st.session_state.keys():
         st.session_state['order'] = '績效(%)'
 
-    st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=st.session_state['kpi'].index(st.session_state['order']))
+    dft_idx = st.session_state['kpi'].index(st.session_state['order'])
+    st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
 
     df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
     df_sids.reset_index(inplace=True)
