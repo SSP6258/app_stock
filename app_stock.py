@@ -274,7 +274,7 @@ def fn_st_chart_bar(df):
     if 'order' not in st.session_state.keys():
         st.session_state['order'] = '績效(%)'
 
-    dft_idx = st.session_state['kpi'].index(st.session_state['order'] if st.session_state['order'] in st.session_state['kpi'] else 0)
+    dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in st.session_state['kpi'] else 0
     st.session_state['order'] = cs[2].selectbox(f'選擇排序:', options=st.session_state['kpi'], index=dft_idx)
 
     df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
