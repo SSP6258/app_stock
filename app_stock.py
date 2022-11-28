@@ -399,8 +399,10 @@ def fn_st_stock_main():
     c1, c2 = st.columns([2.5, 1])
     c1.info(txt)
 
-    fn_st_stock_sel(df_all)
-    fn_st_add_space(3)
+    if 'stock_sel' in st.session_state.keys():
+        fn_st_stock_sel(df_all)
+        fn_st_add_space(3)
+        st.session_state['stock_sel']=1
     fn_st_stock_all(df_all)
 
 
