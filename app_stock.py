@@ -248,14 +248,14 @@ def fn_st_chart_bar(df):
         for c in df_sid.columns:
             df_sid_old = df_sid[df_sid['日期'] == min(df_sid['日期'])]
             df_sid_new = df_sid[df_sid['日期'] == max(df_sid['日期'])]
-            dic_sid[c+'_old'].append(df_sid.loc[df_sid_old.index[0], c])
+            dic_sid[c].append(df_sid.loc[df_sid_old.index[0], c])
 
             dic_sid[c+'_new'].append(df_sid.loc[df_sid_new.index[0], c])
 
     df_sids = pd.DataFrame(dic_sid)
 
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
-
+    st.write(df_sids)
     # ==========
 
     for c in [c for c in df_sids.columns if '相關性' in c]:
