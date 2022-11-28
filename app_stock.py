@@ -8,6 +8,7 @@ dic_url = {
     'Yahoo': 'https://tw.stock.yahoo.com/quote/',
     'Cmoney': 'https://www.cmoney.tw/forum/stock/',
     'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
+    'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
 }
 
 dic_sel = {
@@ -18,7 +19,7 @@ dic_sel = {
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
-    url = rf'{dic_url["Cmoney"]}{sid}'
+    url = rf'{dic_url["WantRich"]}{sid}'
 
     return '<a href="{}">{}</a>'.format(url, name)
 
