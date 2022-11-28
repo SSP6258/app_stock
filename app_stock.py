@@ -252,6 +252,11 @@ def fn_st_chart_bar(df):
 
             dic_sid[c+'_new'].append(df_sid.loc[df_sid_new.index[0], c])
 
+            if '勝率' in c:
+                dic_sid[c + '_diff'].append(df_sid.loc[df_sid_new.index[0], c] - df_sid.loc[df_sid_old.index[0], c])
+            else:
+                dic_sid[c + '_diff'].append('')
+
     df_sids = pd.DataFrame(dic_sid)
 
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
