@@ -250,7 +250,7 @@ def fn_st_chart_bar(df):
             df_sid_new = df_sid[df_sid['日期'] == max(df_sid['日期'])]
             dic_sid[c].append(df_sid.loc[df_sid_old.index[0], c])
 
-            dic_sid[c+'_new'].append(df_sid.loc[df_sid_old.index[0], c])
+            dic_sid[c+'_new'].append(df_sid.loc[df_sid_new.index[0], c])
 
     df_sids = pd.DataFrame(dic_sid)
 
