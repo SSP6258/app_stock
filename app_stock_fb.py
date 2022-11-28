@@ -73,20 +73,33 @@ dic_fb_pick = {
     '現金股利': 'https://www.findbillion.com/twstock/picking/result?type=2&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
 }
 
-
 dic_s_rename = {
     '月營收': '策略_營收',
     'EPS': '策略_EPS',
     '現金股利': '策略_殖利率',
 }
 
+dic_wantrich_main = {
+    'time': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[1]/div[1]/div[2]'],
+    'grow': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[2]/div[1]/div[2]'],
+    'tech': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[3]/div[1]/div[2]'],
 
-def fn_get_stock_info(sid):
+}
+
+
+def fn_get_stock_info(sid, url, webs):
     df = pd.DataFrame()
     df['sid'] = [sid]
 
-    for dic in [dic_fb_main, dic_fb_revenue, dic_fb_eps, dic_fb_cash_dividend]:
-        link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
+    # for dic in [dic_fb_main, dic_fb_revenue, dic_fb_eps, dic_fb_cash_dividend]:
+    for dic in webs:
+        page = dic["page"] if 'page' in dic.keys() else ''
+        link = rf'{url}{sid}{page}'
+        # link = rf'{url}{sid}{dic["page"]}'
+        # link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
         driver, action = fn_web_init(link, is_headless=True)
         time.sleep(1)
         for k in dic.keys():
@@ -100,6 +113,13 @@ def fn_get_stock_info(sid):
                         read = fn_web_get_text(driver, val, slp, by)
                         read = '不適用' if '不適用' in read else read
                         df[k] = read.split(' ')[-1] if k == 'sid_name' else read
+
+                        if 'grow' in dic.keys():
+                            score = int(read.split('%')[0].split(' ')[-1])
+                            if score >= 80:
+                                print(f'{sid} --> {k}: {read}')
+
+
                     except:
                         df[k] = ['']
                         print(f'{sid} get {dic["page"]} {k} Fail !')
@@ -203,7 +223,12 @@ def fn_find_billion(df, stocks=None):
                 pass
             else:
                 t = time.time()
-                df_sid = fn_get_stock_info(sid)
+
+                url = rf'https://www.findbillion.com/twstock/'
+                webs = [dic_fb_main, dic_fb_revenue, dic_fb_eps, dic_fb_cash_dividend]
+                df_sid = fn_get_stock_info(sid, url, webs)
+
+                # df_sid = fn_get_stock_info(sid)
                 df_sid['耗時(秒)'] = int(time.time() - t)
                 for s in ['策略_營收', '策略_EPS', '策略_殖利率']:
                     if sid in df['sid'].values:
@@ -224,6 +249,22 @@ def fn_find_billion(df, stocks=None):
 
         # df_all = df_all[]
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
+
+
+def fn_want_rich(df, stocks=None):
+    df['sid'] = df['公司名稱'].apply(lambda x: str(x.split(" ")[0]))
+
+    stock_ids = list(df['sid'])
+    stock_ids = list(set(stock_ids)) if stocks is None else list(set(stock_ids + stocks))
+
+    url = r'https://wantrich.chinatimes.com/tw-market/listed/stock/'
+
+    webs = [dic_wantrich_main]
+
+    for sid in stock_ids:
+        print('')
+        print(f'{sid} --> {stock_ids.index(sid)+1}/{len(stock_ids)}')
+        df_sid = fn_get_stock_info(sid, url, webs)
 
 
 def fn_is_parsing(is_force=dic_cfg["is_force"]):
@@ -275,6 +316,7 @@ def fn_main():
     if fn_is_parsing():
         df = fn_fb_recommend_stock()
         fn_find_billion(df, dic_cfg["stocks"])
+        # fn_want_rich(df, dic_cfg["stocks"])
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
