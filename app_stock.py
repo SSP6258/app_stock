@@ -400,9 +400,12 @@ def fn_st_stock_main():
     c1.info(txt)
 
     if 'stock_sel' in st.session_state.keys():
+        pass
+    else:
         fn_st_stock_sel(df_all)
         fn_st_add_space(3)
         st.session_state['stock_sel']=1
+
     fn_st_stock_all(df_all)
 
 
