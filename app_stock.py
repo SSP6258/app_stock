@@ -285,7 +285,7 @@ def fn_st_chart_bar(df):
         cs = st.columns([2, 5])
         st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
 
-        dft_kpi = [k for k in st.session_state['kpi'] if k in kpis]
+        dft_kpi = [k for k in st.session_state['kpi'] if k in kpis and 'new' not in k]
         st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=dft_kpi, key='kpixxx')
 
         fn_st_add_space(1)
