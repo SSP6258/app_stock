@@ -254,8 +254,8 @@ def fn_st_chart_bar(df):
 
             if '勝率' in c:
                 dic_sid[c + '_diff'].append(df_sid.loc[df_sid_new.index[0], c] - df_sid.loc[df_sid_old.index[0], c])
-            else:
-                dic_sid[c + '_diff'].append(0)
+            # else:
+            #     dic_sid[c + '_diff'].append(0)
 
     df_sids = pd.DataFrame(dic_sid)
 
