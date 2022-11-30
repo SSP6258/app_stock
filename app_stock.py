@@ -285,7 +285,7 @@ def fn_st_chart_bar(df):
         st.session_state['order_typ'] = ''
     # ==========
 
-    cs = st.columns([3, 1, 1])
+    cs = st.columns([2, 1, 2])
     with cs[0].form(key='Form1'):
 
         # cs = st.columns([2, 5])
