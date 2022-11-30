@@ -6,3 +6,4 @@ workalendar==16.4.0
 selenium==4.6.0
 lxml==4.9.1
 matplotlib==3.6.2
+plotly==5.11.0
