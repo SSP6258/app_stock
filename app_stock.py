@@ -307,7 +307,7 @@ def fn_st_chart_bar(df):
 
         fig = px.histogram(df_sids, x=st.session_state['order'])
         fig.update_layout(margin={'t': 0, 'b': 270})
-        cs[2].plotly_chart(fig)
+        cs[2].plotly_chart(fig, height=50)
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
