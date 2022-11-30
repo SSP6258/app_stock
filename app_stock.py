@@ -305,7 +305,7 @@ def fn_st_chart_bar(df):
 
         # fig = plt.figure()
         # plt.plot()
-        st.pyplot(df_sids.hist(column=st.session_state['order']))
+        st.dataframe(df_sids.hist(column=st.session_state['order']))
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
