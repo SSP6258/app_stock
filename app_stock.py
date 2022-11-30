@@ -305,7 +305,7 @@ def fn_st_chart_bar(df):
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
 
-        fig = px.histogram(df_sids, x=st.session_state['order'])
+        fig = px.histogram(df_sids, x=st.session_state['order'], height=200)
         cs[2].plotly_chart(fig, use_container_width=False)
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
