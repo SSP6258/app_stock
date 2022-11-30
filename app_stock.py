@@ -330,7 +330,7 @@ def fn_st_chart_bar(df):
 
         c1, c2 = st.columns([1, 4])
         fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
-        margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
+        margin = {'t': 30, 'b': 50, 'r': 0, 'l': 0}
         fig.update_layout(margin=margin, height=10, width=10)
         c1.plotly_chart(fig)
 
