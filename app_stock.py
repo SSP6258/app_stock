@@ -268,36 +268,42 @@ def fn_st_chart_bar(df):
 
     watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
 
-    if 'stra' not in st.session_state.keys():
-        st.session_state['stra'] = ['營收']
+    # if 'stra' not in st.session_state.keys():
+    #     st.session_state['stra'] = ['營收']
 
-    kpis = ['績效(%)', '天數'] + [w for w in watch if w.split('_')[0] in st.session_state['stra']]
+    kpis = ['績效(%)', '天數'] + watch  # [w for w in watch if w.split('_')[0] in st.session_state['stra']]
     if 'kpi' not in st.session_state.keys():
-        st.session_state['kpi'] = [k for k in kpis if k != '天數']
+        st.session_state['kpi'] = []  # [k for k in kpis if k != '天數']
 
     if 'order' not in st.session_state.keys():
-        st.session_state['order'] = '績效(%)'
+        st.session_state['order'] = ''
 
+    if 'order_typ' not in st.session_state.keys():
+        st.session_state['order_typ'] = ''
     # ==========
 
-    with st.form(key='Form1'):
+    cs = st.columns([3, 1, 1])
+    with cs[0].form(key='Form1'):
 
-        cs = st.columns([2, 5])
-        st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
+        # cs = st.columns([2, 5])
+        # st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
 
-        dft_kpi = [k for k in st.session_state['kpi'] if k in kpis and 'new' not in k]
-        st.session_state['kpi'] = cs[1].multiselect(f'選擇指標:', options=kpis, default=dft_kpi, key='kpixxx')
+        # dft_kpi = [k for k in st.session_state['kpi'] if k in kpis and 'new' not in k]
+        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'], key='kpixxx')
 
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
-        c1, c2 = st.columns([2, 5])
+        # c1, c2 = st.columns([2, 5])
         dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in \
                                                                               st.session_state['kpi'] else 0
-        st.session_state['order'] = c1.selectbox(f'選擇排序方式:', options=st.session_state['kpi'], index=dft_idx)
 
-        df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=False, ignore_index=True)
+        st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
+        st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=dft_idx)
+
+        ascending = st.session_state['order_typ'] == '大 --> 小'
+        df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
         df_sids.reset_index(inplace=True)
 
         def fn_add_digit(x):
@@ -309,8 +315,21 @@ def fn_st_chart_bar(df):
         df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
         fn_st_add_space(2)
-        fn_show_bar(df_sids[df_sids['績效(%)'] > 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0], title=False)
-        fn_show_bar(df_sids[df_sids['績效(%)'] <= 0], stg=','.join(st.session_state['stra']), y=st.session_state['kpi'], num=df_sids.shape[0])
+
+        df_p = df_sids[df_sids['績效(%)'] > 1]
+        df_n = df_sids[df_sids['績效(%)'] < -1]
+        df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
+
+        tab_p, tab_n, tab_e = st.tabs([f'正報酬( > 1% ): {df_p.shape[0]}筆', f'負報酬( < -1% ): {df_n.shape[0]}筆', f'持平( -1% ~ 1% ): {df_e.shape[0]}筆'])
+
+        with tab_p:
+            fn_show_bar(df_p, y=st.session_state['kpi'])
+
+        with tab_n:
+            fn_show_bar(df_n, y=st.session_state['kpi'])
+
+        with tab_e:
+            fn_show_bar(df_e, y=st.session_state['kpi'])
 
 
 def fn_st_stock_all(df_all):
