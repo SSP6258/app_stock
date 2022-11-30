@@ -331,7 +331,7 @@ def fn_st_chart_bar(df):
         c1, c2 = st.columns([1, 4])
         fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
         margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
-        fig.update_layout(margin=None, height=10, width=10)
+        fig.update_layout(margin=margin, height=10, width=10)
         c1.plotly_chart(fig)
 
         tab_p, tab_n, tab_e = c2.tabs([f'正報酬( > 1% ): {df_p.shape[0]}筆', f'負報酬( < -1% ): {df_n.shape[0]}筆', f'持平( -1% ~ 1% ): {df_e.shape[0]}筆'])
