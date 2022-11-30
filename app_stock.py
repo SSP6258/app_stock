@@ -305,10 +305,10 @@ def fn_st_chart_bar(df):
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
 
-        fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
-        margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
-        fig.update_layout(margin=None, height=10, width=10)
-        cs[2].plotly_chart(fig)
+        # fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
+        # margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
+        # fig.update_layout(margin=None, height=10, width=10)
+        # cs[2].plotly_chart(fig)
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
@@ -328,7 +328,13 @@ def fn_st_chart_bar(df):
         df_n = df_sids[df_sids['績效(%)'] < -1]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
-        tab_p, tab_n, tab_e = st.tabs([f'正報酬( > 1% ): {df_p.shape[0]}筆', f'負報酬( < -1% ): {df_n.shape[0]}筆', f'持平( -1% ~ 1% ): {df_e.shape[0]}筆'])
+        c1, c2 = st.columns([1, 4])
+        fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
+        margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
+        fig.update_layout(margin=None, height=10, width=10)
+        c1.plotly_chart(fig)
+
+        tab_p, tab_n, tab_e = c2.tabs([f'正報酬( > 1% ): {df_p.shape[0]}筆', f'負報酬( < -1% ): {df_n.shape[0]}筆', f'持平( -1% ~ 1% ): {df_e.shape[0]}筆'])
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'])
