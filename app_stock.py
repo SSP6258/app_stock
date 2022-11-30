@@ -302,7 +302,7 @@ def fn_st_chart_bar(df):
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
 
-        st.write(df_sids.hist(by=st.session_state['order']))
+        st.dataframe(df_sids.hist(by=st.session_state['order']))
 
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
