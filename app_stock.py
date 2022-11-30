@@ -340,8 +340,8 @@ def fn_st_chart_bar(df):
             fn_show_bar(df_e, y=st.session_state['kpi'])
 
         with tab_d:
-            fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
-            margin = {'t': 50, 'b': 100, 'r': 0, 'l': 0}
+            fig = px.histogram(df_sids, x=st.session_state['order'], nbins=50)
+            margin = {'t': 10, 'b': 100, 'r': 0, 'l': 0}
             fig.update_layout(margin=margin, height=10, width=10)
             st.plotly_chart(fig)
 
