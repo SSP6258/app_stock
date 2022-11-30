@@ -1,7 +1,8 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-import plotly.figure_factory as ff
+import plotly.express as px
+
 from app_stock_fb import *
 from collections import defaultdict
 
@@ -304,19 +305,8 @@ def fn_st_chart_bar(df):
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
 
-        # fig = plt.figure()
-        # plt.plot(df_sids.hist(column=st.session_state['order']))
-        # st.pyplot(fig)
-
-        hist_data = [[df_sids[st.session_state['order']].values]]
-
-        group_labels = [st.session_state['order']]
-
-        # Create distplot with custom bin_size
-        fig = ff.create_distplot(hist_data, group_labels)
-
+        fig = px.histogram(df_sids, x=st.session_state['order'])
         st.plotly_chart(fig, use_container_width=True)
-
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
