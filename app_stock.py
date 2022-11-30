@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import matplotlib as plt
+import matplotlib.pyplot as plt
 from app_stock_fb import *
 from collections import defaultdict
 
