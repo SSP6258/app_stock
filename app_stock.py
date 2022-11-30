@@ -308,7 +308,7 @@ def fn_st_chart_bar(df):
         # plt.plot(df_sids.hist(column=st.session_state['order']))
         # st.pyplot(fig)
 
-        hist_data = [df_sids[st.session_state['order']].values]
+        hist_data = [[df_sids[st.session_state['order']].values]]
 
         group_labels = [st.session_state['order']]
 
