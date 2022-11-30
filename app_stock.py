@@ -308,10 +308,9 @@ def fn_st_chart_bar(df):
         # plt.plot(df_sids.hist(column=st.session_state['order']))
         # st.pyplot(fig)
 
-        st.write(df_sids[st.session_state['order']])
-        hist_data = [df_sids[st.session_state['order']].to_list()]
+        hist_data = [df_sids[st.session_state['order']].values]
 
-        group_labels = [st.session_state['order'],]
+        group_labels = [st.session_state['order']]
 
         # Create distplot with custom bin_size
         fig = ff.create_distplot(hist_data, group_labels)
