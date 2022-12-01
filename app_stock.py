@@ -279,37 +279,12 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar(df, stg=None, x='策略選股', y=None, num=None, title=False):
-    # fn_st_add_space(3)
-    df_win = df[df["績效(%)"] > 0]
-    win_rate = round(10 * df_win.shape[0] / df.shape[0], 1)
-    # st.markdown(f'#### 依{stg}選股 勝率: {win_rate}成, {df_win.shape[0]}/{df.shape[0]}')
-    if title:
-        st.markdown(f'#### 📊 {num}檔個股的 績效 v.s. "{stg}" 策略指標')
-
-    # st.bar_chart(data=df, x=x, y=y,
-    #              width=0, height=500,
-    #              use_container_width=True)
-
-    fn_test(df, y)
+def fn_show_bar(df, x='策略選股', y=None):
+    st.bar_chart(data=df, x=x, y=y,
+                 width=0, height=500,
+                 use_container_width=True)
 
 
-def fn_test(df, d):
-    data = pd.melt(df, id_vars=d)
-
-    # Horizontal stacked bar chart
-    chart = (
-        alt.Chart(data)
-            .mark_bar()
-            .encode(
-            x=alt.X("value", type="quantitative", title=""),
-            y=alt.Y("index", type="nominal", title=""),
-            color=alt.Color("variable", type="nominal", title=""),
-            order=alt.Order("variable", sort="descending"),
-        )
-    )
-
-    st.altair_chart(chart, use_container_width=True)
 
 
 def fn_st_chart_bar(df):
