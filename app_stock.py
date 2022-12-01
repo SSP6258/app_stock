@@ -367,16 +367,20 @@ def fn_st_chart_bar(df):
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
         fn_st_add_space(2)
 
-        df_p = df_sids[df_sids['績效(%)'] > 1]
+        df_p = df_sids[df_sids['績效(%)'].apply(lambda x: 1 < x < 5)]
+        df_p5 = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 5)]
         df_n = df_sids[df_sids['績效(%)'] < -1]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_d, tab_p, tab_n, tab_e = st.tabs([f'指標分布', f'正報酬( > 1% ): {df_p.shape[0]}檔', f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs([f'指標分布', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔', f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'])
+
+        with tab_p5:
+            fn_show_bar(df_p5, y=st.session_state['kpi'])
 
         with tab_n:
             fn_show_bar(df_n, y=st.session_state['kpi'])
