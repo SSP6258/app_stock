@@ -330,52 +330,28 @@ def fn_st_chart_bar(df):
     df_sids = pd.DataFrame(dic_sid)
 
     st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
-    # st.write(df_sids)
+
     # ==========
 
     for c in [c for c in df_sids.columns if '相關性' in c]:
         df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x) * 10)
 
-    watch = [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
+    for s in ['kpi', 'order', 'order_typ']:
+        if s not in st.session_state.keys():
+            st.session_state[s] = []
 
-    # if 'stra' not in st.session_state.keys():
-    #     st.session_state['stra'] = ['營收']
-
-    kpis = ['績效(%)', '天數'] + watch  # [w for w in watch if w.split('_')[0] in st.session_state['stra']]
-    if 'kpi' not in st.session_state.keys():
-        st.session_state['kpi'] = []  # [k for k in kpis if k != '天數']
-
-    if 'order' not in st.session_state.keys():
-        st.session_state['order'] = ''
-
-    if 'order_typ' not in st.session_state.keys():
-        st.session_state['order_typ'] = ''
     # ==========
 
-    cs = st.columns([3, 1, 1])
+    cs = st.columns([3, 0.8, 1.2])
+    kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
-
-        # cs = st.columns([2, 5])
-        # st.session_state['stra'] = cs[0].multiselect(f'選擇策略:', options=['營收', 'EPS', '殖利率'], default=st.session_state['stra'], key='straxx')
-
-        # dft_kpi = [k for k in st.session_state['kpi'] if k in kpis and 'new' not in k]
         st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'], key='kpixxx')
-
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
-        # c1, c2 = st.columns([2, 5])
-        # dft_idx = st.session_state['kpi'].index(st.session_state['order']) if st.session_state['order'] in \
-        #                                                                       st.session_state['kpi'] else 0
-
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
-
-        # fig = px.histogram(df_sids, x=st.session_state['order'], height=10, width=10)
-        # margin = {'t': 0, 'b': 270, 'r': 100, 'l': 0}
-        # fig.update_layout(margin=None, height=10, width=10)
-        # cs[2].plotly_chart(fig)
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
