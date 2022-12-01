@@ -2,9 +2,9 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-
 from app_stock_fb import *
 from collections import defaultdict
+from twstock import Stock
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -57,6 +57,21 @@ def fn_pick_date(df, col_pick, col_date):
     return df_sel_pick
 
 
+def fn_twstock(sid):
+    stock = Stock(sid)  # 擷取台積電股價
+    # ma_p = stock.moving_average(stock.price, 5)  # 計算五日均價
+    # ma_c = stock.moving_average(stock.capacity, 5)  # 計算五日均量
+    # ma_p_cont = stock.continuous(ma_p)  # 計算五日均價持續天數
+    # ma_br = stock.ma_bias_ratio(5, 10)  # 計算五日、十日乖離值
+    #
+    # print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
+
+    price = stock.price[-1]
+    amount = int(stock.capacity[-1]/1000)
+
+    return price, amount
+
+
 def fn_stock_sel(df_all):
     for idx in df_all.index:
         for c in df_all.columns:
@@ -87,6 +102,11 @@ def fn_stock_sel(df_all):
     df_sel.reset_index(drop=True, inplace=True)
 
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
+
+    for sid in df_sel_pick['sid'].unique():
+        price, amount = fn_twstock(sid)
+        if amount < 1000:
+            df_sel_pick = df_sel_pick[df_sel_pick['sid'] != sid]
 
     df_sel_pick.reset_index(drop=True, inplace=True)
 
