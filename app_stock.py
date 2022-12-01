@@ -5,6 +5,8 @@ import plotly.express as px
 from app_stock_fb import *
 from collections import defaultdict
 from twstock import Stock
+from plotly.subplots import make_subplots
+import plotly.graph_objs as go
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -55,6 +57,50 @@ def fn_pick_date(df, col_pick, col_date):
         df_sel_pick = pd.concat([df_sel_pick, df_sid_pick], axis=0)
 
     return df_sel_pick
+
+
+def fn_kpi_plt(kpis, df_sids):
+    dis = [k for k in kpis if 'new' in k]
+    dis = [k for k in dis if '價差' in k] + [k for k in dis if '價差' not in k]
+    dis = [k for k in dis if '勝率' in k] + [k for k in dis if '勝率' not in k]
+    dis = ['績效(%)'] + dis
+
+    rows = 2
+    cols = int(round(len(dis)/rows, 0))
+    titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d else round(df_sids[d].max(), 2)}' for d in dis]
+    watch = ''
+    subplot_titles = []
+    for t in titles:
+        sub_t = t
+        if "勝率" in t:
+            if float(t.split('👉')[-1]) > 5.0:
+                sub_t = sub_t + '💎'
+                watch = '💎'
+        if "價差" in t:
+            if float(t.split('👉')[-1]) < -5.5:
+                sub_t = sub_t + '💎'
+                watch = '💎'
+
+        subplot_titles.append(sub_t)
+
+    fig = make_subplots(rows=rows, cols=cols, subplot_titles=subplot_titles)
+
+    for d in dis:
+        i = dis.index(d)
+        r = int(i / cols) + 1
+        c = i - cols*(r-1) + 1
+        fig.add_trace(
+            go.Histogram(x=df_sids[d], nbinsx=40, showlegend=False,
+                         marker=dict(opacity=1, line=dict(color='white', width=0.4)),
+                         ),
+            row=r, col=c
+        )
+
+    margin = {'t': 30, 'b': 0, 'l': 0, 'r': 0}
+    fig.update_layout(margin=margin)
+
+    return fig, watch
+
 
 
 def fn_twstock(sid):
@@ -349,7 +395,9 @@ def fn_st_chart_bar(df):
         df_n = df_sids[df_sids['績效(%)'] < -1]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
-        tab_p, tab_n, tab_e, tab_d = st.tabs([f'正報酬( > 1% ): {df_p.shape[0]}筆', f'負報酬( < -1% ): {df_n.shape[0]}筆', f'持平( -1% ~ 1% ): {df_e.shape[0]}筆', f'分布'])
+        fig, watch = fn_kpi_plt(kpis, df_sids)
+
+        tab_d, tab_p, tab_n, tab_e = st.tabs([f'指標分布', f'正報酬( > 1% ): {df_p.shape[0]}檔', f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'])
@@ -361,11 +409,7 @@ def fn_st_chart_bar(df):
             fn_show_bar(df_e, y=st.session_state['kpi'])
 
         with tab_d:
-            fig = px.histogram(df_sids, x=st.session_state['order'], nbins=50)
-            margin = {'t': 10, 'b': 100, 'r': 0, 'l': 0}
-            fig.update_layout(margin=margin, height=10, width=10)
-            st.plotly_chart(fig)
-
+            st.plotly_chart(fig, use_container_width=True)
 
 
 def fn_st_stock_all(df_all):
