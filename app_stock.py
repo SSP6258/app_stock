@@ -103,11 +103,11 @@ def fn_stock_sel(df_all):
 
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
 
-    for sid in df_sel_pick['sid'].unique():
-        price, amount = fn_twstock(sid)
-        if amount < 500:
-            st.write(f'drop {sid} amount = {amount}')
-            df_sel_pick = df_sel_pick[df_sel_pick['sid'] != sid]
+    # for sid in df_sel_pick['sid'].unique():
+    #     price, amount = fn_twstock(sid)
+    #     if amount < 500:
+    #         st.write(f'drop {sid} amount = {amount}')
+    #         df_sel_pick = df_sel_pick[df_sel_pick['sid'] != sid]
 
     df_sel_pick.reset_index(drop=True, inplace=True)
 
