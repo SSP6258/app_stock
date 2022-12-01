@@ -1,7 +1,7 @@
 numpy==1.23.4
 pandas==1.5.1
 requests==2.28.1
-streamlit==1.14.1
+streamlit==1.15.0
 workalendar==16.4.0
 selenium==4.6.0
 lxml==4.9.1
