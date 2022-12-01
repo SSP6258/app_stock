@@ -285,8 +285,6 @@ def fn_show_bar(df, x='策略選股', y=None):
                  use_container_width=True)
 
 
-
-
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
