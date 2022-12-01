@@ -295,7 +295,7 @@ def fn_show_bar(df, stg=None, x='策略選股', y=None, num=None, title=False):
 
 
 def fn_test(df, d):
-    data = pd.melt(df, id_vars=[d])
+    data = pd.melt(df, id_vars=d)
 
     # Horizontal stacked bar chart
     chart = (
