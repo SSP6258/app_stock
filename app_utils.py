@@ -8,7 +8,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       legend=True, lg_title=None, lg_pos=None, lg_x=None):
 
     fig = px.bar(df, x=x_col, y=y_col, orientation=v_h, title=title, text=txt_col, color=color_col,
-                 width=width, height=1200, opacity=op)
+                 width=width, height=height, opacity=op)
 
     fig.update_layout(margin=margin,
                       xaxis_title='',

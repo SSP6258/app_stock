@@ -279,7 +279,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
 
     width_full = 1200
     width_max = 600
-    height = 1200
+    height = 700
     bars = 30
 
     v = int(df.shape[0] / bars)
@@ -361,7 +361,7 @@ def fn_st_chart_bar(df):
 
     # ==========
 
-    cs = st.columns([3, 0.8, 1.2])
+    cs = st.columns([3, 1, 1, 1])
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
         st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'],
