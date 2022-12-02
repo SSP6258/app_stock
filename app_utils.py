@@ -19,7 +19,6 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       font=dict(
                           # family="Courier New, monospace",
                           size=14,
-                          # color="RebeccaPurple"
                           ),
                       legend=dict(
                           title=lg_title,
