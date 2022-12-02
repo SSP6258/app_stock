@@ -279,7 +279,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
 
     width_full = 1200
     width_max = 600
-    height = 700
+    height = 600
     bars = 30
 
     v = int(df.shape[0] / bars)
