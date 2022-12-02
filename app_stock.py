@@ -275,11 +275,11 @@ def fn_st_stock_sel(df_all):
 
 
 def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
-    margin = {'t': 20, 'b': 0, 'l': 0, 'r': 0}
+    margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0}
 
     width_full = 1200
     width_max = 600
-    height = 600
+    height = 800
     bars = 30
 
     v = int(df.shape[0] / bars)
@@ -294,7 +294,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
         fr = to
 
         fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.8, barmode=barmode,
-                                lg_pos='h', lg_x=0.8, lg_title='指標', width=width, height=height,
+                                lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
                                 title=title)
 
         cs[cols - c - 1].plotly_chart(fig)
