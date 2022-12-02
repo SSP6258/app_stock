@@ -14,6 +14,8 @@ def fn_gen_plotly_bar(df, x_col, y_col,
     fig.update_layout(margin=margin,
                       xaxis_title='',
                       yaxis_title='',
+                      width=width,
+                      height=height,
                       showlegend=legend,
                       barmode=barmode,
                       font=dict(
