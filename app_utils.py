@@ -17,9 +17,10 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       showlegend=legend,
                       barmode=barmode,
                       font=dict(
-                          family="Courier New, monospace",
-                          size=12,
-                          color="RebeccaPurple"),
+                          # family="Courier New, monospace",
+                          size=14,
+                          # color="RebeccaPurple"
+                          ),
                       legend=dict(
                           title=lg_title,
                           orientation=lg_pos,
