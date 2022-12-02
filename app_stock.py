@@ -313,9 +313,10 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
-    df_pick['股價'] = df_pick['股價'].astype(float)
 
-    # st.write(df_pick)
+    st.write(df_pick['股價'])
+
+    df_pick['股價'] = df_pick['股價'].astype(float)
 
     for c in df_pick.columns:
         if '勝率' in c or '合理價差' in c:
