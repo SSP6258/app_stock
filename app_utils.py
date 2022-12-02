@@ -10,7 +10,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
     fig = px.bar(df, x=x_col, y=y_col, orientation=v_h, title=title, text=txt_col, color=color_col,
                  width=width, height=height, opacity=op)
 
-    fig.update_traces(textfont_size=8)
+    fig.update_traces(textfont_size=12)
     fig.update_layout(margin=margin,
                       xaxis_title='',
                       yaxis_title='',
