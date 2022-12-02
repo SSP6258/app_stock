@@ -16,13 +16,17 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       yaxis_title='',
                       showlegend=legend,
                       barmode=barmode,
+                      font=dict(
+                          family="Courier New, monospace",
+                          size=12,
+                          color="RebeccaPurple"),
                       legend=dict(
                           title=lg_title,
                           orientation=lg_pos,
                           yanchor="bottom",
                           y=1.02,
                           xanchor="right",
-                          x=lg_x)
+                          x=lg_x),
                       )
 
     return fig
