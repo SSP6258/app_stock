@@ -11,6 +11,8 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                  width=width, height=height, opacity=op)
 
     fig.update_layout(margin=margin,
+                      xaxis_title='',
+                      yaxis_title='',
                       showlegend=legend,
                       barmode=barmode,
                       legend=dict(
