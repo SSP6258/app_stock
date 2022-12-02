@@ -1,14 +1,10 @@
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
-import plotly.express as px
-from app_stock_fb import *
 from collections import defaultdict
 from twstock import Stock
 from plotly.subplots import make_subplots
-import plotly.graph_objs as go
-import altair as alt
-
+from app_stock_fb import *
+from app_utils import *
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -68,7 +64,7 @@ def fn_kpi_plt(kpis, df_sids):
     dis = ['績效(%)'] + dis
 
     rows = 2
-    cols = int(round(len(dis)/rows, 0))
+    cols = int(round(len(dis) / rows, 0))
     titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d else round(df_sids[d].max(), 2)}' for d in dis]
     watch = ''
     subplot_titles = []
@@ -90,7 +86,7 @@ def fn_kpi_plt(kpis, df_sids):
     for d in dis:
         i = dis.index(d)
         r = int(i / cols) + 1
-        c = i - cols*(r-1) + 1
+        c = i - cols * (r - 1) + 1
         fig.add_trace(
             go.Histogram(x=df_sids[d], nbinsx=40, showlegend=False,
                          marker=dict(opacity=1, line=dict(color='white', width=0.4)),
@@ -104,7 +100,6 @@ def fn_kpi_plt(kpis, df_sids):
     return fig, watch
 
 
-
 def fn_twstock(sid):
     stock = Stock(sid)  # 擷取台積電股價
     # ma_p = stock.moving_average(stock.price, 5)  # 計算五日均價
@@ -115,7 +110,7 @@ def fn_twstock(sid):
     # print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
 
     price = stock.price[-1]
-    amount = int(stock.capacity[-1]/1000)
+    amount = int(stock.capacity[-1] / 1000)
 
     return price, amount
 
@@ -279,10 +274,40 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None):
-    st.bar_chart(data=df, x=x, y=y,
-                 width=0, height=500,
-                 use_container_width=True)
+def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
+    margin = {'t': 20, 'b': 0, 'l': 0, 'r': 0}
+
+    width_full = 1200
+    width_max = 600
+    height = 600
+    bars = 30
+
+    v = int(df.shape[0] / bars)
+    cols = v + 1 if v < float(df.shape[0] / bars) else v
+    width = min(int(width_full / cols), width_max)
+    cs = st.columns(cols)
+    fr = 0
+
+    for c in range(cols):
+        to = min(df.shape[0], fr + bars)
+        df_c = df.loc[fr: to].reset_index(drop=True)
+        fr = to
+
+        fig = fn_gen_plotly_bar(df_c, x_col=x, y_col=y, v_h='v', margin=margin, op=0.8, barmode=barmode,
+                                lg_pos='h', lg_x=0.8, lg_title='指標', width=width, height=height,
+                                title=title)
+
+        cs[cols - c - 1].plotly_chart(fig)
+
+
+def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
+    if v_h == 'v':
+        st.bar_chart(data=df, x=x, y=y,
+                     width=0, height=500,
+                     use_container_width=True)
+    else:
+        df = df.loc[::-1].reset_index(drop=True)
+        fn_show_bar_h(df, x, y)
 
 
 def fn_st_chart_bar(df):
@@ -309,19 +334,17 @@ def fn_st_chart_bar(df):
 
         dic_sid['績效(%)'].append(gain)
         dic_sid['績效_str'].append(gain_str)
-        dic_sid['天數'].append(-1*dt.days)
+        dic_sid['天數'].append(-1 * dt.days)
 
         for c in df_sid.columns:
             df_sid_old = df_sid[df_sid['日期'] == min(df_sid['日期'])]
             df_sid_new = df_sid[df_sid['日期'] == max(df_sid['日期'])]
             dic_sid[c].append(df_sid.loc[df_sid_old.index[0], c])
 
-            dic_sid[c+'_new'].append(df_sid.loc[df_sid_new.index[0], c])
+            dic_sid[c + '_new'].append(df_sid.loc[df_sid_new.index[0], c])
 
             if '勝率' in c:
                 dic_sid[c + '_diff'].append(df_sid.loc[df_sid_new.index[0], c] - df_sid.loc[df_sid_old.index[0], c])
-            # else:
-            #     dic_sid[c + '_diff'].append(0)
 
     df_sids = pd.DataFrame(dic_sid)
 
@@ -332,7 +355,7 @@ def fn_st_chart_bar(df):
     for c in [c for c in df_sids.columns if '相關性' in c]:
         df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x) * 10)
 
-    for s in ['kpi', 'order', 'order_typ']:
+    for s in ['kpi', 'order', 'order_typ', 'bar']:
         if s not in st.session_state.keys():
             st.session_state[s] = []
 
@@ -341,13 +364,16 @@ def fn_st_chart_bar(df):
     cs = st.columns([3, 0.8, 1.2])
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
-        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'], key='kpixxx')
+        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'],
+                                                 key='kpixxx')
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
+        st.session_state['bar'] = cs[2].selectbox(f'柱狀圖方向:', options=['水平', '垂直'], index=0)
+        v_h = 'v' if '垂直' in st.session_state['bar'] else 'h'
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
@@ -370,26 +396,27 @@ def fn_st_chart_bar(df):
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs([f'指標分布', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔', f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+            [f'指標分布', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
-            fn_show_bar(df_p, y=st.session_state['kpi'])
+            fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_p5:
-            fn_show_bar(df_p5, y=st.session_state['kpi'])
+            fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_n:
-            fn_show_bar(df_n, y=st.session_state['kpi'])
+            fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_e:
-            fn_show_bar(df_e, y=st.session_state['kpi'])
+            fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_d:
             st.plotly_chart(fig, use_container_width=True)
 
 
 def fn_st_stock_all(df_all):
-
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
     show_cols_rename = {'date': '日期',
                         'sid_name': '名稱',
