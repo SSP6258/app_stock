@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import math
 from collections import defaultdict
 from twstock import Stock
 from plotly.subplots import make_subplots
@@ -63,8 +64,8 @@ def fn_kpi_plt(kpis, df_sids):
     dis = [k for k in dis if '勝率' in k] + [k for k in dis if '勝率' not in k]
     dis = ['績效(%)'] + dis
 
-    rows = 2
-    cols = int(round(len(dis) / rows, 0))
+    rows = 3
+    cols = math.ceil(len(dis) / rows)  # int(round(len(dis) / rows, 0))
     titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d else round(df_sids[d].max(), 2)}' for d in dis]
     watch = ''
     subplot_titles = []
