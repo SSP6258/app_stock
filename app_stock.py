@@ -417,7 +417,8 @@ def fn_st_chart_bar(df):
             fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_d:
-            st.plotly_chart(fig, use_container_width=True)
+            cs = st.columns([1, 3, 1])
+            cs[1].plotly_chart(fig, use_container_width=True)
 
 
 def fn_st_stock_all(df_all):
