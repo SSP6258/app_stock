@@ -63,7 +63,7 @@ def fn_kpi_plt(kpis, df_sids):
     dis = [k for k in dis if '勝率' in k] + [k for k in dis if '勝率' not in k]
     dis = ['績效(%)'] + dis
 
-    rows = 2
+    rows = 3
     cols = int(round(len(dis) / rows, 0))
     titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d else round(df_sids[d].max(), 2)}' for d in dis]
     watch = ''
