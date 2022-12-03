@@ -62,7 +62,7 @@ def fn_kpi_plt(kpis, df_sids):
     dis = [k for k in kpis if 'new' in k]
     dis = [k for k in dis if '價差' in k] + [k for k in dis if '價差' not in k]
     dis = [k for k in dis if '勝率' in k] + [k for k in dis if '勝率' not in k]
-    dis = ['績效(%)'] + dis
+    dis = dis + ['績效(%)']
 
     rows = 3
     cols = math.ceil(len(dis) / rows)  # int(round(len(dis) / rows, 0))
