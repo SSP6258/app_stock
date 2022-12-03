@@ -1,4 +1,4 @@
-# 🕷️ [爬蟲練習](https://tw-stock.streamlit.app/) ( *by 傑克潘* )
+# 🕷️ [爬蟲練習](https://tw-stock.streamlit.app/) ( *by [傑克潘](https://www.facebook.com/jack.pan.96)* )
 
 
 ## 🗃️ 其它專案:
