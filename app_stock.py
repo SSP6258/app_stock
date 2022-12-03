@@ -96,7 +96,7 @@ def fn_kpi_plt(kpis, df_sids):
         )
 
     margin = {'t': 30, 'b': 0, 'l': 0, 'r': 0}
-    fig.update_layout(margin=margin, height=None)
+    fig.update_layout(margin=margin, height=600)
 
     return fig, watch
 
