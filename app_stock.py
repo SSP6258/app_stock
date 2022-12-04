@@ -176,7 +176,7 @@ def fn_st_stock_sel(df_all):
 
     # c1, c2 = st.columns([2.5, 1])
     with st.form(key='sel'):
-        sels = st.columns([1, 1, 2, 1])
+        sels = st.columns([1, 1, 2])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
         dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
