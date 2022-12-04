@@ -178,8 +178,8 @@ def fn_st_stock_sel(df_all):
     with c1.form(key='sel'):
         sels = st.columns(3)
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=dic_cfg["sel_rat"])
-        dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=40, max_value=100, value=dic_cfg["sel_corr"])
-        dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=40, max_value=100, value=dic_cfg["sel_price"])
+        dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=dic_cfg["sel_corr"])
+        dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=100, max_value=1000, value=dic_cfg["sel_price"])
 
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
