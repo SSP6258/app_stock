@@ -319,7 +319,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     bars = 30
 
     v = int(df.shape[0] / bars)
-    cols = v + 1 if v < float(df.shape[0] / bars) else v
+    cols = max(3, v + 1) if v < float(df.shape[0] / bars) else v
     width = min(int(width_full / cols), width_max)
     cs = st.columns(cols)
     fr = 0
