@@ -176,7 +176,7 @@ def fn_st_stock_sel(df_all):
 
     # c1, c2 = st.columns([2.5, 1])
     with st.form(key='sel'):
-        st.markdown(f'#### 🎯 篩選條件設定:')
+        st.markdown(f'#### 🎚️ 篩選條件設定:')
         sels = st.columns([1, 1, 2])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
