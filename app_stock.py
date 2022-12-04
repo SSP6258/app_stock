@@ -166,13 +166,14 @@ def fn_st_add_space(s):
 
 def fn_st_stock_sel(df_all):
 
-
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
     fr = min(df_all['date'])
     to = max(df_all['date'])
     dl = max(df_all['date_dt']) - min(df_all['date_dt'])
     df_all.drop(columns=['date_dt'], inplace=True)
 
+    fn_st_add_space(1)
+    c1, c2 = st.columns([2.5, 1])
 
     txt = f'''
            #### 🎯 篩選條件:
@@ -194,8 +195,6 @@ def fn_st_stock_sel(df_all):
         df_sel['max'] = df_sel[[c for c in df_sel.columns if '勝率' in c]].max(axis=1)
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
-        fn_st_add_space(1)
-        c1, c2 = st.columns([2.5, 1])
         sel_sid = list(df_sel["sid_name"].unique())
         sel_num = df_sel["sid"].nunique()
         c1.info(txt)
@@ -513,12 +512,7 @@ def fn_st_stock_main():
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_all["篩選"] = 0
 
-
-    #  👀 關注個股:
-
-
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
-
     fn_st_stock_sel(df_all)
     fn_st_add_space(3)
     fn_st_stock_all(df_all)
