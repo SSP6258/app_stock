@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 from web_utils import *
 
+
 dic_cfg = {
     'get_txt_slp': 1,
     'is_force': True,
