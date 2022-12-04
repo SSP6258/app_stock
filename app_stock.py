@@ -510,7 +510,7 @@ def fn_st_stock_all(df_all):
 
     fn_st_chart_bar(df_all)
 
-    cols = [c for c in df_all.columns if '策略_' not in c] + [c for c in df_all.columns if '策略_' in c]
+    cols = [c for c in df_all.columns if '策略_' not in c]
     df_all = df_all[cols]
 
     df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
