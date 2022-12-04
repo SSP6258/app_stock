@@ -182,7 +182,7 @@ def fn_st_stock_sel(df_all):
         c1.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
-        cs = st.columns(sel_num + 3)
+        cs = st.columns(sel_num + 1)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
