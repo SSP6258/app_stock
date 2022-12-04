@@ -166,6 +166,14 @@ def fn_st_add_space(s):
 
 def fn_st_stock_sel(df_all):
 
+
+    df_all['date_dt'] = pd.to_datetime(df_all['date'])
+    fr = min(df_all['date'])
+    to = max(df_all['date'])
+    dl = max(df_all['date_dt']) - min(df_all['date_dt'])
+    df_all.drop(columns=['date_dt'], inplace=True)
+
+
     txt = f'''
            #### 🎯 篩選條件:
            * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
@@ -505,11 +513,7 @@ def fn_st_stock_main():
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_all["篩選"] = 0
 
-    df_all['date_dt'] = pd.to_datetime(df_all['date'])
-    fr = min(df_all['date'])
-    to = max(df_all['date'])
-    dl = max(df_all['date_dt']) - min(df_all['date_dt'])
-    df_all.drop(columns=['date_dt'], inplace=True)
+
     #  👀 關注個股:
 
 
