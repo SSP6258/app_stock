@@ -165,6 +165,16 @@ def fn_st_add_space(s):
 
 
 def fn_st_stock_sel(df_all):
+
+    txt = f'''
+           #### 🎯 篩選條件:
+           * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
+           * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
+           * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
+           * 篩選 策略: 營收, EPS, 殖利率 __任一勝率大於 {dic_cfg["sel_rat"]}% 👍__
+           * 篩選 策略: 歷史股價 與 所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
+           '''
+
     df_sel = fn_stock_sel(df_all)
 
     if df_sel.shape[0] > 0:
@@ -176,9 +186,11 @@ def fn_st_stock_sel(df_all):
         df_sel['max'] = df_sel[[c for c in df_sel.columns if '勝率' in c]].max(axis=1)
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
+        fn_st_add_space(1)
         c1, c2 = st.columns([2.5, 1])
         sel_sid = list(df_sel["sid_name"].unique())
         sel_num = df_sel["sid"].nunique()
+        c1.info(txt)
         c1.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
@@ -500,19 +512,8 @@ def fn_st_stock_main():
     df_all.drop(columns=['date_dt'], inplace=True)
     #  👀 關注個股:
 
-    txt = f'''
-           #### 🎯 篩選條件:
-           * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
-           * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
-           * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
-           * 篩選 策略: 營收, EPS, 殖利率 __任一勝率大於 {dic_cfg["sel_rat"]}% 👍__
-           * 篩選 策略: 歷史股價 與 所選策略之 __相關性大於 {dic_cfg["sel_corr"]} 📈__
-           '''
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
-    fn_st_add_space(1)
-    c1, c2 = st.columns([2.5, 1])
-    c1.info(txt)
 
     fn_st_stock_sel(df_all)
     fn_st_add_space(3)
