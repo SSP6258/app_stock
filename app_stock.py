@@ -174,8 +174,8 @@ def fn_st_stock_sel(df_all):
 
     fn_st_add_space(1)
 
-    c1, c2 = st.columns([2.5, 1])
-    with c1.form(key='sel'):
+    # c1, c2 = st.columns([2.5, 1])
+    with st.form(key='sel'):
         sels = st.columns(3)
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=dic_cfg["sel_rat"])
