@@ -208,8 +208,8 @@ def fn_st_stock_sel(df_all):
         sel_sid = list(df_sel["sid_name"].unique())
         sel_num = df_sel["sid"].nunique()
         c1, c2 = st.columns([2.5, 1])
-        c1.info(txt)
-        c1.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
+        st.info(txt)
+        st.error(f'#### 👉 篩選出{sel_num}檔: {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
         cs = st.columns(sel_num + 1)
