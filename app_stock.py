@@ -197,7 +197,9 @@ def fn_st_stock_sel(df_all):
 
     df_sel = fn_stock_sel(df_all)
 
-    if df_sel.shape[0] > 0:
+    if df_sel.shape[0] == 0:
+        st.error(f'#### 👉 篩選結果(0檔): 🙅‍♂️')
+    else:
         def f(s, name):
             return s if name == '' else name
 
