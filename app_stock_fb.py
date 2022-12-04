@@ -11,7 +11,7 @@ dic_cfg = {
     'is_force': True,
     'batch_size': 5,
     'sel_rat': 50,
-    'sel_price': 500,
+    'sel_price': 200,
     'sel_corr': 0.75,
     'sel_rat_h': 90,
     'stocks': ['1535'],
