@@ -74,11 +74,11 @@ def fn_kpi_plt(kpis, df_sids):
         if "勝率" in t:
             if float(t.split('👉')[-1]) > 5.0:
                 sub_t = sub_t + '💎'
-                watch = '💎'
+                watch = watch+'💎'
         if "價差" in t:
             if float(t.split('👉')[-1]) < -5.5:
                 sub_t = sub_t + '💎'
-                watch = '💎'
+                watch = watch+'💎'
 
         subplot_titles.append(sub_t)
 
