@@ -318,10 +318,8 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     height = 650
     bars = 30
 
-    # v = int(df.shape[0] / bars)
     col_max = 3
     col_end = math.ceil(df.shape[0] / bars)
-    # cols = v + 1 if v < float(df.shape[0] / bars) else v
     width = min(int(width_full / col_max), width_max)
     cs = st.columns(col_max)
     fr = 0
@@ -332,9 +330,9 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     for idx in df.index:
         for c in y:
             if df.loc[idx, c] > 0:
-                df.at[idx, 'max'] = df.loc[idx, 'max'] + df.loc[idx, 'c']
+                df.at[idx, 'max'] = df.loc[idx, 'max'] + df.loc[idx, c]
             else:
-                df.at[idx, 'min'] = df.loc[idx, 'min'] + df.loc[idx, 'c']
+                df.at[idx, 'min'] = df.loc[idx, 'min'] + df.loc[idx, c]
 
     m, M = df['min'].min(), df['max'].max()
     x_range = [m+min(m/8, -1), M+max(M/8, 1)]
