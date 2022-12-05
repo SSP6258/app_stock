@@ -427,6 +427,7 @@ def fn_st_chart_bar(df):
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
         st.session_state['bar'] = cs[2].selectbox(f'柱狀圖方向:', options=['水平', '垂直'], index=0)
         v_h = 'v' if '垂直' in st.session_state['bar'] else 'h'
+        st.session_state['kpi'] = [st.session_state['order']]+[k for k in st.session_state['kpi'] if k != st.session_state['order']]
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
