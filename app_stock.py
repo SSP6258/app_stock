@@ -343,7 +343,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
             df_c = df.loc[fr: to].reset_index(drop=True)
             fr = to
 
-            fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.8, barmode=barmode,
+            fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                     lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
                                     title=title, x_range=x_range)
 
