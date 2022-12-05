@@ -318,22 +318,38 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     height = 650
     bars = 30
 
-    v = int(df.shape[0] / bars)
-    cols = v + 1 if v < float(df.shape[0] / bars) else v
-    width = min(int(width_full / cols), width_max)
-    cs = st.columns(cols)
+    # v = int(df.shape[0] / bars)
+    col_max = 3
+    col_end = math.ceil(df.shape[0] / bars)
+    # cols = v + 1 if v < float(df.shape[0] / bars) else v
+    width = min(int(width_full / col_max), width_max)
+    cs = st.columns(col_max)
     fr = 0
 
-    for c in range(cols):
-        to = min(df.shape[0], fr + bars)
-        df_c = df.loc[fr: to].reset_index(drop=True)
-        fr = to
+    df['min'] = 0
+    df['max'] = 0
 
-        fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.8, barmode=barmode,
-                                lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
-                                title=title)
+    for idx in df.index:
+        for c in y:
+            if df.loc[idx, c] > 0:
+                df.at[idx, 'max'] = df.loc[idx, 'max'] + df.loc[idx, 'c']
+            else:
+                df.at[idx, 'min'] = df.loc[idx, 'min'] + df.loc[idx, 'c']
 
-        cs[cols - c - 1].plotly_chart(fig, use_container_width=True)
+    m, M = df['min'].min(), df['max'].max()
+    x_range = [m+min(m/8, -1), M+max(M/8, 1)]
+
+    for c in range(col_max):
+        if c < col_end:
+            to = min(df.shape[0], fr + bars)
+            df_c = df.loc[fr: to].reset_index(drop=True)
+            fr = to
+
+            fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.8, barmode=barmode,
+                                    lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                    title=title, x_range=x_range)
+
+            cs[col_max - c - 1].plotly_chart(fig, use_container_width=True)
 
 
 def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
