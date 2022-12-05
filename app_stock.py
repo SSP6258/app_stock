@@ -347,7 +347,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
                                     lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
                                     title=title, x_range=x_range)
 
-            cs[col_max - c - 1].plotly_chart(fig, use_container_width=True)
+            cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
 
 
 def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
