@@ -1,20 +1,21 @@
 import datetime
 import os.path
 import time
+
 import pandas as pd
 import requests
 from web_utils import *
-
+from twstock import Stock
 
 dic_cfg = {
     'get_txt_slp': 1,
     'is_force': True,
     'batch_size': 5,
     'sel_rat': 50,
-    'sel_price': 200,
-    'sel_corr': 0.75,
+    'sel_price': 500,
+    'sel_corr': 0.8,
     'sel_rat_h': 90,
-    'stocks': ['1535'],
+    'stocks': ['2345'],
     'stock_file': 'stock.csv',
     'header': {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
@@ -247,7 +248,8 @@ def fn_find_billion(df, stocks=None):
 
                 print(f'({stock_ids.index(sid) + 1}/{len(stock_ids)}): {sid} --> {df_sid["耗時(秒)"].values[0]}(秒)')
 
-        # df_all = df_all[]
+        df_all = df_all[df_all['股價'].apply(lambda x: str(x) != 'nan')]
+        df_all.reset_index(drop=True, inplace=True)
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
 
@@ -289,6 +291,32 @@ def fn_is_parsing(is_force=dic_cfg["is_force"]):
     return is_parsing
 
 
+def fn_gen_stock_field_info():
+    link1 = r'https://isin.twse.com.tw/isin/C_public.jsp?strMode=2'
+    link2 = r'https://isin.twse.com.tw/isin/C_public.jsp?strMode=4'
+
+    df_field = pd.DataFrame()
+
+    for link in [link1, link2]:
+        res = requests.get(link)
+        df = pd.read_html(res.text)[0]
+        df.columns = df.iloc[0]
+        df = df.iloc[2:]
+
+        df['sid'] = df['有價證券代號及名稱'].apply(lambda x: x.split('　')[0])
+        df = df[df['sid'].apply(lambda x: str(x).isnumeric())]
+        df = df[df['產業別'].apply(lambda x: str(x) != 'nan')]
+        df['產業別'] = df['產業別'].apply(
+            lambda x: x.replace('工業', '').replace('事業', '').replace('業', '').replace('及週邊設備', '週邊'))
+
+        df_field = pd.concat([df_field, df], axis=0)
+
+    df_field.sort_values(by=['sid'], inplace=True, ignore_index=True)
+
+    print(df_field['產業別'].unique())
+    df_field.to_csv('stock_field.csv', encoding='utf_8_sig')
+
+
 def fn_test():
     df = pd.read_csv(dic_cfg['stock_file'], na_filter=False, dtype=str, index_col=0)
 
@@ -308,10 +336,22 @@ def fn_test():
     df.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
 
+def fn_twstock(sid):
+    stock = Stock(sid)  # 擷取台積電股價
+    ma_p = stock.moving_average(stock.price, 5)  # 計算五日均價
+    ma_c = stock.moving_average(stock.capacity, 5)  # 計算五日均量
+    ma_p_cont = stock.continuous(ma_p)  # 計算五日均價持續天數
+    ma_br = stock.ma_bias_ratio(5, 10)  # 計算五日、十日乖離值
+
+    print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
+
+
 def fn_main():
     t = time.time()
 
     # fn_test()
+    # fn_twstock('1514')
+    # fn_gen_stock_field_info()
 
     if fn_is_parsing():
         df = fn_fb_recommend_stock()
