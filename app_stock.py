@@ -340,7 +340,7 @@ def fn_st_stock_sel(df_all):
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
-                           '勝率(%)_殖利率', '相關性_殖利率', '產業別']
+                           '勝率(%)_殖利率', '相關性_殖利率', '產業別', '市場別']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
