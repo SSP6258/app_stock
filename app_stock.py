@@ -300,8 +300,6 @@ def fn_st_stock_sel(df_all):
             cs[i + 1].metric(*metrics[j], delta_color='inverse')
             j += 1
 
-        st.write(df_sel)
-
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
@@ -601,9 +599,12 @@ def fn_st_stock_main():
     for idx in df_all.index:
         sid = df_all.loc[idx, 'sid']
         df_all.at[idx, '產業別'] = '未分類'
+        df_all.at[idx, '市場別'] = '未分類'
         if sid in df_field['sid'].values:
             field = df_field[df_field['sid'] == sid]['產業別'].values[0]
+            market = df_field[df_field['sid'] == sid]['市場別'].values[0]
             df_all.at[idx, '產業別'] = field
+            df_all.at[idx, '產業別'] = market
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
     fn_st_stock_sel(df_all)
