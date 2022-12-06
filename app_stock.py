@@ -599,7 +599,6 @@ def fn_st_stock_main():
             df_all.at[idx, '市場別'] = market
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
-    st.write(df_all)
     fn_st_stock_sel(df_all)
     fn_st_add_space(3)
     fn_st_stock_all(df_all)
