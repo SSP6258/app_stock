@@ -13,10 +13,46 @@ dic_url = {
     'Cmoney': 'https://www.cmoney.tw/forum/stock/',
     'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
     'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
+    'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
 }
 
 dic_sel = {
     'pick': []
+}
+
+
+dic_field_id = {
+    '其他': '23024',
+    '水泥': '',
+    '食品': '23007',
+    '觀光': '23022',
+    '塑膠': '23012',
+    '汽車': '23019',
+    '化學': '23068',
+    '光電': '23073',
+    '橡膠': '23018',
+    '造紙': '23009',
+    '鋼鐵': '23017',
+    '航運': '23021',
+    '半導體': '23071',
+    '農科技': '',
+    '建材營造': '23006',
+    '生技醫療': '23069',
+    '紡織纖維': '23008',
+    '貿易百貨': '23023',
+    '電機機械': '23013',
+    '通信網路': '23074',
+    '電腦週邊': '23072',
+    '電器電纜': '23014',
+    '其他電子': '23078',
+    '玻璃陶瓷': '23016',
+    '電子通路': '',
+    '資訊服務': '23077',
+    '油電燃氣': '',
+    '金融保險': '23010',
+    '電子商務': '23076',
+    '文化創意': '',
+    '電子零組件': '23075',
 }
 
 
@@ -60,13 +96,15 @@ def fn_pick_date(df, col_pick, col_date):
 
 def fn_kpi_plt(kpis, df_sids):
     dis = [k for k in kpis if 'new' in k]
-    # dis = [k for k in dis if '價差' in k] + [k for k in dis if '價差' not in k]
-    # dis = [k for k in dis if '勝率' in k] + [k for k in dis if '勝率' not in k]
-    dis = dis + ['績效(%)']
+    dis = dis + ['績效(%)', '天數']
 
     rows = 4
     cols = math.ceil(len(dis) / rows)  # int(round(len(dis) / rows, 0))
-    titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d else round(df_sids[d].max(), 2)}' for d in dis]
+    titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d or "天數" in d else round(df_sids[d].max(), 2)}' for d in dis]
+
+    dis = dis + ['產業別']
+    titles = titles + ['產業別']
+
     watch = ''
     subplot_titles = []
     for t in titles:
@@ -164,6 +202,14 @@ def fn_st_add_space(s):
         st.write('')
 
 
+def fn_get_field_id(x):
+    field_id = ''
+    if x in dic_field_id.keys():
+        field_id = dic_field_id[x]
+
+    return field_id
+
+
 def fn_st_stock_sel(df_all):
 
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
@@ -215,13 +261,15 @@ def fn_st_stock_sel(df_all):
         st.error(f'#### 👉 篩選結果({sel_num}檔): {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
-        cs = st.columns(sel_num + 1)
+        sel_num_metric = min(sel_num, 8)
+
+        cs = st.columns(sel_num_metric + 1)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
         profs = []
         metrics = []
-        for i in range(sel_num):
+        for i in range(sel_num_metric):
             sid_name = sel_sid[i]
 
             df_sid = df_sel[df_sel['sid_name'] == sid_name]
@@ -287,9 +335,12 @@ def fn_st_stock_sel(df_all):
         df_show['股價'] = df_show.apply(
             lambda x: fn_click_name(x["sid"] + '/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
 
+        df_show['field_id'] = df_show['產業別'].apply(fn_get_field_id)
+        df_show['產業別'] = df_show.apply(lambda x: fn_click_name(x['field_id'], x['產業別'], dic_url['Yahoo_field']), axis=1)
+
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
-                           '勝率(%)_殖利率', '相關性_殖利率']
+                           '勝率(%)_殖利率', '相關性_殖利率', '產業別']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
@@ -542,7 +593,15 @@ def fn_st_stock_main():
         return
 
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_all["篩選"] = 0
+
+    for idx in df_all.index:
+        sid = df_all.loc[idx, 'sid']
+        df_all.at[idx, '產業別'] = '未分類'
+        if sid in df_field['sid'].values:
+            field = df_field[df_field['sid'] == sid]['產業別'].values[0]
+            df_all.at[idx, '產業別'] = field
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
     fn_st_stock_sel(df_all)
