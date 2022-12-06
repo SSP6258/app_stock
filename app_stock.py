@@ -604,7 +604,7 @@ def fn_st_stock_main():
             field = df_field[df_field['sid'] == sid]['產業別'].values[0]
             market = df_field[df_field['sid'] == sid]['市場別'].values[0]
             df_all.at[idx, '產業別'] = field
-            df_all.at[idx, '產業別'] = market
+            df_all.at[idx, '市場別'] = market
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
     fn_st_stock_sel(df_all)
