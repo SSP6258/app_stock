@@ -181,13 +181,9 @@ def fn_stock_sel(df_all):
     df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
                      '耗時' not in c and
                      '合理價差' not in c]]
-    st.write(df_sel)
+
     df_sel.reset_index(drop=True, inplace=True)
-
-    st.write(df_sel)
-
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
-
     df_sel_pick.reset_index(drop=True, inplace=True)
 
     return df_sel_pick
@@ -603,6 +599,7 @@ def fn_st_stock_main():
             df_all.at[idx, '市場別'] = market
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
+    st.write(df_all)
     fn_st_stock_sel(df_all)
     fn_st_add_space(3)
     fn_st_stock_all(df_all)
@@ -613,13 +610,6 @@ def fn_st_init():
 
 
 def fn_main():
-    # if fn_is_parsing():
-    #     try:
-    #         df = fn_fb_recommend_stock()
-    #         fn_find_billion(df, dic_cfg["stocks"])
-    #     except:
-    #         pass
-
     fn_st_init()
     fn_st_stock_main()
 
