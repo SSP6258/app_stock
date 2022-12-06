@@ -181,8 +181,10 @@ def fn_stock_sel(df_all):
     df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
                      '耗時' not in c and
                      '合理價差' not in c]]
-
+    st.write(df_sel)
     df_sel.reset_index(drop=True, inplace=True)
+
+    st.write(df_sel)
 
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
 
