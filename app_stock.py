@@ -300,6 +300,8 @@ def fn_st_stock_sel(df_all):
             cs[i + 1].metric(*metrics[j], delta_color='inverse')
             j += 1
 
+        st.write(df_sel)
+
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
