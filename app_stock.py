@@ -127,8 +127,9 @@ def fn_kpi_plt(kpis, df_sids):
         r = int(i / cols) + 1
         c = i - cols * (r - 1) + 1
         # c = c + 1 if '績效' in d else c
+        x = [_ for _ in df_sids[d].values if _ != 0]
         fig.add_trace(
-            go.Histogram(x=df_sids[d], nbinsx=50, showlegend=False,
+            go.Histogram(x=x, nbinsx=50, showlegend=False,
                          marker=dict(opacity=1, line=dict(color='white', width=0.4)),
                          ),
             row=r, col=c
