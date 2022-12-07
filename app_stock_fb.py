@@ -248,7 +248,8 @@ def fn_find_billion(df, stocks=None):
 
                 print(f'({stock_ids.index(sid) + 1}/{len(stock_ids)}): {sid} --> {df_sid["耗時(秒)"].values[0]}(秒)')
 
-        df_all = df_all[df_all['股價'].apply(lambda x: str(x) != 'nan')]
+        for c in ['股價', 'sid_name']:
+            df_all = df_all[df_all[c].apply(lambda x: str(x) != 'nan' and str(x) != '')]
         df_all.reset_index(drop=True, inplace=True)
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
