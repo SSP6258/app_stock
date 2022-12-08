@@ -385,7 +385,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
         if c < col_end:
             to = min(df.shape[0], fr + bars)
             df_c = df.loc[fr: to].reset_index(drop=True)
-            fr = to
+            fr = to+1
 
             fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                     lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
