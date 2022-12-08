@@ -382,7 +382,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     x_range = [m+min(m/8, -1), M+max(M/8, 1)]
 
     for c in range(col_max):
-        if c < col_end:
+        if c < col_end and fr < df.shape[0]:
             to = min(df.shape[0], fr + bars)
             df_c = df.loc[fr: to].reset_index(drop=True)
             fr = to+1
