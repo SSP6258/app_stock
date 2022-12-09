@@ -539,6 +539,16 @@ def fn_st_chart_bar(df):
                 df_f, flts = fn_stock_filter(df_sids, '營收', cols[0])
                 fn_show_bar(df_f, y=flts, v_h=v_h)
 
+            with tab2:
+                cols = st.columns(4)
+                df_f, flts = fn_stock_filter(df_sids, 'EPS', cols[0])
+                fn_show_bar(df_f, y=flts, v_h=v_h)
+
+            with tab3:
+                cols = st.columns(4)
+                df_f, flts = fn_stock_filter(df_sids, '殖利率', cols[0])
+                fn_show_bar(df_f, y=flts, v_h=v_h)
+
 
 def fn_st_stock_all(df_all):
     df_all = df_all[[c for c in df_all.columns if '耗時' not in c]]
