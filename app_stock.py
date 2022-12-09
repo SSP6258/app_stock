@@ -404,6 +404,26 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
         fn_show_bar_h(df, x, y)
 
 
+def fn_stock_filter(df, stra, col):
+
+    with col.form(key='Form2'):
+        corr = col.slider('相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
+        win = col.slider('勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
+        margin = col.slider('預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
+        win_diff = col.slider('勝率變化 大於', min_value=0.0, max_value=10.0, value=0.0, step=0.5)
+
+        col.form_submit_button('選擇')
+
+    flts = [f'{stra}_相關性_new', f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_勝率_diff']
+
+    df_f = df[df[flts[0]].apply(lambda x: x > corr)]
+    df_f = df_f[df_f[flts[0]].apply(lambda x: x > win)]
+    df_f = df_f[df_f[flts[0]].apply(lambda x: x < -1*margin)]
+    df_f = df_f[df_f[flts[0]].apply(lambda x: x > win_diff)]
+
+    return df_f, flts
+
+
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
@@ -492,9 +512,9 @@ def fn_st_chart_bar(df):
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+        tab_d, tab_p5, tab_p, tab_n, tab_e, tab_f = st.tabs(
             [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
-             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'], '策略選股')
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
@@ -511,6 +531,13 @@ def fn_st_chart_bar(df):
         with tab_d:
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
+
+        with tab_f:
+            tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
+            with tab1:
+                cols = st.columns(4)
+                df_f, flts = fn_stock_filter(df_sids, '營收', cols[0])
+                fn_show_bar(df_f, y=flts, v_h=v_h)
 
 
 def fn_st_stock_all(df_all):
