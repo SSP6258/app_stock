@@ -543,7 +543,7 @@ def fn_st_chart_bar(df):
 
         with tab_f:
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
-            margin = {'t': 15, 'b': 150, 'l': 0, 'r': 0}
+            margin = {'t': 15, 'b': 100, 'l': 0, 'r': 0}
             with tab1:
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
