@@ -23,13 +23,13 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                           # family="Courier New, monospace",
                           size=14,
                           ),
-                      legend=dict(
-                          title=lg_title,
-                          orientation=lg_pos,
-                          yanchor="bottom",
-                          y=1.02,
-                          xanchor="right",
-                          x=lg_x),
+                      # legend=dict(
+                      #     title=lg_title,
+                      #     orientation=lg_pos,
+                      #     yanchor="bottom",
+                      #     y=1.02,
+                      #     xanchor="right",
+                      #     x=lg_x),
                       )
 
     return fig
