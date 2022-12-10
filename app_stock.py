@@ -354,7 +354,7 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None):
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0}
 
     width_full = 1200
@@ -389,7 +389,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None):
                 fr = to+1
 
                 fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                        lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                        lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
                                         title=title, x_range=x_range)
 
                 cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
@@ -403,14 +403,14 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None):
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None):
+def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h'):
     if v_h == 'v':
         st.bar_chart(data=df, x=x, y=y,
                      width=0, height=500,
                      use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos)
 
 
 def fn_stock_filter(df, stra, col):
@@ -545,17 +545,17 @@ def fn_st_chart_bar(df):
             with tab1:
                 cols = st.columns([1, 2, 1])
                 df_f, flts = fn_stock_filter(df_sids, '營收', cols[0])
-                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
+                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1], lg_pos='r')
 
             with tab2:
                 cols = st.columns([1, 2, 1])
                 df_f, flts = fn_stock_filter(df_sids, 'EPS', cols[0])
-                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
+                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1], lg_pos='r')
 
             with tab3:
                 cols = st.columns([1, 2, 1])
                 df_f, flts = fn_stock_filter(df_sids, '殖利率', cols[0])
-                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
+                fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1], lg_pos='r')
 
 
 def fn_st_stock_all(df_all):
