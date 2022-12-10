@@ -23,7 +23,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                           # family="Courier New, monospace",
                           size=14,
                           ),
-                      legend_x='r',
+                      legend_x='right',
                       legend=dict(
                           title=lg_title,
                           # orientation=lg_pos,
