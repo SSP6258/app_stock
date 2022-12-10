@@ -396,7 +396,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
 
     else:
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', lg_top=False, width=width, height=height,
                                 title=title, x_range=x_range)
 
         col.plotly_chart(fig, use_container_width=True)
