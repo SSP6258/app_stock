@@ -418,7 +418,7 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None):
 
 def fn_stock_filter(df, stra, col):
 
-    with col.form(key='Form2'):
+    with col.form(key=f'Form2_{stra}'):
         corr = st.slider('相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
         win = st.slider('勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
         margin = st.slider('預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
