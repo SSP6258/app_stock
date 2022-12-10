@@ -417,9 +417,9 @@ def fn_stock_filter(df, stra, col):
         col.write('')
     with col.form(key=f'Form2_{stra}'):
         corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
-        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
+        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.0, step=0.5)
         margin = st.slider(f'{stra} 預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
-        win_diff = st.slider(f'{stra} 勝率變化 大於', min_value=-1.0, max_value=10.0, value=0.0, step=0.5)
+        win_diff = st.slider(f'{stra} 勝率變化 大於', min_value=-1.0, max_value=10.0, value=-1.0, step=0.5)
         fn_st_add_space(3)
         st.form_submit_button('選擇')
 
@@ -543,7 +543,7 @@ def fn_st_chart_bar(df):
 
         with tab_f:
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
-            margin = {'t': 15, 'b': 100, 'l': 0, 'r': 0}
+            margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
             with tab1:
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
