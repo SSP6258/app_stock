@@ -395,9 +395,9 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
                 cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
 
     else:
-        st.write(df)
+        # st.write(df)
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
                                 title=title, x_range=x_range)
 
         col.plotly_chart(fig, use_container_width=True)
@@ -420,6 +420,7 @@ def fn_stock_filter(df, stra, col):
         win = st.slider('勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
         margin = st.slider('預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
         win_diff = st.slider('勝率變化 大於', min_value=0.0, max_value=10.0, value=0.0, step=0.5)
+        fn_st_add_space(3)
         st.form_submit_button('選擇')
 
     flts = [f'{stra}_相關性_new', f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_勝率_diff']
