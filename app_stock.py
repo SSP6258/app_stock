@@ -402,18 +402,18 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h'):
+def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', margin=None):
     if v_h == 'v':
         st.bar_chart(data=df, x=x, y=y,
                      width=0, height=500,
                      use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin)
 
 
 def fn_stock_filter(df, stra, col):
-    for _ in range(3):
+    for _ in range(2):
         col.write('')
     with col.form(key=f'Form2_{stra}'):
         corr = st.slider('相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
@@ -543,11 +543,12 @@ def fn_st_chart_bar(df):
 
         with tab_f:
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
+            margin = {'t': 20, 'b': 0, 'l': 0, 'r': 0}
             with tab1:
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1])
+                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
                     cols[1].markdown('# 🙅‍♂️')
 
@@ -555,7 +556,7 @@ def fn_st_chart_bar(df):
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1])
+                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
                     cols[1].markdown('# 🙅‍♂️')
 
@@ -563,7 +564,7 @@ def fn_st_chart_bar(df):
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1])
+                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
                     cols[1].markdown('# 🙅‍♂️')
 
