@@ -354,8 +354,8 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'):
-    margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0}
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None):
+    margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
     width_full = 1200
     width_max = 600
