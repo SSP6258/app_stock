@@ -354,7 +354,7 @@ def fn_st_stock_sel(df_all):
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0}
 
     width_full = 1200
@@ -381,27 +381,39 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative'):
     m, M = df['min'].min(), df['max'].max()
     x_range = [m+min(m/8, -1), M+max(M/8, 1)]
 
-    for c in range(col_max):
-        if c < col_end and fr < df.shape[0]:
-            to = min(df.shape[0], fr + bars)
-            df_c = df.loc[fr: to].reset_index(drop=True)
-            fr = to+1
+    if col is None:
+        for c in range(col_max):
+            if c < col_end and fr < df.shape[0]:
+                to = min(df.shape[0], fr + bars)
+                df_c = df.loc[fr: to].reset_index(drop=True)
+                fr = to+1
 
-            fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                    lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
-                                    title=title, x_range=x_range)
+                fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
+                                        lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                        title=title, x_range=x_range)
 
-            cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
+                cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
+
+    else:
+        fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
+                                lg_pos='h', lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                title=title, x_range=x_range)
+
+        col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, v_h='h'):
+
+
+
+
+def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None):
     if v_h == 'v':
         st.bar_chart(data=df, x=x, y=y,
                      width=0, height=500,
                      use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y)
+        fn_show_bar_h(df, x, y, col)
 
 
 def fn_stock_filter(df, stra, col):
