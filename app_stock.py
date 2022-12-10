@@ -543,13 +543,14 @@ def fn_st_chart_bar(df):
 
         with tab_f:
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
-            margin = {'t': 20, 'b': 0, 'l': 0, 'r': 0}
+            margin = {'t': 15, 'b': 0, 'l': 0, 'r': 0}
             with tab1:
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
+                    cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
 
             with tab2:
@@ -558,6 +559,7 @@ def fn_st_chart_bar(df):
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
+                    cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
 
             with tab3:
@@ -566,6 +568,7 @@ def fn_st_chart_bar(df):
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
                 else:
+                    cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
 
 
