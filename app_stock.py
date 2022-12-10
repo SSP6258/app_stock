@@ -423,11 +423,11 @@ def fn_stock_filter(df, stra, col):
         fn_st_add_space(3)
         st.form_submit_button('選擇')
 
-    flts = [f'{stra}_相關性_new', f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_勝率_diff']
+    flts = [ f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_相關性_new', f'{stra}_勝率_diff']
 
-    df_f = df[df[flts[0]].apply(lambda x: x > corr)]
-    df_f = df_f[df_f[flts[1]].apply(lambda x: x > win)]
-    df_f = df_f[df_f[flts[2]].apply(lambda x: x < -1*margin)]
+    df_f = df[df[flts[0]].apply(lambda x: x > win)]
+    df_f = df_f[df_f[flts[1]].apply(lambda x: x < -1*margin)]
+    df_f = df_f[df_f[flts[2]].apply(lambda x: x > corr)]
     df_f = df_f[df_f[flts[3]].apply(lambda x: x > win_diff)]
 
     return df_f, flts
