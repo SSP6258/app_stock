@@ -413,7 +413,7 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', mar
 
 
 def fn_stock_filter(df, stra, col):
-    for _ in range(2):
+    for _ in range(1):
         col.write('')
     with col.form(key=f'Form2_{stra}'):
         corr = st.slider('相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
