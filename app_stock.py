@@ -402,10 +402,6 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None):
         col.plotly_chart(fig, use_container_width=True)
 
 
-
-
-
-
 def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None):
     if v_h == 'v':
         st.bar_chart(data=df, x=x, y=y,
@@ -413,7 +409,7 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None):
                      use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col)
+        fn_show_bar_h(df, x, y, col=col)
 
 
 def fn_stock_filter(df, stra, col):
