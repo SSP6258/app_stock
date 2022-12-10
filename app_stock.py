@@ -404,9 +404,14 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
 
 def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', margin=None):
     if v_h == 'v':
-        st.bar_chart(data=df, x=x, y=y,
-                     width=0, height=500,
-                     use_container_width=True)
+        if col is None:
+            st.bar_chart(data=df, x=x, y=y,
+                         width=0, height=500,
+                         use_container_width=True)
+        else:
+            col.bar_chart(data=df, x=x, y=y,
+                         width=0, height=500,
+                         use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
         fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin)
