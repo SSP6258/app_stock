@@ -424,7 +424,7 @@ def fn_stock_filter(df, stra, col):
         margin = col.slider('預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
         win_diff = col.slider('勝率變化 大於', min_value=0.0, max_value=10.0, value=0.0, step=0.5)
 
-        col.form_submit_button('選擇')
+        st.form_submit_button('選擇')
 
     flts = [f'{stra}_相關性_new', f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_勝率_diff']
 
