@@ -544,23 +544,23 @@ def fn_st_chart_bar(df):
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
             with tab1:
                 cols = st.columns([1, 2, 1])
-                df_f, flts = fn_stock_filter(df_sids, '營收', cols[0])
-                st.write(df_f.columns)
-                st.write(flts)
+                df_f, flts = fn_stock_filter(df_sids.copy(), '營收', cols[0])
+                # st.write(df_f.columns)
+                # st.write(flts)
                 fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
 
             with tab2:
                 cols = st.columns([1, 2, 1])
-                df_f, flts = fn_stock_filter(df_sids, 'EPS', cols[0])
-                st.write(df_f.columns)
-                st.write(flts)
+                df_f, flts = fn_stock_filter(df_sids.copy(), 'EPS', cols[0])
+                # st.write(df_f.columns)
+                # st.write(flts)
                 fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
 
             with tab3:
                 cols = st.columns([1, 2, 1])
-                df_f, flts = fn_stock_filter(df_sids, '殖利率', cols[0])
-                st.write(df_f.columns)
-                st.write(flts)
+                df_f, flts = fn_stock_filter(df_sids.copy(), '殖利率', cols[0])
+                # st.write(df_f.columns)
+                # st.write(flts)
                 fn_show_bar(df_f, y=flts, v_h=v_h, col=cols[1])
 
 
