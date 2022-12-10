@@ -418,7 +418,7 @@ def fn_stock_filter(df, stra, col):
         corr = st.slider('相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
         win = st.slider('勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
         margin = st.slider('預估價差 大於', min_value=0.0, max_value=10.0, value=2.0, step=0.5)
-        win_diff = st.slider('勝率變化 大於', min_value=0.0, max_value=10.0, value=0.0, step=0.5)
+        win_diff = st.slider('勝率變化 大於', min_value=-1.0, max_value=10.0, value=0.0, step=0.5)
         fn_st_add_space(3)
         st.form_submit_button('選擇')
 
