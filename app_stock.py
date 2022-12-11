@@ -435,6 +435,8 @@ def fn_stock_filter(df, stra, col):
     df_f = df_f[df_f[flts[2]].apply(lambda x: x > corr)] if df_f.shape[0] > 0 else df_f
     df_f = df_f[df_f[flts[3]].apply(lambda x: x > win_diff)] if df_f.shape[0] > 0 else df_f
 
+    df_f = df_f.sort_values(by=flts, ascending=False, inplace=True)
+
     return df_f, flts
 
 
