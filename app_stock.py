@@ -528,9 +528,9 @@ def fn_st_chart_bar(df):
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_d, tab_p5, tab_p, tab_n, tab_e, tab_f = st.tabs(
-            [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
-             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔', '策略選股 🔍'])
+        tab_d, tab_f, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+            [f'指標分布{watch}', '策略選股 🔍', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
