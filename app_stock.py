@@ -1,7 +1,10 @@
+import datetime
+
 import pandas as pd
 import streamlit as st
 import math
 from collections import defaultdict
+from pandas_datareader import data
 from twstock import Stock
 from plotly.subplots import make_subplots
 from app_stock_fb import *
@@ -203,6 +206,45 @@ def fn_get_field_id(x):
     return field_id
 
 
+def fn_get_stock_price(sid, days=30):
+    sid_tw = str(sid) + '.TW'
+    df_sid = pd.DataFrame()
+    start = datetime.datetime.now() - datetime.timedelta(days=days)
+    end = datetime.datetime.today()
+
+    try:
+        df_sid = data.get_data_yahoo(sid_tw, start, end)
+    except:
+        pass
+
+    return df_sid
+
+
+def fn_get_stock_price_plt(df, days_ago=None):
+    fig = make_subplots(specs=[[{'secondary_y': True}]])
+    fig.add_trace(go.Candlestick(x=df.index,
+                                 open=df['Open'],
+                                 high=df['High'],
+                                 low=df['Low'],
+                                 close=df['Close'],
+                                 increasing_line_color='red',
+                                 decreasing_line_color='green'), secondary_y=True)
+
+    fig.add_trace(go.Bar(x=df.index,
+                         y=df['Volume'].apply(lambda x: int(x/1000)),
+                         opacity=0.5,
+                         ), secondary_y=False)
+
+    margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
+
+    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=100, showlegend=False)
+
+    if days_ago is not None:
+        fig.add_vrect(x0=df.index[days_ago], x1=df.index[-1])
+
+    return fig
+
+
 def fn_st_stock_sel(df_all):
 
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
@@ -352,6 +394,36 @@ def fn_st_stock_sel(df_all):
         df_show.rename(columns=show_cols_rename, inplace=True)
         fn_st_add_space(1)
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
+
+        fn_st_add_space(3)
+
+        p, s, d, sid_order, days = [], [], [], [], []
+
+        for m in metrics:
+            p.append(float(m[2].split('%')[0]))
+            s.append(m[0])
+            d.append(int(m[-1].split(' /')[-1].replace('天', '')))
+
+        p_sort = sorted(p, reverse=True)
+
+        for ps in p_sort:
+            sid_order.append(s[p.index(ps)])
+            days.append(d[p.index(ps)])
+
+        for n_s in sid_order:
+            sid = n_s.split(' ')[-1]
+            df = fn_get_stock_price(sid, days=300)
+            if df.shape[0] > 0:
+                days_ago = -1 * days[sid_order.index(n_s)]
+                fig = fn_get_stock_price_plt(df, days_ago=days_ago)
+
+                c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
+                c1.markdown(f'### {n_s.replace("⭐", "")}')
+                c2.plotly_chart(fig, use_container_width=True)
+
+                for m in metrics:
+                    if sid in m[0]:
+                        c3.metric(*metrics[metrics.index(m)], delta_color='inverse')
 
 
 def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None):
