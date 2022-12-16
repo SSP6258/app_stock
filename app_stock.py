@@ -717,6 +717,23 @@ def fn_st_stock_all(df_all):
     st.dataframe(df_all_show, width=None, height=500)
 
 
+def fn_st_reference():
+
+    with st.form(key='ref'):
+
+        st.markdown('### 📚 參考資料:')
+        cols = st.columns([1, 2, 1, 1, 1])
+        cols[0].markdown('#### 數據來源')
+        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw/mops/web/index)')
+        cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
+
+        cols[1].markdown('#### 概念教學')
+        cols[1].markdown('- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
+        cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
+
+        cols[-1].form_submit_button('')
+
+
 def fn_st_stock_main():
     stock_file = dic_cfg['stock_file']
     if not os.path.exists(stock_file):
@@ -739,23 +756,7 @@ def fn_st_stock_main():
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
 
-    with st.form(key='ref'):
-
-        st.markdown('### 📚 參考資料:')
-        cols = st.columns([1, 2, 1, 1, 1])
-        cols[0].markdown('#### 數據來源')
-        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw/mops/web/index)')
-        cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
-
-        cols[1].markdown('#### 概念教學')
-        cols[1].markdown('- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
-        cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
-
-        cols[-1].form_submit_button('')
-
-
-
-
+    fn_st_reference()
     fn_st_stock_sel(df_all)
     fn_st_add_space(3)
     fn_st_stock_all(df_all)
