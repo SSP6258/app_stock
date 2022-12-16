@@ -727,7 +727,7 @@ def fn_st_reference():
         cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw/mops/web/index)')
         cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
 
-        cols[1].markdown('#### 概念教學')
+        cols[1].markdown('#### 基本概念')
         cols[1].markdown('- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
         cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
 
