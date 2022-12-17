@@ -5,6 +5,7 @@ import streamlit as st
 import math
 from collections import defaultdict
 from pandas_datareader import data
+import yfinance as yf
 from twstock import Stock
 from plotly.subplots import make_subplots
 from app_stock_fb import *
@@ -207,15 +208,17 @@ def fn_get_field_id(x):
 
 
 def fn_get_stock_price(sid, days=30):
-    sid_tw = str(sid) + '.TW'
+    sid_tw = sid + '.TW'
     df_sid = pd.DataFrame()
-    start = datetime.datetime.now() - datetime.timedelta(days=days)
-    end = datetime.datetime.today()
-
+    start = datetime.datetime.now().date() - datetime.timedelta(days=days)
+    end = datetime.datetime.today().date()
     try:
         df_sid = data.get_data_yahoo(sid_tw, start, end)
+        st.write('get_data_yahoo')
     except:
-        pass
+        yf.pdr_override()
+        df_sid = yf.download(sid_tw, start, end)
+        st.write('yh')
 
     return df_sid
 
@@ -228,19 +231,24 @@ def fn_get_stock_price_plt(df, days_ago=None):
                                  low=df['Low'],
                                  close=df['Close'],
                                  increasing_line_color='red',
-                                 decreasing_line_color='green'), secondary_y=True)
+                                 decreasing_line_color='green'),
+                  secondary_y=True)
 
     fig.add_trace(go.Bar(x=df.index,
                          y=df['Volume'].apply(lambda x: int(x/1000)),
                          opacity=0.5,
-                         ), secondary_y=False)
+                         ),
+                  secondary_y=False)
 
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=100, showlegend=False)
 
     if days_ago is not None:
-        fig.add_vrect(x0=df.index[days_ago], x1=df.index[-1])
+        days_ago = days_ago - int(days_ago/7)*2-1
+        color = "pink" if df["Close"][-1] >= df["Close"][days_ago] else "lightgreen"
+        fig.add_vrect(x0=df.index[days_ago], x1=df.index[-1],
+                      fillcolor=color, opacity=0.45, line_width=0)
 
     return fig
 
@@ -410,10 +418,12 @@ def fn_st_stock_sel(df_all):
             sid_order.append(s[p.index(ps)])
             days.append(d[p.index(ps)])
 
+        is_price_got = False
         for n_s in sid_order:
             sid = n_s.split(' ')[-1]
             df = fn_get_stock_price(sid, days=300)
             if df.shape[0] > 0:
+                is_price_got = True
                 days_ago = -1 * days[sid_order.index(n_s)]
                 fig = fn_get_stock_price_plt(df, days_ago=days_ago)
 
@@ -424,6 +434,9 @@ def fn_st_stock_sel(df_all):
                 for m in metrics:
                     if sid in m[0]:
                         c3.metric(*metrics[metrics.index(m)], delta_color='inverse')
+
+        if is_price_got is False:
+            st.error(f'get stock price fail !')
 
 
 def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None):
