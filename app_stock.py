@@ -214,11 +214,11 @@ def fn_get_stock_price(sid, days=30):
     end = datetime.datetime.today().date()
     try:
         df_sid = data.get_data_yahoo(sid_tw, start, end)
-        st.write('get_data_yahoo')
+        # st.write('get_data_yahoo')
     except:
         yf.pdr_override()
         df_sid = yf.download(sid_tw, start, end)
-        st.write('yh')
+        # st.write('yh')
 
     return df_sid
 
