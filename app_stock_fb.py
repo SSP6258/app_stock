@@ -21,6 +21,7 @@ dic_cfg = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     },
+    'mops_path': 'mops',
 }
 
 dic_fb_main = {
@@ -348,6 +349,26 @@ def fn_twstock(sid):
     print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
 
 
+def fn_mops_twse_parser():
+
+    for root, dirs, files in os.walk(dic_cfg['mops_path']):
+        df_mops = pd.DataFrame()
+        for name in files:
+            if 'mops.csv' in name:
+                pass
+            else:
+                csv = os.path.join(root, name)
+                df = pd.read_csv(csv, encoding='ANSI')
+                df['year'] = name.split('年')[0].split('司')[-1]
+                df['market'] = name.split('公司')[0]
+                print(f'{name} --> {df.shape}')
+                df_mops = pd.concat([df_mops, df], ignore_index=True)
+
+    print(df_mops.shape)
+    df_mops.to_csv('mops.csv', encoding='utf_8_sig', index=False)
+
+
+
 def fn_main():
     t = time.time()
 
@@ -355,10 +376,12 @@ def fn_main():
     # fn_twstock('1514')
     # fn_gen_stock_field_info()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
-        # fn_want_rich(df, dic_cfg["stocks"])
+    fn_mops_twse_parser()
+
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
+    #     # fn_want_rich(df, dic_cfg["stocks"])
 
     dur = int(time.time() - t)
     h = int(dur / 3600)

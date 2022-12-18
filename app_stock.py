@@ -439,7 +439,7 @@ def fn_st_stock_sel(df_all):
             st.error(f'get stock price fail !')
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None):
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
     width_full = 1200
@@ -475,31 +475,32 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
 
                 fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                         lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
-                                        title=title, x_range=x_range)
+                                        title=title, x_range=x_range, showtick_y=showtick_y)
 
                 cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
 
     else:
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                 lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', lg_top=False, width=width, height=height,
-                                title=title, x_range=x_range)
+                                title=title, x_range=x_range, showtick_y=showtick_y)
 
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', margin=None):
+def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True):
     if v_h == 'v':
         if col is None:
             st.bar_chart(data=df, x=x, y=y,
                          width=0, height=500,
                          use_container_width=True)
         else:
+            col.write('')
             col.bar_chart(data=df, x=x, y=y,
                          width=0, height=500,
                          use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y)
 
 
 def fn_stock_filter(df, stra, col):
@@ -637,10 +638,43 @@ def fn_st_chart_bar(df):
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
             margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
             with tab1:
-                cols = st.columns([1, 2, 1])
+                cols = st.columns([0.8, 1.5, 1.2])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
+
+                    df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+                    '''
+                    公司代號, 公司簡稱, year, market,
+                    
+                    財務結構-負債佔資產比率(%),
+                    財務結構-長期資金佔不動產、廠房及設備比率(%),
+                    
+                    償債能力-流動比率(%),
+                    償債能力-速動比率(%),
+                    償債能力-利息保障倍數(%),
+                    
+                    經營能力-應收款項週轉率(次),
+                    經營能力-平均收現日數,
+                    經營能力-存貨週轉率(次),
+                    經營能力-平均售貨日數,
+                    經營能力-不動產、廠房及設備週轉率(次),
+                    經營能力-總資產週轉率(次),
+                    
+                    獲利能力-資產報酬率(%),
+                    獲利能力-權益報酬率(%),
+                    獲利能力-稅前純益佔實收資本比率(%),
+                    獲利能力-純益率(%),獲利能力-每股盈餘(元),
+                    
+                    現金流量-現金流量比率(%),
+                    現金流量-現金流量允當比率(%),
+                    現金流量-現金再投<br>資比率(%),
+                    '''
+                    for sid in df['代碼'].values:
+                        df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
+                        st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)', '現金流量-現金流量比率(%)']])
+
+                    fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
                 else:
                     cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
