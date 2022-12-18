@@ -526,6 +526,41 @@ def fn_stock_filter(df, stra, col):
     return df_f, flts
 
 
+def fn_show_mops(df_mops, df):
+    # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    # '''
+    # 公司代號, 公司簡稱, year, market,
+    #
+    # 財務結構-負債佔資產比率(%),
+    # 財務結構-長期資金佔不動產、廠房及設備比率(%),
+    #
+    # 償債能力-流動比率(%),
+    # 償債能力-速動比率(%),
+    # 償債能力-利息保障倍數(%),
+    #
+    # 經營能力-應收款項週轉率(次),
+    # 經營能力-平均收現日數,
+    # 經營能力-存貨週轉率(次),
+    # 經營能力-平均售貨日數,
+    # 經營能力-不動產、廠房及設備週轉率(次),
+    # 經營能力-總資產週轉率(次),
+    #
+    # 獲利能力-資產報酬率(%),
+    # 獲利能力-權益報酬率(%),
+    # 獲利能力-稅前純益佔實收資本比率(%),
+    # 獲利能力-純益率(%),獲利能力-每股盈餘(元),
+    #
+    # 現金流量-現金流量比率(%),
+    # 現金流量-現金流量允當比率(%),
+    # 現金流量-現金再投<br>資比率(%),
+    # '''
+    for sid in df['代碼'].values:
+        df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
+        if df_mops_sid.shape[0] > 0:
+            st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
+                                  '現金流量-現金流量比率(%)']])
+
+
 def fn_st_chart_bar(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
@@ -613,6 +648,7 @@ def fn_st_chart_bar(df):
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
+        df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
 
         tab_d, tab_f, tab_p5, tab_p, tab_n, tab_e = st.tabs(
             [f'指標分布{watch}', '策略選股 🔍', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
@@ -642,40 +678,8 @@ def fn_st_chart_bar(df):
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
-
-                    df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
-                    # '''
-                    # 公司代號, 公司簡稱, year, market,
-                    #
-                    # 財務結構-負債佔資產比率(%),
-                    # 財務結構-長期資金佔不動產、廠房及設備比率(%),
-                    #
-                    # 償債能力-流動比率(%),
-                    # 償債能力-速動比率(%),
-                    # 償債能力-利息保障倍數(%),
-                    #
-                    # 經營能力-應收款項週轉率(次),
-                    # 經營能力-平均收現日數,
-                    # 經營能力-存貨週轉率(次),
-                    # 經營能力-平均售貨日數,
-                    # 經營能力-不動產、廠房及設備週轉率(次),
-                    # 經營能力-總資產週轉率(次),
-                    #
-                    # 獲利能力-資產報酬率(%),
-                    # 獲利能力-權益報酬率(%),
-                    # 獲利能力-稅前純益佔實收資本比率(%),
-                    # 獲利能力-純益率(%),獲利能力-每股盈餘(元),
-                    #
-                    # 現金流量-現金流量比率(%),
-                    # 現金流量-現金流量允當比率(%),
-                    # 現金流量-現金再投<br>資比率(%),
-                    # '''
-                    for sid in df['代碼'].values:
-                        df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
-                        if df_mops_sid.shape[0] > 0:
-                            st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)','獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)', '現金流量-現金流量比率(%)']])
-
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
+                    fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
@@ -685,6 +689,7 @@ def fn_st_chart_bar(df):
                 df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
+                    fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
@@ -694,6 +699,7 @@ def fn_st_chart_bar(df):
                 df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
                 if df.shape[0] > 0:
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
+                    fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
                     cols[1].markdown('# 🙅‍♂️')
