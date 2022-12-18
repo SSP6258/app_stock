@@ -672,7 +672,8 @@ def fn_st_chart_bar(df):
                     # '''
                     for sid in df['代碼'].values:
                         df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
-                        st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)', '現金流量-現金流量比率(%)']])
+                        if df_mops_sid.shape[0] > 0:
+                            st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)', '現金流量-現金流量比率(%)']])
 
                     fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
                 else:
