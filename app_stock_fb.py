@@ -350,9 +350,8 @@ def fn_twstock(sid):
 
 
 def fn_mops_twse_parser():
-
+    df_mops = pd.DataFrame()
     for root, dirs, files in os.walk(dic_cfg['mops_path']):
-        df_mops = pd.DataFrame()
         for name in files:
             if 'mops.csv' in name:
                 pass
@@ -368,7 +367,6 @@ def fn_mops_twse_parser():
     df_mops.to_csv('mops.csv', encoding='utf_8_sig', index=False)
 
 
-
 def fn_main():
     t = time.time()
 
@@ -376,12 +374,12 @@ def fn_main():
     # fn_twstock('1514')
     # fn_gen_stock_field_info()
 
-    fn_mops_twse_parser()
+    # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"])
-    #     # fn_want_rich(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"])
+        # fn_want_rich(df, dic_cfg["stocks"])
 
     dur = int(time.time() - t)
     h = int(dur / 3600)

@@ -212,13 +212,14 @@ def fn_get_stock_price(sid, days=30):
     df_sid = pd.DataFrame()
     start = datetime.datetime.now().date() - datetime.timedelta(days=days)
     end = datetime.datetime.today().date()
+    yf.pdr_override()
     try:
-        df_sid = data.get_data_yahoo(sid_tw, start, end)
-        # st.write('get_data_yahoo')
+        df_sid = data.get_data_yahoo([sid_tw], start, end)
     except:
-        yf.pdr_override()
-        df_sid = yf.download(sid_tw, start, end)
-        # st.write('yh')
+        df_sid = yf.download([sid_tw], start, end)
+
+    if df_sid.shape[0] == 0:
+        df_sid = data.get_data_yahoo([sid_tw+'O'], start, end)
 
     return df_sid
 
