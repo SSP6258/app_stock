@@ -307,7 +307,8 @@ def fn_st_stock_sel(df_all):
 
         sel_num_metric = sel_num  # min(sel_num, 8)
 
-        cs = st.columns(sel_num_metric + 1)
+        # cs = st.columns(sel_num_metric + 1)
+        cs = st.columns(11)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
@@ -421,8 +422,10 @@ def fn_st_stock_sel(df_all):
         p_sort = sorted(p, reverse=True)
 
         for ps in p_sort:
-            sid_order.append(s[p.index(ps)])
-            days.append(d[p.index(ps)])
+            sid = s[p.index(ps)]
+            if sid not in sid_order:
+                sid_order.append(sid)
+                days.append(d[p.index(ps)])
 
         is_price_got = False
         for n_s in sid_order:
