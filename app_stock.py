@@ -305,7 +305,7 @@ def fn_st_stock_sel(df_all):
         st.error(f'#### 👉 篩選結果({sel_num}檔): {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
-        sel_num_metric = min(sel_num, 8)
+        sel_num_metric = sel_num  # min(sel_num, 8)
 
         cs = st.columns(sel_num_metric + 1)
         # cs[0].markdown('# 👀')
@@ -340,9 +340,10 @@ def fn_st_stock_sel(df_all):
 
         j = 0
         for p in profs:
-            i = profs_sort.index(p)
-            cs[i + 1].metric(*metrics[j], delta_color='inverse')
-            j += 1
+            if j < 10:
+                i = profs_sort.index(p)
+                cs[i + 1].metric(*metrics[j], delta_color='inverse')
+                j += 1
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
