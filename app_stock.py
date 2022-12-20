@@ -341,7 +341,7 @@ def fn_st_stock_sel(df_all):
 
         j = 0
         for p in profs:
-            if j < 10:
+            if j < 11:
                 i = profs_sort.index(p)
                 cs[i + 1].metric(*metrics[j], delta_color='inverse')
                 j += 1
