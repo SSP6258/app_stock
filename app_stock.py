@@ -307,8 +307,7 @@ def fn_st_stock_sel(df_all):
 
         sel_num_metric = sel_num  # min(sel_num, 8)
 
-        # cs = st.columns(sel_num_metric + 1)
-        cs = st.columns(11)
+        cs = st.columns(sel_num_metric + 1)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
@@ -339,12 +338,16 @@ def fn_st_stock_sel(df_all):
 
         profs_sort = sorted(profs, reverse=True)
 
-        j = 0
-        for p in profs:
-            if j < 11:
-                i = profs_sort.index(p)
-                cs[i + 1].metric(*metrics[j], delta_color='inverse')
-                j += 1
+        # j = 0
+        # for p in profs:
+        #     i = profs_sort.index(p)
+        #     cs[i + 1].metric(*metrics[j], delta_color='inverse')
+        #     j += 1
+
+        for p in profs_sort:
+            i = profs_sort.index(p)
+            if i < 11:
+                cs[i + 1].metric(*metrics[profs.index(p)], delta_color='inverse')
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
