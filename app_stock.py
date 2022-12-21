@@ -10,6 +10,7 @@ from twstock import Stock
 from plotly.subplots import make_subplots
 from app_stock_fb import *
 from app_utils import *
+from workalendar.asia import Taiwan
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -23,7 +24,6 @@ dic_url = {
 dic_sel = {
     'pick': []
 }
-
 
 dic_field_id = {
     '其他': '23024',
@@ -104,7 +104,8 @@ def fn_kpi_plt(kpis, df_sids):
 
     rows = 4
     cols = math.ceil(len(dis) / rows)  # int(round(len(dis) / rows, 0))
-    titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d or "天數" in d else round(df_sids[d].max(), 2)}' for d in dis]
+    titles = [f'{d} 👉 {round(df_sids[d].min(), 2) if "差" in d or "天數" in d else round(df_sids[d].max(), 2)}' for d in
+              dis]
 
     dis = dis + ['產業別']
     titles = titles + ['產業別']
@@ -116,11 +117,11 @@ def fn_kpi_plt(kpis, df_sids):
         if "勝率" in t:
             if float(t.split('👉')[-1]) > 5.0:
                 sub_t = sub_t + '💎'
-                watch = watch+'💎'
+                watch = watch + '💎'
         if "價差" in t:
             if float(t.split('👉')[-1]) < -5.5:
                 sub_t = sub_t + '💎'
-                watch = watch+'💎'
+                watch = watch + '💎'
 
         subplot_titles.append(sub_t)
 
@@ -219,12 +220,12 @@ def fn_get_stock_price(sid, days=30):
         df_sid = yf.download([sid_tw], start, end)
 
     if df_sid.shape[0] == 0:
-        df_sid = data.get_data_yahoo([sid_tw+'O'], start, end)
+        df_sid = data.get_data_yahoo([sid_tw + 'O'], start, end)
 
     return df_sid
 
 
-def fn_get_stock_price_plt(df, days_ago=None):
+def fn_get_stock_price_plt(df, days_ago=None, watch=None):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     fig.add_trace(go.Candlestick(x=df.index,
                                  open=df['Open'],
@@ -236,7 +237,7 @@ def fn_get_stock_price_plt(df, days_ago=None):
                   secondary_y=True)
 
     fig.add_trace(go.Bar(x=df.index,
-                         y=df['Volume'].apply(lambda x: int(x/1000)),
+                         y=df['Volume'].apply(lambda x: int(x / 1000)),
                          opacity=0.5,
                          ),
                   secondary_y=False)
@@ -245,17 +246,40 @@ def fn_get_stock_price_plt(df, days_ago=None):
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=100, showlegend=False)
 
-    if days_ago is not None:
-        days_ago = days_ago - int(days_ago/7)*2-1
-        color = "pink" if df["Close"][-1] >= df["Close"][days_ago] else "lightgreen"
-        fig.add_vrect(x0=df.index[days_ago], x1=df.index[-1],
-                      fillcolor=color, opacity=0.45, line_width=0)
+    # if days_ago is not None:
+    #     days_ago = days_ago - int(days_ago / 7) * 2 - 1
+    #     color = "pink" if df["Close"][-1] >= df["Close"][days_ago] else "lightgreen"
+    #     fig.add_vrect(x0=df.index[days_ago], x1=df.index[-1],
+    #                   fillcolor=color, opacity=0.45, line_width=0)
+
+    if watch is not None:
+        fr, to = watch[0], watch[-1]
+
+        day_fr = datetime.date.fromisoformat(fr)
+
+        is_working_day = Taiwan().is_working_day(day_fr)
+        # st.write(f'{fr} --> {is_working_day}')
+
+        # day_to = datetime.date.fromisoformat(to)
+        # to = str(day_to + datetime.timedelta(days=-1))
+
+        if is_working_day:
+            pass
+        else:
+            fr = str(day_fr + datetime.timedelta(days=-1))
+            # st.write(f'{fr} --> {fr in df.index}')
+
+        if fr in df.index and to in df.index:
+            p_fr = df[df.index == fr]["Close"].values[0]
+            p_to = df[df.index == to]["Close"].values[0]
+            color = "pink" if p_to >= p_fr else "lightgreen"
+            fig.add_vrect(x0=fr, x1=to,
+                          fillcolor=color, opacity=0.45, line_width=0)
 
     return fig
 
 
 def fn_st_stock_sel(df_all):
-
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
     fr = min(df_all['date'])
     to = max(df_all['date'])
@@ -434,7 +458,10 @@ def fn_st_stock_sel(df_all):
             if df.shape[0] > 0:
                 is_price_got = True
                 days_ago = -1 * days[sid_order.index(n_s)]
-                fig = fn_get_stock_price_plt(df, days_ago=days_ago)
+                fr = df_sel[df_sel['sid'] == sid]['date'].min()
+                to = df_sel[df_sel['sid'] == sid]['date'].max()
+                fig = fn_get_stock_price_plt(df, days_ago=days_ago, watch=[fr, to])
+                # st.write(f'{sid} {fr} {to}')
 
                 c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
                 c1.markdown(f'### {n_s.replace("⭐", "")}')
@@ -473,14 +500,14 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
                 df.at[idx, 'min'] = df.loc[idx, 'min'] + df.loc[idx, c]
 
     m, M = df['min'].min(), df['max'].max()
-    x_range = [m+min(m/8, -1), M+max(M/8, 1)]
+    x_range = [m + min(m / 8, -1), M + max(M / 8, 1)]
 
     if col is None:
         for c in range(col_max):
             if c < col_end and fr < df.shape[0]:
                 to = min(df.shape[0], fr + bars)
                 df_c = df.loc[fr: to].reset_index(drop=True)
-                fr = to+1
+                fr = to + 1
 
                 fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                         lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
@@ -505,8 +532,8 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', mar
         else:
             col.write('')
             col.bar_chart(data=df, x=x, y=y,
-                         width=0, height=500,
-                         use_container_width=True)
+                          width=0, height=500,
+                          use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
         fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y)
@@ -526,7 +553,7 @@ def fn_stock_filter(df, stra, col):
     flts = [f'{stra}_勝率_new', f'{stra}_合理價差_new', f'{stra}_相關性_new', f'{stra}_勝率_diff']
 
     df_f = df[df[flts[0]].apply(lambda x: x > win)]
-    df_f = df_f[df_f[flts[1]].apply(lambda x: x < -1*margin)] if df_f.shape[0] > 0 else df_f
+    df_f = df_f[df_f[flts[1]].apply(lambda x: x < -1 * margin)] if df_f.shape[0] > 0 else df_f
     df_f = df_f[df_f[flts[2]].apply(lambda x: x > corr)] if df_f.shape[0] > 0 else df_f
     df_f = df_f[df_f[flts[3]].apply(lambda x: x > win_diff)] if df_f.shape[0] > 0 else df_f
 
@@ -635,7 +662,8 @@ def fn_st_chart_bar(df):
         st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
         st.session_state['bar'] = cs[2].selectbox(f'柱狀圖方向:', options=['水平', '垂直'], index=0)
         v_h = 'v' if '垂直' in st.session_state['bar'] else 'h'
-        st.session_state['kpi'] = [st.session_state['order']]+[k for k in st.session_state['kpi'] if k != st.session_state['order']]
+        st.session_state['kpi'] = [st.session_state['order']] + [k for k in st.session_state['kpi'] if
+                                                                 k != st.session_state['order']]
 
         ascending = st.session_state['order_typ'] == '小 --> 大'
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
@@ -781,9 +809,7 @@ def fn_st_stock_all(df_all):
 
 
 def fn_st_reference():
-
     with st.form(key='ref'):
-
         st.markdown('### 📚 參考資料:')
         cols = st.columns([1, 2, 1, 1, 1])
         cols[0].markdown('#### 數據來源')
@@ -791,7 +817,8 @@ def fn_st_reference():
         cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
 
         cols[1].markdown('#### 基本概念')
-        cols[1].markdown('- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
+        cols[1].markdown(
+            '- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
         cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
 
         cols[-1].form_submit_button('')
