@@ -269,7 +269,8 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
             fr = str(day_fr + datetime.timedelta(days=-1))
             # st.write(f'{fr} --> {fr in df.index}')
 
-        if fr in df.index and to in df.index:
+        if fr in df.index:
+            to = to if to in df.index else df.index.values[-1]
             p_fr = df[df.index == fr]["Close"].values[0]
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
