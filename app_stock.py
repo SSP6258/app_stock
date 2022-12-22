@@ -211,8 +211,9 @@ def fn_get_field_id(x):
 def fn_get_stock_price(sid, days=30):
     sid_tw = sid + '.TW'
     df_sid = pd.DataFrame()
-    start = datetime.datetime.now().date() - datetime.timedelta(days=days)
-    end = datetime.datetime.today().date()
+
+    end = datetime.datetime.today().date() + datetime.timedelta(days=1)
+    start = end - datetime.timedelta(days=days)
     yf.pdr_override()
     try:
         df_sid = data.get_data_yahoo([sid_tw], start, end)
