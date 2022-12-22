@@ -275,8 +275,9 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
             p_fr = df[df.index == fr]["Close"].values[0]
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
+            op = 0.45 + 0.2*abs(int(100*(p_to - p_fr)/p_fr))/5
             fig.add_vrect(x0=fr, x1=to,
-                          fillcolor=color, opacity=0.45, line_width=0)
+                          fillcolor=color, opacity=op, line_width=0)
         else:
             st.write(f'{fr} --> {fr in df.index}')
             st.write(f'{to} --> {to in df.index}')
