@@ -245,7 +245,7 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
 
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
-    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=100, showlegend=False)
+    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=150, showlegend=False)
 
     # if days_ago is not None:
     #     days_ago = days_ago - int(days_ago / 7) * 2 - 1
