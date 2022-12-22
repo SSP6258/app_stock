@@ -278,6 +278,22 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
             op = 0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5
             fig.add_vrect(x0=fr, x1=to,
                           fillcolor=color, opacity=op, line_width=0)
+
+            fig.add_trace(go.Candlestick(x=df.index,
+                                         open=df['Open'],
+                                         high=df['High'],
+                                         low=df['Low'],
+                                         close=df['Close'],
+                                         increasing_line_color='red',
+                                         decreasing_line_color='green'),
+                          secondary_y=True)
+
+            fig.add_trace(go.Bar(x=df.index,
+                                 y=df['Volume'].apply(lambda x: int(x / 1000)),
+                                 opacity=0.5,
+                                 ),
+                          secondary_y=False)
+
         else:
             st.write(f'{fr} --> {fr in df.index}')
             st.write(f'{to} --> {to in df.index}')
