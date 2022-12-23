@@ -247,6 +247,9 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=120, showlegend=False)
 
+    fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
+    fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
+
     # if days_ago is not None:
     #     days_ago = days_ago - int(days_ago / 7) * 2 - 1
     #     color = "pink" if df["Close"][-1] >= df["Close"][days_ago] else "lightgreen"
