@@ -12,7 +12,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
     fig = px.bar(df, x=x_col, y=y_col, orientation=v_h, title=title, text=txt_col, color=color_col,
                  width=width, height=height, opacity=op)
 
-    fig.update_traces(textfont_size=12, textposition='outside')
+    fig.update_traces(textfont_size=14, textposition='outside')
     fig.for_each_trace(lambda t: t.update(text=[]) if '勝率_new' not in t.name else ())
 
 
