@@ -1,4 +1,4 @@
-import plotly.graph_objs as go
+# import plotly.graph_objs as go
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -12,7 +12,9 @@ def fn_gen_plotly_bar(df, x_col, y_col,
     fig = px.bar(df, x=x_col, y=y_col, orientation=v_h, title=title, text=txt_col, color=color_col,
                  width=width, height=height, opacity=op)
 
-    fig.update_traces(textfont_size=12)
+    fig.update_traces(textfont_size=12, textposition='outside')
+    fig.for_each_trace(lambda t: t.update(text=[]) if '勝率_new' not in t.name else ())
+
     fig.update_layout(margin=margin,
                       xaxis_title='',
                       yaxis_title='',

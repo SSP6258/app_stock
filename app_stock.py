@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import pandas as pd
 import streamlit as st
@@ -485,13 +486,13 @@ def fn_st_stock_sel(df_all):
             st.error(f'get stock price fail !')
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True):
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True, text=None):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
     width_full = 1200
     width_max = 600
     height = 650
-    bars = 30
+    bars = 35
 
     col_max = 3
     col_end = math.ceil(df.shape[0] / bars)
@@ -521,19 +522,21 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
 
                 fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                         lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
-                                        title=title, x_range=x_range, showtick_y=showtick_y)
-
-                cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
+                                        title=title, x_range=x_range, showtick_y=showtick_y, txt_col=text)
+                if col_end - c - 1 < col_max:
+                    cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
+                else:
+                    cs[col_max-1].error(f'{col_end} - {c} - 1 out of max col {col_max}')
 
     else:
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
                                 lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', lg_top=False, width=width, height=height,
-                                title=title, x_range=x_range, showtick_y=showtick_y)
+                                title=title, x_range=x_range, showtick_y=showtick_y, txt_col=text)
 
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True):
+def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True):
     if v_h == 'v':
         if col is None:
             st.bar_chart(data=df, x=x, y=y,
@@ -546,13 +549,13 @@ def fn_show_bar(df, x='策略選股', y=None, v_h='h', col=None, lg_pos='h', mar
                           use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text)
 
 
 def fn_stock_filter(df, stra, col):
     for _ in range(1):
         col.write('')
-    with col.form(key=f'Form2_{stra}'):
+    with col.form(key=f'Form2_{stra}_{random.randint(0, 1000)}'):
         win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.0, step=0.5)
         margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=2.0, step=0.5)
         corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
@@ -570,6 +573,14 @@ def fn_stock_filter(df, stra, col):
     df_f.sort_values(by=flts, ascending=[False, True, False, False], inplace=True, ignore_index=True)
 
     return df_f, flts
+
+
+def fn_stock_basic(df, y, col):
+    df['basic'] = df['代碼'].apply(lambda x: '基本面: 佳' if '3' in str(x) else '基本面: 差')
+    col.write(df)
+    col.write(y)
+
+    return df, y
 
 
 def fn_show_mops(df_mops, df):
@@ -721,11 +732,13 @@ def fn_st_chart_bar(df):
             tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
             margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
             with tab1:
-                cols = st.columns([0.8, 1.5, 1.2])
+                cols = st.columns([0.8, 1.6, 0.8])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
+                    df, y = fn_stock_basic(df.copy(), y.copy(), cols[2])
+                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
+                    # fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
+
                     fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
