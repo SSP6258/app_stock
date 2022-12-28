@@ -575,10 +575,18 @@ def fn_stock_filter(df, stra, col):
     return df_f, flts
 
 
-def fn_stock_basic(df, y, col):
-    df['basic'] = df['代碼'].apply(lambda x: '基本面: 佳' if '3' in str(x) else '基本面: 差')
-    col.write(df)
-    col.write(y)
+def fn_stock_basic(df, df_mops, y):
+    for idx in df.index:
+        sid = df.loc[idx, '代碼']
+        df_sm = df_mops[df_mops['公司代號'] == sid]
+        ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
+        df.at[idx, 'basic'] = '基本面: 佳'
+        r_p = 0
+        for r in ROE:
+            if r < 8 or r < r_p:
+                df.at[idx, 'basic'] = '基本面: 差'
+                break
+            r_p = r
 
     return df, y
 
@@ -735,7 +743,7 @@ def fn_st_chart_bar(df):
                 cols = st.columns([0.8, 1.6, 0.8])
                 df, y = fn_stock_filter(df_sids, '營收', cols[0])
                 if df.shape[0] > 0:
-                    df, y = fn_stock_basic(df.copy(), y.copy(), cols[2])
+                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
                     fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
                     # fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
 
