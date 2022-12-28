@@ -575,7 +575,7 @@ def fn_stock_filter(df, stra, col):
     return df_f, flts
 
 
-def fn_stock_basic(df, df_mops, y):
+def fn_stock_basic(df, df_mops, y, col):
     for idx in df.index:
         sid = df.loc[idx, '代碼']
         df_sm = df_mops[df_mops['公司代號'] == sid]
@@ -756,7 +756,8 @@ def fn_st_chart_bar(df):
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
+                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
                     fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
@@ -766,7 +767,8 @@ def fn_st_chart_bar(df):
                 cols = st.columns([1, 2, 1])
                 df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
                 if df.shape[0] > 0:
-                    fn_show_bar(df, y=y, v_h=v_h, col=cols[1], margin=margin)
+                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
                     fn_show_mops(df_mops, df)
                 else:
                     cols[1].write('')
