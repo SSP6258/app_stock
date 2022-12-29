@@ -582,11 +582,11 @@ def fn_stock_basic(df, df_mops, y, col):
         df_sm = df_mops[df_mops['公司代號'] == sid]
         ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
         basic = '差' if ROE[-1] < ROE[-2] else '佳'
-
-        for r in ROE:
-            if r < 8:
-                basic = '差'
-                break
+        if basic == '佳':
+            for r in ROE:
+                if r < 8:
+                    basic = '差'
+                    break
 
         df.at[idx, 'basic'] = f'基本面: {basic}'
 
