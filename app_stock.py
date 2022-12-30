@@ -846,7 +846,8 @@ def fn_st_reference():
         st.markdown('### 📚 參考資料:')
         cols = st.columns([1, 2, 1, 1, 1])
         cols[0].markdown('#### 數據來源')
-        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw/mops/web/index)')
+        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw)')
+        cols[0].markdown('- [財務比較E點通](https://mopsfin.twse.com.tw)')
         cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
 
         cols[1].markdown('#### 基本概念')
