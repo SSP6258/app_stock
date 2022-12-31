@@ -890,10 +890,21 @@ def fn_st_stock_main():
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
 
-    fn_st_reference()
-    fn_st_stock_sel(df_all)
-    fn_st_add_space(3)
-    fn_st_stock_all(df_all)
+    tab_sel, tab_watch, tab_ref = st.tabs(['策略選股', '觀察驗證', '參考資料'])
+
+    with tab_sel:
+        fn_st_stock_all(df_all)
+
+    with tab_watch:
+        fn_st_stock_sel(df_all)
+
+    with tab_ref:
+        fn_st_reference()
+
+    # fn_st_reference()
+    # fn_st_stock_sel(df_all)
+    # fn_st_add_space(3)
+    # fn_st_stock_all(df_all)
 
 
 def fn_st_init():
