@@ -576,14 +576,24 @@ def fn_stock_filter(df, stra, col):
 
 
 def fn_stock_basic(df, df_mops, y, col):
+    txt = f'''
+           #### 🎯 [基本面指標](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69):
+           1. ROE: __> 8%__ (公司錢滾錢的能力)
+           2. 營業利益率: __> 0%__ (本業有沒有賺錢)
+           3. 本業收入率: __> 80%__ (本業收入的比例)
+           4. 負債佔資產比率: __< 60%__ (舉債經營壓力)
+           5. 營運現金流量: __> 0__ (確認有現金流入)
+           '''
+
+    col.info(txt)
 
     for idx in df.index:
         sid = df.loc[idx, '代碼']
         df_sm = df_mops[df_mops['公司代號'] == sid]
         ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
 
-        basic = '差' if ROE[-1] < ROE[-2] else '可'
-        basic = '差' if min(ROE) < 8 else basic
+        basic = '❌' if ROE[-1] < ROE[-2] else '可'
+        basic = '❌' if min(ROE) < 8 else basic
         basic = '佳' if basic == '可' and ROE[-1] > 15 else basic
 
         df.at[idx, 'basic'] = f'基本面: {basic}'
