@@ -594,7 +594,7 @@ def fn_stock_basic(df, df_mops, y, col):
 
         basic = '❌' if ROE[-1] < ROE[-2] else '可'
         basic = '❌' if min(ROE) < 8 else basic
-        basic = '佳' if basic == '可' and ROE[-1] > 15 else basic
+        basic = '✔️' if basic == '⭕' and ROE[-1] > 15 else basic
 
         df.at[idx, 'basic'] = f'基本面: {basic}'
 
@@ -675,7 +675,7 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
 
-    st.markdown(f'#### 📊 {df_sids.shape[0]}檔個股的 績效 v.s. 策略指標')
+    st.markdown(f'#### 📊 {df_sids.shape[0]} 檔個股的 績效 v.s. 策略指標')
 
     # ==========
 
