@@ -577,7 +577,7 @@ def fn_stock_filter(df, stra, col):
 
 def fn_stock_basic(df, df_mops, y, col):
     txt = f'''
-           #### 🎯 [基本面指標](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69):
+           #### 🎯 [基本面指標](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69): ❌ ⭕ ✔️
            1. ROE: __> 8%__ (公司錢滾錢的能力)
            2. 營業利益率: __> 0%__ (本業有沒有賺錢)
            3. 本業收入率: __> 80%__ (本業收入的比例)
