@@ -492,7 +492,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
     width_full = 1200
     width_max = 600
     height = 650
-    bars = 35
+    bars = 30
 
     col_max = 3
     col_end = math.ceil(df.shape[0] / bars)
@@ -773,19 +773,16 @@ def fn_st_chart_bar(df):
 
         df_p = df_sids[df_sids['績效(%)'].apply(lambda x: 1 < x < 5)]
         df_p5 = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 5)]
-        df_n = df_sids[df_sids['績效(%)'] < -1]
+        df_n = df_sids[df_sids['績效(%)'].apply(lambda x: -5 < x < -1)]
+        df_n5 = df_sids[df_sids['績效(%)'].apply(lambda x: x <= -5)]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
-        # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
 
-        # tab_d, tab_f, tab_p5, tab_p, tab_n, tab_e = st.tabs(
-        #     [f'指標分布{watch}', '策略選股 🔍', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
-        #      f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
-
-        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+        tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
             [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
-             f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+             f'負報酬( -1% ~ -5% ): {df_n.shape[0]}檔', f'負報酬( < -5% ): {df_n5.shape[0]}檔',
+             f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
@@ -796,50 +793,15 @@ def fn_st_chart_bar(df):
         with tab_n:
             fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
 
+        with tab_n5:
+            fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
+
         with tab_e:
             fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_d:
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
-
-        # with tab_f:
-        #     tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
-        #     margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
-        #     with tab1:
-        #         cols = st.columns([0.8, 1.6, 0.8])
-        #         df, y = fn_stock_filter(df_sids, '營收', cols[0])
-        #         if df.shape[0] > 0:
-        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-        #             # fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
-        #
-        #             fn_show_mops(df_mops, df)
-        #         else:
-        #             cols[1].write('')
-        #             cols[1].markdown('# 🙅‍♂️')
-        #
-        #     with tab2:
-        #         cols = st.columns([1, 2, 1])
-        #         df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
-        #         if df.shape[0] > 0:
-        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-        #             fn_show_mops(df_mops, df)
-        #         else:
-        #             cols[1].write('')
-        #             cols[1].markdown('# 🙅‍♂️')
-        #
-        #     with tab3:
-        #         cols = st.columns([1, 2, 1])
-        #         df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
-        #         if df.shape[0] > 0:
-        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-        #             fn_show_mops(df_mops, df)
-        #         else:
-        #             cols[1].write('')
-        #             cols[1].markdown('# 🙅‍♂️')
 
 
 def fn_st_stock_all(df_all):
@@ -897,15 +859,6 @@ def fn_st_stock_all(df_all):
     dic_sel['pick'] = [c for c in list(df_all[df_all['篩選'] == 1]['名稱'].unique()) if c != '']
 
     return df_all
-
-    # fn_st_chart_bar(df_all)
-    #
-    # cols = [c for c in df_all.columns if '策略_' not in c]
-    # df_all = df_all[cols]
-    # df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
-    # fn_st_add_space(3)
-    # st.markdown(f'#### 📡 {df_all["代碼"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
-    # st.dataframe(df_all_show, width=None, height=500)
 
 
 def fn_st_reference():
