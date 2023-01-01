@@ -20,6 +20,7 @@ dic_url = {
     'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
     'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
     'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
+    'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
 }
 
 dic_sel = {
@@ -576,6 +577,18 @@ def fn_stock_filter(df, stra, col, fr=''):
     return df_f, flts
 
 
+def fn_basic_rule(sid, df_mops):
+
+    df_sm = df_mops[df_mops['公司代號'] == sid]
+    ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
+
+    basic = '❌' if ROE[-1] < ROE[-2] else '⭕'
+    basic = '❌' if min(ROE) < 8 else basic
+    basic = '✔️' if basic == '⭕' and ROE[-1] > 15 else basic
+
+    return basic
+
+
 def fn_stock_basic(df, df_mops, y, col):
     txt = f'''
            #### 🎯 [基本面指標](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69): ❌ ⭕ ✔️
@@ -590,12 +603,14 @@ def fn_stock_basic(df, df_mops, y, col):
 
     for idx in df.index:
         sid = df.loc[idx, '代碼']
-        df_sm = df_mops[df_mops['公司代號'] == sid]
-        ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
+        basic = fn_basic_rule(sid, df_mops)
 
-        basic = '❌' if ROE[-1] < ROE[-2] else '⭕'
-        basic = '❌' if min(ROE) < 8 else basic
-        basic = '✔️' if basic == '⭕' and ROE[-1] > 15 else basic
+        # df_sm = df_mops[df_mops['公司代號'] == sid]
+        # ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
+        #
+        # basic = '❌' if ROE[-1] < ROE[-2] else '⭕'
+        # basic = '❌' if min(ROE) < 8 else basic
+        # basic = '✔️' if basic == '⭕' and ROE[-1] > 15 else basic
 
         df.at[idx, 'basic'] = f'基本面: {basic}'
 
@@ -714,6 +729,7 @@ def fn_pick_stock(df, df_mops):
         cols = st.columns(col_width)
         df, y = fn_stock_filter(df_sids, '營收', cols[0], fr='pick')
         if df.shape[0] > 0:
+            cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
 
@@ -758,10 +774,20 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
     cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
-    cols[0].markdown(f'基本面: {df_sid["basic"].values[0].split(":")[-1]}')
+    # cols[0].markdown(f'基本面: {df_sid["basic"].values[0].split(":")[-1]}')
+    # cols[0].markdown(f'專業評比: {df_sid["basic"].values[0].split(":")[-1]}')
 
     sid = sid_name.split(sep)[0]
+    url_WantRich = rf'{dic_url["WantRich"]}{sid}'
+    url_FB = rf'{dic_url["FindBillion"]}{sid}'
+    url_PC = rf'{dic_url["PChome"]}{sid}.html'
     df_mop = fn_get_mops(df_mops, sid)
+    basic = fn_basic_rule(sid, df_mops)
+    cols[0].markdown(f'基本面: {basic}')
+
+    cols[0].markdown(f'專業評比: [旺得富]({url_WantRich}), [FindBillion]({url_FB}), [PChome]({url_PC})')
+
+
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
