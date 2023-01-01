@@ -552,10 +552,10 @@ def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_p
         fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text)
 
 
-def fn_stock_filter(df, stra, col):
+def fn_stock_filter(df, stra, col, fr=''):
     for _ in range(1):
         col.write('')
-    with col.form(key=f'Form2_{stra}'):
+    with col.form(key=f'Form2_{stra}_{fr}'):
         win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.0, step=0.5)
         margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=2.0, step=0.5)
         corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
@@ -636,12 +636,15 @@ def fn_show_mops(df_mops, df):
                                   '現金流量-現金流量比率(%)']])
 
 
-def fn_st_chart_bar(df):
+def fn_add_digit(x):
+    for i in range(3 - len(str(x))):
+        x = '0' + str(x)
+    return str(x)
+
+
+def fn_get_sids(df):
     df_pick = fn_pick_date(df, '代碼', '日期')
     df_pick['日期'] = pd.to_datetime(df_pick['日期'])
-
-    # st.write(df_pick['股價'])
-
     df_pick['股價'] = df_pick['股價'].astype(float)
 
     for c in df_pick.columns:
@@ -675,18 +678,73 @@ def fn_st_chart_bar(df):
 
     df_sids = pd.DataFrame(dic_sid)
 
-    st.markdown(f'#### 📊 {df_sids.shape[0]} 檔個股的 績效 v.s. 策略指標')
-
     # ==========
 
     for c in [c for c in df_sids.columns if '相關性' in c]:
         df_sids[c] = df_sids[c].apply(lambda x: 0 if x == '' else float(x) * 10)
+
+    return df_sids
+
+
+def fn_pick_stock(df, df_mops):
+    df_sids = fn_get_sids(df)
+
+    # df_sids['index'] = df_sids['index'].apply(fn_add_digit)
+    # df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
+    df_sids['策略選股'] = df_sids['名稱'] + ' ' + df_sids['代碼']
+    df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
+
+    # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+
+    tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
+    margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
+    col_width = [0.8, 1.6, 0.8]
+    with tab1:
+        cols = st.columns(col_width)
+        df, y = fn_stock_filter(df_sids, '營收', cols[0], fr='pick')
+        if df.shape[0] > 0:
+            df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+
+            fn_show_mops(df_mops, df)
+        else:
+            cols[1].write('')
+            cols[1].markdown('# 🙅‍♂️')
+
+    with tab2:
+        cols = st.columns(col_width)
+        df, y = fn_stock_filter(df_sids, 'EPS', cols[0], fr='pick')
+        if df.shape[0] > 0:
+            df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_mops(df_mops, df)
+        else:
+            cols[1].write('')
+            cols[1].markdown('# 🙅‍♂️')
+
+    with tab3:
+        cols = st.columns(col_width)
+        df, y = fn_stock_filter(df_sids, '殖利率', cols[0], fr='pick')
+        if df.shape[0] > 0:
+            df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_mops(df_mops, df)
+        else:
+            cols[1].write('')
+            cols[1].markdown('# 🙅‍♂️')
+
+
+def fn_st_chart_bar(df):
+
+    df_sids = fn_get_sids(df)
 
     for s in ['kpi', 'order', 'order_typ', 'bar']:
         if s not in st.session_state.keys():
             st.session_state[s] = []
 
     # ==========
+
+    st.markdown(f'#### 📊 {df_sids.shape[0]} 檔個股的 績效 v.s. 策略指標')
 
     cs = st.columns([3, 1, 1, 1])
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
@@ -708,11 +766,6 @@ def fn_st_chart_bar(df):
         df_sids.sort_values(by=[st.session_state['order']], inplace=True, ascending=ascending, ignore_index=True)
         df_sids.reset_index(inplace=True)
 
-        def fn_add_digit(x):
-            for i in range(3 - len(str(x))):
-                x = '0' + str(x)
-            return str(x)
-
         df_sids['index'] = df_sids['index'].apply(fn_add_digit)
         df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
@@ -724,10 +777,14 @@ def fn_st_chart_bar(df):
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
-        df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+        # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
 
-        tab_d, tab_f, tab_p5, tab_p, tab_n, tab_e = st.tabs(
-            [f'指標分布{watch}', '策略選股 🔍', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+        # tab_d, tab_f, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+        #     [f'指標分布{watch}', '策略選股 🔍', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+        #      f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+
+        tab_d, tab_p5, tab_p, tab_n, tab_e = st.tabs(
+            [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
              f'負報酬( < -1% ): {df_n.shape[0]}檔', f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
@@ -746,43 +803,43 @@ def fn_st_chart_bar(df):
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
 
-        with tab_f:
-            tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
-            margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
-            with tab1:
-                cols = st.columns([0.8, 1.6, 0.8])
-                df, y = fn_stock_filter(df_sids, '營收', cols[0])
-                if df.shape[0] > 0:
-                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-                    # fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
-
-                    fn_show_mops(df_mops, df)
-                else:
-                    cols[1].write('')
-                    cols[1].markdown('# 🙅‍♂️')
-
-            with tab2:
-                cols = st.columns([1, 2, 1])
-                df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
-                if df.shape[0] > 0:
-                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-                    fn_show_mops(df_mops, df)
-                else:
-                    cols[1].write('')
-                    cols[1].markdown('# 🙅‍♂️')
-
-            with tab3:
-                cols = st.columns([1, 2, 1])
-                df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
-                if df.shape[0] > 0:
-                    df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-                    fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
-                    fn_show_mops(df_mops, df)
-                else:
-                    cols[1].write('')
-                    cols[1].markdown('# 🙅‍♂️')
+        # with tab_f:
+        #     tab1, tab2, tab3 = st.tabs(['依營收', '依EPS', '依殖利率'])
+        #     margin = {'t': 15, 'b': 110, 'l': 0, 'r': 0}
+        #     with tab1:
+        #         cols = st.columns([0.8, 1.6, 0.8])
+        #         df, y = fn_stock_filter(df_sids, '營收', cols[0])
+        #         if df.shape[0] > 0:
+        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
+        #             # fn_show_bar(df, y=y, v_h=v_h, col=cols[2], margin=margin, showtick_y=False)
+        #
+        #             fn_show_mops(df_mops, df)
+        #         else:
+        #             cols[1].write('')
+        #             cols[1].markdown('# 🙅‍♂️')
+        #
+        #     with tab2:
+        #         cols = st.columns([1, 2, 1])
+        #         df, y = fn_stock_filter(df_sids, 'EPS', cols[0])
+        #         if df.shape[0] > 0:
+        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
+        #             fn_show_mops(df_mops, df)
+        #         else:
+        #             cols[1].write('')
+        #             cols[1].markdown('# 🙅‍♂️')
+        #
+        #     with tab3:
+        #         cols = st.columns([1, 2, 1])
+        #         df, y = fn_stock_filter(df_sids, '殖利率', cols[0])
+        #         if df.shape[0] > 0:
+        #             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
+        #             fn_show_bar(df, y=y, text='basic', v_h=v_h, col=cols[1], margin=margin)
+        #             fn_show_mops(df_mops, df)
+        #         else:
+        #             cols[1].write('')
+        #             cols[1].markdown('# 🙅‍♂️')
 
 
 def fn_st_stock_all(df_all):
@@ -839,16 +896,16 @@ def fn_st_stock_all(df_all):
     df_all['名稱'] = df_all.apply(lambda x: fn_rename(x['名稱'], x['代碼']), axis=1)
     dic_sel['pick'] = [c for c in list(df_all[df_all['篩選'] == 1]['名稱'].unique()) if c != '']
 
-    fn_st_chart_bar(df_all)
+    return df_all
 
-    cols = [c for c in df_all.columns if '策略_' not in c]
-    df_all = df_all[cols]
-
-    df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
-
-    fn_st_add_space(3)
-    st.markdown(f'#### 📡 {df_all["代碼"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
-    st.dataframe(df_all_show, width=None, height=500)
+    # fn_st_chart_bar(df_all)
+    #
+    # cols = [c for c in df_all.columns if '策略_' not in c]
+    # df_all = df_all[cols]
+    # df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
+    # fn_st_add_space(3)
+    # st.markdown(f'#### 📡 {df_all["代碼"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
+    # st.dataframe(df_all_show, width=None, height=500)
 
 
 def fn_st_reference():
@@ -866,6 +923,15 @@ def fn_st_reference():
         cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
 
         cols[-1].form_submit_button('')
+
+
+def fn_show_raw(df_all):
+    cols = [c for c in df_all.columns if '策略_' not in c]
+    df_all = df_all[cols]
+    df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
+    fn_st_add_space(3)
+    st.markdown(f'#### 📡 {df_all["代碼"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
+    st.dataframe(df_all_show, width=None, height=500)
 
 
 def fn_st_stock_main():
@@ -890,10 +956,16 @@ def fn_st_stock_main():
 
     st.title(f'👨‍💻 傑克潘的爬蟲練習')
 
-    tab_sel, tab_watch, tab_ref = st.tabs(['策略選股', '觀察驗證', '參考資料'])
+    df = fn_st_stock_all(df_all)
+    df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
 
-    with tab_sel:
-        fn_st_stock_all(df_all)
+    with tab_index:
+        fn_st_chart_bar(df)
+        # fn_show_raw(df)
+
+    with tab_pick:
+        fn_pick_stock(df, df_mops)
 
     with tab_watch:
         fn_st_stock_sel(df_all)
