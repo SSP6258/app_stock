@@ -954,7 +954,7 @@ def fn_st_stock_main():
             df_all.at[idx, '產業別'] = field
             df_all.at[idx, '市場別'] = market
 
-    st.title(f'👨‍💻 傑克潘的爬蟲練習')
+    st.title(f'👨‍💻 [傑克潘](https://www.facebook.com/jack.pan.96)的爬蟲練習')
 
     df = fn_st_stock_all(df_all)
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
