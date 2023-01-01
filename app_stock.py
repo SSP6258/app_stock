@@ -227,7 +227,7 @@ def fn_get_stock_price(sid, days=30):
     return df_sid
 
 
-def fn_get_stock_price_plt(df, days_ago=None, watch=None):
+def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     fig.add_trace(go.Candlestick(x=df.index,
                                  open=df['Open'],
@@ -246,7 +246,7 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None):
 
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
-    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=120, showlegend=False)
+    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=False)
 
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
@@ -602,6 +602,14 @@ def fn_stock_basic(df, df_mops, y, col):
     return df, y
 
 
+def fn_get_mops(df_mops, sid):
+    df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)].reset_index(drop=True)
+    df_mops_sid = df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
+                 '現金流量-現金流量比率(%)']]
+
+    return df_mops_sid
+
+
 def fn_show_mops(df_mops, df):
     # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
     # '''
@@ -631,10 +639,12 @@ def fn_show_mops(df_mops, df):
     # 現金流量-現金再投<br>資比率(%),
     # '''
     for sid in df['代碼'].values:
-        df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
-        if df_mops_sid.shape[0] > 0:
-            st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
-                                  '現金流量-現金流量比率(%)']])
+        df_mops_sid = fn_get_mops(df_mops, sid)
+        st.write(df_mops_sid)
+        # df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
+        # if df_mops_sid.shape[0] > 0:
+        #     st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
+        #                           '現金流量-現金流量比率(%)']])
 
 
 def fn_add_digit(x):
@@ -707,7 +717,8 @@ def fn_pick_stock(df, df_mops):
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
 
-            fn_show_mops(df_mops, df)
+            fn_show_hist_price(df, df_mops, key='income')
+            # fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -718,6 +729,7 @@ def fn_pick_stock(df, df_mops):
         if df.shape[0] > 0:
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_hist_price(df, df_mops, key='eps')
             fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
@@ -729,10 +741,34 @@ def fn_pick_stock(df, df_mops):
         if df.shape[0] > 0:
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_hist_price(df, df_mops, key='cash')
             fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
+
+
+def fn_show_hist_price(df, df_mops, key='hist_price'):
+    # st.write(df)
+    sep = ' '
+    df['sid_name'] = df['代碼'] + sep + df['名稱']
+    cols = st.columns([2, 8])
+    sid_name = cols[0].selectbox('個股資料:', options=df['sid_name'], index=0, key=key)
+    df_sid = df[df["sid_name"] == sid_name]
+
+    cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
+    cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
+    cols[0].markdown(f'基本面: {df_sid["basic"].values[0].split(":")[-1]}')
+
+    sid = sid_name.split(sep)[0]
+    df_mop = fn_get_mops(df_mops, sid)
+    df_sid = fn_get_stock_price(sid, days=300)
+    if df_sid.shape[0] > 0:
+        fig = fn_get_stock_price_plt(df_sid, height=200)
+        cols[1].plotly_chart(fig, use_container_width=True)
+        cols[1].write(df_mop)
+
+
 
 
 def fn_st_chart_bar(df):
