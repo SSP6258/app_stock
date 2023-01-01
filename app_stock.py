@@ -732,9 +732,7 @@ def fn_pick_stock(df, df_mops):
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
-
             fn_show_hist_price(df, df_mops, key='income')
-            # fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -746,7 +744,6 @@ def fn_pick_stock(df, df_mops):
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
             fn_show_hist_price(df, df_mops, key='eps')
-            fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -758,7 +755,6 @@ def fn_pick_stock(df, df_mops):
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
             fn_show_hist_price(df, df_mops, key='cash')
-            fn_show_mops(df_mops, df)
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -784,15 +780,13 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_mop = fn_get_mops(df_mops, sid)
     basic = fn_basic_rule(sid, df_mops)
     cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [旺得富]({url_WantRich}), [FindBillion]({url_FB}), [PChome]({url_PC})')
+    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[FindBillion]({url_FB})、[PChome]({url_PC})')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
         cols[1].write(df_mop)
-
-
 
 
 def fn_st_chart_bar(df):
