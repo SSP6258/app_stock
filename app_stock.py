@@ -765,13 +765,14 @@ def fn_pick_stock(df, df_mops):
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
-    cols = st.columns([2, 8])
+    cols = st.columns([1, 3])
 
     with cols[0].form(key=f'form_{key}'):
 
         sid_name = st.selectbox('個股資料:', options=df['sid_name'], index=0, key=key)
         df_sid = df[df["sid_name"] == sid_name]
 
+        fn_st_add_space(1)
         st.markdown(f'市場別: {df_sid["市場別"].values[0]}')
         st.markdown(f'產業別: {df_sid["產業別"].values[0]}')
 
@@ -783,11 +784,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         df_mop = fn_get_mops(df_mops, sid)
         basic = fn_basic_rule(sid, df_mops)
         st.markdown(f'基本面: {basic}')
-        st.markdown(f'專業的: [旺得富]({url_WantRich})、')
+        st.markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
         mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
-        st.markdown(f'{mkd_space}[CMoney]({url_CMoney})、')
-        st.markdown(f'{mkd_space}[PChome]({url_PC})、')
+        # st.markdown(f'{mkd_space}[CMoney]({url_CMoney})、')
+        # st.markdown(f'{mkd_space}[PChome]({url_PC})、')
         st.markdown(f'{mkd_space}[FindBillion]({url_FB})')
+        fn_st_add_space(4)
         st.form_submit_button('')
 
     df_sid = fn_get_stock_price(sid, days=300)
