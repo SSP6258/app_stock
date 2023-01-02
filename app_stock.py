@@ -246,11 +246,6 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
                          ),
                   secondary_y=False)
 
-    # fig.update_xaxes(
-    #     rangebreaks=[
-    #         dict(bounds=["sat", "mon"])  # hide weekends
-    #     ]
-    # )
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=False)
