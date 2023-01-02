@@ -21,6 +21,7 @@ dic_url = {
     'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
     'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
     'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
+    'Wantgoo': r'https://www.wantgoo.com/stock/',
 }
 
 dic_sel = {
@@ -776,12 +777,13 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         url_FB = rf'{dic_url["FindBillion"]}{sid}'
         url_PC = rf'{dic_url["PChome"]}{sid}.html'
         url_CMoney = rf'{dic_url["CMoney"]}{sid}'
+        url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
         df_mop = fn_get_mops(df_mops, sid)
         basic = fn_basic_rule(sid, df_mops)
         st.markdown(f'基本面: {basic}')
         st.markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
         mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
-        st.markdown(f'{mkd_space}[FindBillion]({url_FB})')
+        st.markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})')
         fn_st_add_space(4)
         st.form_submit_button('')
 
