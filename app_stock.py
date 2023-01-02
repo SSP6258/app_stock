@@ -765,27 +765,32 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     with cols[0].form(key=f'form_{key}'):
 
-        sid_name = st.selectbox('個股資料:', options=df['sid_name'], index=0, key=key)
+        sid_name = st.selectbox('觀察個股:', options=df['sid_name'], index=0, key=key)
         df_sid = df[df["sid_name"] == sid_name]
 
-        fn_st_add_space(1)
-        st.markdown(f'市場別: {df_sid["市場別"].values[0]}')
-        st.markdown(f'產業別: {df_sid["產業別"].values[0]}')
+        fn_st_add_space(2)
+        st.form_submit_button('選擇')
 
-        sid = sid_name.split(sep)[0]
-        url_WantRich = rf'{dic_url["WantRich"]}{sid}'
-        url_FB = rf'{dic_url["FindBillion"]}{sid}'
-        url_PC = rf'{dic_url["PChome"]}{sid}.html'
-        url_CMoney = rf'{dic_url["CMoney"]}{sid}'
-        url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
-        df_mop = fn_get_mops(df_mops, sid)
-        basic = fn_basic_rule(sid, df_mops)
-        st.markdown(f'基本面: {basic}')
-        st.markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
-        mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
-        st.markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})')
-        fn_st_add_space(4)
-        st.form_submit_button('')
+    sid = sid_name.split(sep)[0]
+    url_WantRich = rf'{dic_url["WantRich"]}{sid}'
+    url_FB = rf'{dic_url["FindBillion"]}{sid}'
+    url_PC = rf'{dic_url["PChome"]}{sid}.html'
+    url_CMoney = rf'{dic_url["CMoney"]}{sid}'
+    url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
+
+    df_mop = fn_get_mops(df_mops, sid)
+    basic = fn_basic_rule(sid, df_mops)
+
+    mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
+    for _ in range(1):
+        cols[0].write('')
+
+    cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
+    cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
+    cols[0].markdown(f'基本面: {basic}')
+    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
+    cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})')
+
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
