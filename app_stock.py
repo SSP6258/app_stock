@@ -16,7 +16,7 @@ from workalendar.asia import Taiwan
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
     'Yahoo': 'https://tw.stock.yahoo.com/quote/',
-    'Cmoney': 'https://www.cmoney.tw/forum/stock/',
+    'CMoney': 'https://www.cmoney.tw/forum/stock/',
     'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
     'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
     'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
@@ -777,10 +777,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     url_WantRich = rf'{dic_url["WantRich"]}{sid}'
     url_FB = rf'{dic_url["FindBillion"]}{sid}'
     url_PC = rf'{dic_url["PChome"]}{sid}.html'
+    url_CMoney = rf'{dic_url["CMoney"]}{sid}'
     df_mop = fn_get_mops(df_mops, sid)
     basic = fn_basic_rule(sid, df_mops)
     cols[0].markdown(f'基本面: {basic}')
     cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[FindBillion]({url_FB})、[PChome]({url_PC})')
+    cols[0].markdown(f'{3*"&emsp;"}{2*"&nbsp;"}[CMoney]({url_CMoney})')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
