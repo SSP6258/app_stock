@@ -781,8 +781,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_mop = fn_get_mops(df_mops, sid)
     basic = fn_basic_rule(sid, df_mops)
     cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[FindBillion]({url_FB})、[PChome]({url_PC})')
-    cols[0].markdown(f'{3*"&emsp;"}{2*"&nbsp;"}[CMoney]({url_CMoney})')
+    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})')
+    cols[0].markdown(f'{3*"&emsp;"}{2*"&nbsp;"}[FindBillion]({url_FB})、')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
@@ -919,6 +919,7 @@ def fn_st_stock_all(df_all):
 
 
 def fn_st_reference():
+    fn_st_add_space(1)
     with st.form(key='ref'):
         st.markdown('### 📚 參考資料:')
         cols = st.columns([1, 2, 1, 1, 1])
