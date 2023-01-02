@@ -763,34 +763,40 @@ def fn_pick_stock(df, df_mops):
 
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
-    # st.write(df)
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
     cols = st.columns([2, 8])
-    sid_name = cols[0].selectbox('個股資料:', options=df['sid_name'], index=0, key=key)
-    df_sid = df[df["sid_name"] == sid_name]
 
-    cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
-    cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
-    # cols[0].markdown(f'基本面: {df_sid["basic"].values[0].split(":")[-1]}')
-    # cols[0].markdown(f'專業評比: {df_sid["basic"].values[0].split(":")[-1]}')
+    with cols[0].form(key=f'form_{key}'):
 
-    sid = sid_name.split(sep)[0]
-    url_WantRich = rf'{dic_url["WantRich"]}{sid}'
-    url_FB = rf'{dic_url["FindBillion"]}{sid}'
-    url_PC = rf'{dic_url["PChome"]}{sid}.html'
-    url_CMoney = rf'{dic_url["CMoney"]}{sid}'
-    df_mop = fn_get_mops(df_mops, sid)
-    basic = fn_basic_rule(sid, df_mops)
-    cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})')
-    cols[0].markdown(f'{3*"&emsp;"}{2*"&nbsp;"}[FindBillion]({url_FB})、')
+        sid_name = st.selectbox('個股資料:', options=df['sid_name'], index=0, key=key)
+        df_sid = df[df["sid_name"] == sid_name]
+
+        st.markdown(f'市場別: {df_sid["市場別"].values[0]}')
+        st.markdown(f'產業別: {df_sid["產業別"].values[0]}')
+
+        sid = sid_name.split(sep)[0]
+        url_WantRich = rf'{dic_url["WantRich"]}{sid}'
+        url_FB = rf'{dic_url["FindBillion"]}{sid}'
+        url_PC = rf'{dic_url["PChome"]}{sid}.html'
+        url_CMoney = rf'{dic_url["CMoney"]}{sid}'
+        df_mop = fn_get_mops(df_mops, sid)
+        basic = fn_basic_rule(sid, df_mops)
+        st.markdown(f'基本面: {basic}')
+        st.markdown(f'專業的: [旺得富]({url_WantRich})、')
+        mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
+        st.markdown(f'{mkd_space}[CMoney]({url_CMoney})、')
+        st.markdown(f'{mkd_space}[PChome]({url_PC})、')
+        st.markdown(f'{mkd_space}[FindBillion]({url_FB})')
+        st.form_submit_button('')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
         cols[1].write(df_mop)
+
+
 
 
 def fn_st_chart_bar(df):
