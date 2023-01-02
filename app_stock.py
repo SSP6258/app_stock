@@ -230,6 +230,7 @@ def fn_get_stock_price(sid, days=30):
 
 def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
+    # st.write(df)
     fig.add_trace(go.Candlestick(x=df.index,
                                  open=df['Open'],
                                  high=df['High'],
@@ -245,11 +246,17 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
                          ),
                   secondary_y=False)
 
+    # fig.update_xaxes(
+    #     rangebreaks=[
+    #         dict(bounds=["sat", "mon"])  # hide weekends
+    #     ]
+    # )
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=False)
 
-    fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
+    fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
+                     spikedash = 'solid', rangebreaks=[dict(bounds=["sat", "mon"])])
     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
 
     # if days_ago is not None:
