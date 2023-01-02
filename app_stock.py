@@ -620,16 +620,6 @@ def fn_stock_basic(df, df_mops, y, col):
 
 
 def fn_get_mops(df_mops, sid):
-    df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)].reset_index(drop=True)
-    df_mops_sid = df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
-                 '現金流量-現金流量比率(%)']]
-
-    return df_mops_sid
-
-
-def fn_show_mops(df_mops, df):
-    # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
-    # '''
     # 公司代號, 公司簡稱, year, market,
     #
     # 財務結構-負債佔資產比率(%),
@@ -654,14 +644,19 @@ def fn_show_mops(df_mops, df):
     # 現金流量-現金流量比率(%),
     # 現金流量-現金流量允當比率(%),
     # 現金流量-現金再投<br>資比率(%),
-    # '''
+
+    df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)].reset_index(drop=True)
+    df_mops_sid = df_mops_sid[['公司代號', '公司簡稱', 'market', 'year',
+                               '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)',
+                               '財務結構-負債佔資產比率(%)', '現金流量-現金流量比率(%)']]
+
+    return df_mops_sid
+
+
+def fn_show_mops(df_mops, df):
     for sid in df['代碼'].values:
         df_mops_sid = fn_get_mops(df_mops, sid)
         st.write(df_mops_sid)
-        # df_mops_sid = df_mops[df_mops['公司代號'] == str(sid)]
-        # if df_mops_sid.shape[0] > 0:
-        #     st.write(df_mops_sid[['公司代號', '公司簡稱', 'market', 'year', '獲利能力-資產報酬率(%)', '獲利能力-權益報酬率(%)', '財務結構-負債佔資產比率(%)',
-        #                           '現金流量-現金流量比率(%)']])
 
 
 def fn_add_digit(x):
@@ -786,8 +781,6 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         st.markdown(f'基本面: {basic}')
         st.markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
         mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
-        # st.markdown(f'{mkd_space}[CMoney]({url_CMoney})、')
-        # st.markdown(f'{mkd_space}[PChome]({url_PC})、')
         st.markdown(f'{mkd_space}[FindBillion]({url_FB})')
         fn_st_add_space(4)
         st.form_submit_button('')
@@ -796,9 +789,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
+        cols[1].markdown(f'[公開資訊觀測站 -> 彙總報表 -> 營運概況 -> 財務比率分析 -> 採IFRSs後 -> 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新)')
         cols[1].write(df_mop)
-
-
+        cols[1].markdown(
+            f'[公開資訊觀測站 -> 彙總報表 -> 營運概況 -> 財務比率分析 -> 採IFRSs後 -> 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
 
 
 def fn_st_chart_bar(df):
