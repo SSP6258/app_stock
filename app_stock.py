@@ -798,10 +798,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
-        cols[1].markdown(f'[公開資訊觀測站 -> 彙總報表 -> 營運概況 -> 財務比率分析 -> 採IFRSs後 -> 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+        cols[1].markdown(f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
         cols[1].write(df_mop)
         cols[1].markdown(
-            f'[公開資訊觀測站 -> 彙總報表 -> 營運概況 -> 財務比率分析 -> 採IFRSs後 -> 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+            f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
 
 
 def fn_st_chart_bar(df):
