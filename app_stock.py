@@ -561,8 +561,9 @@ def fn_stock_filter(df, stra, col, fr=''):
     for _ in range(1):
         col.write('')
     with col.form(key=f'Form2_{stra}_{fr}'):
-        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.0, step=0.5)
-        margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=2.0, step=0.5)
+        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
+        v = 2.0 if '營收' in stra else -1.0
+        margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=v, step=0.5)
         corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
         win_diff = st.slider(f'{stra} 勝率變化 大於', min_value=-1.0, max_value=10.0, value=-1.0, step=0.5)
         fn_st_add_space(3)
@@ -739,6 +740,7 @@ def fn_pick_stock(df, df_mops):
         cols = st.columns(col_width)
         df, y = fn_stock_filter(df_sids, 'EPS', cols[0], fr='pick')
         if df.shape[0] > 0:
+            cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
             fn_show_hist_price(df, df_mops, key='eps')
@@ -750,6 +752,7 @@ def fn_pick_stock(df, df_mops):
         cols = st.columns(col_width)
         df, y = fn_stock_filter(df_sids, '殖利率', cols[0], fr='pick')
         if df.shape[0] > 0:
+            cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
             fn_show_hist_price(df, df_mops, key='cash')
@@ -790,7 +793,6 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'基本面: {basic}')
     cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
     cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})')
-
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
@@ -976,7 +978,14 @@ def fn_st_stock_main():
             df_all.at[idx, '產業別'] = field
             df_all.at[idx, '市場別'] = market
 
-    st.title(f'👨‍💻 [傑克潘](https://www.facebook.com/jack.pan.96)的爬蟲練習')
+    cols = st.columns(3)
+
+    url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
+    url = r'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD77cetO5GgS7c2YGH7ai5ocF_ZGMC64Wdqg&usqp=CAU'
+
+    img = fn_show_img(url)
+    cols[1].image(img)
+    cols[0].title(f'👨‍💻 [傑克潘](https://www.facebook.com/jack.pan.96) 的 _[B計畫](https://www.gvm.com.tw/article/55654)_')
 
     df = fn_st_stock_all(df_all)
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)

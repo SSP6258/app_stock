@@ -1,6 +1,13 @@
 # import plotly.graph_objs as go
 import plotly.express as px
 import plotly.graph_objects as go
+import os
+from PIL import Image
+
+
+def fn_show_img(IMG_file):
+    img = IMG_file if IMG_file.endswith('.gif') or IMG_file.startswith('http') else Image.open(IMG_file)
+    return img
 
 
 def fn_gen_plotly_bar(df, x_col, y_col,
