@@ -986,7 +986,7 @@ def fn_st_stock_main():
 
     img = fn_show_img(url)
     cols[1].image(img)
-    cols[0].title(f'👨‍💻 [傑克潘](https://www.facebook.com/jack.pan.96) 的 _[B計劃](https://www.gvm.com.tw/article/55654)_')
+    cols[0].title(r'🐰 [$傑克潘$](https://www.facebook.com/jack.pan.96) $的$ :red[${\bf B}$] $計劃$ ')
 
     df = fn_st_stock_all(df_all)
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
