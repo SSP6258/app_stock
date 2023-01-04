@@ -820,7 +820,7 @@ def fn_st_chart_bar(df):
     cs = st.columns([3, 1, 1, 1])
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
-        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差_new'],
+        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'],
                                                  key='kpixxx')
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
