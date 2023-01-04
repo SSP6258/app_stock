@@ -985,10 +985,10 @@ def fn_st_stock_main():
     url = r'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD77cetO5GgS7c2YGH7ai5ocF_ZGMC64Wdqg&usqp=CAU'
 
     img = fn_show_img(url)
-
-    cols[0].title(r'🐰 [$傑克潘$](https://www.facebook.com/jack.pan.96) $的$ :red[${\bf B}$] $計劃$ ')
+    # 👨‍💻  🐰
+    cols[0].title(r'👨‍💻 [$傑克潘$](https://www.facebook.com/jack.pan.96) $的$ :red[${\bf B}$] $計劃$ ')
     cols[1].image(img)
-    cols[2].title('🥕 🥕 🥕')
+    cols[2].title(' 🥕 🐇')
 
     df = fn_st_stock_all(df_all)
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
