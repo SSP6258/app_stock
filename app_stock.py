@@ -812,7 +812,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
     cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
     cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
+    cols[0].markdown(f'專業的: [$旺得富$]({url_WantRich})、[$CMoney$]({url_CMoney})、[$PChome$]({url_PC})、')
     cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})、[鉅亨網]({url_Cnyes})、')
     cols[0].markdown(f'{mkd_space}[財報狗]({url_dog})、')
 
