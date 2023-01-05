@@ -324,7 +324,7 @@ def fn_st_stock_sel(df_all):
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
         dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
-        dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=200)
+        dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=300)
         dic_cfg["sel_lead"] = sels[3].radio('產業領先指標', ('中等', '佳', '極佳'), index=1, horizontal=True)
 
         # fn_st_add_space(1)
