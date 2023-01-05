@@ -170,10 +170,24 @@ def fn_stock_sel(df_all):
             if '勝率' in c:
                 v = df_all.loc[idx, c]
                 corr = df_all.loc[idx, '相關性_' + c.split('_')[-1]].split(' ')[-1]
+                lead = df_all.loc[idx, '產業領先指標']
                 if v != '' and corr != '':
                     if int(v) >= dic_cfg["sel_rat"] and float(corr) > dic_cfg["sel_corr"]:
-                        df_all.at[idx, "篩選"] = 1
-                        break
+                        if dic_cfg["sel_lead"] == '極佳':
+                            if lead == '極佳':
+                                df_all.at[idx, "篩選"] = 1
+                                break
+                        elif dic_cfg["sel_lead"] == '佳':
+                            if lead == '佳' or lead == '極佳':
+                                df_all.at[idx, "篩選"] = 1
+                                break
+                        elif dic_cfg["sel_lead"] == '中等':
+                            if lead == '佳' or lead == '極佳' or lead == '中等':
+                                df_all.at[idx, "篩選"] = 1
+                                break
+                        else:
+                            df_all.at[idx, "篩選"] = 1
+                            break
                     elif int(v) >= dic_cfg["sel_rat_h"]:
                         df_all.at[idx, "篩選"] = 1
                         break
@@ -306,11 +320,12 @@ def fn_st_stock_sel(df_all):
     # c1, c2 = st.columns([2.5, 1])
     with st.form(key='sel'):
         st.markdown(f'#### 🎚️ 篩選條件設定:')
-        sels = st.columns([1, 1, 2])
+        sels = st.columns([1, 1, 1, 1])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
         dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
         dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=200)
+        dic_cfg["sel_lead"] = sels[3].radio('產業領先指標', ('中等', '佳', '極佳'), index=1, horizontal=True)
 
         # fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
