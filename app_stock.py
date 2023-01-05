@@ -297,7 +297,7 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
             p_fr = df[df.index == fr]["Close"].values[0]
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
-            op = 0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5
+            op = 0.4 # min(0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5, 0.9)
             fig.add_vrect(x0=fr, x1=to,
                           fillcolor=color, opacity=op, line_width=0)
 
