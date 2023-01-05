@@ -23,6 +23,7 @@ dic_url = {
     'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
     'Wantgoo': r'https://www.wantgoo.com/stock/',
     'Cnyes': r'https://invest.cnyes.com/twstock/tws/',
+    'dog': r'https://statementdog.com/analysis/',
 }
 
 dic_sel = {
@@ -799,6 +800,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     url_CMoney = rf'{dic_url["CMoney"]}{sid}'
     url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
+    url_dog = rf'{dic_url["dog"]}{sid}'
 
     df_mop = fn_get_mops(df_mops, sid)
     basic = fn_basic_rule(sid, df_mops)
@@ -812,6 +814,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'基本面: {basic}')
     cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
     cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})、[鉅亨網]({url_Cnyes})')
+    cols[0].markdown(f'{mkd_space}[財報狗]({url_dog})、')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
