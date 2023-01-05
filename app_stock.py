@@ -266,7 +266,7 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=False)
 
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
-                     spikedash = 'solid', rangebreaks=[dict(bounds=["sat", "mon"])])
+                     spikedash='solid', rangebreaks=[dict(bounds=["sat", "mon"])])
     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
 
     # if days_ago is not None:
@@ -320,6 +320,7 @@ def fn_st_stock_sel(df_all):
     # c1, c2 = st.columns([2.5, 1])
     with st.form(key='sel'):
         st.markdown(f'#### 🎚️ 篩選條件設定:')
+        fn_st_add_space(1)
         sels = st.columns([1, 1, 1, 1])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
