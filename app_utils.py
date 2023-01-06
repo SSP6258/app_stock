@@ -22,7 +22,6 @@ def fn_gen_plotly_bar(df, x_col, y_col,
     fig.update_traces(textfont_size=14, textposition='inside')
     fig.for_each_trace(lambda t: t.update(text=[]) if '勝率_new' not in t.name else ())
 
-
     fig.update_layout(margin=margin,
                       xaxis_title='',
                       yaxis_title='',
