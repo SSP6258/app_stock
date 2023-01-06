@@ -8,6 +8,7 @@ from web_utils import *
 from twstock import Stock
 
 dic_cfg = {
+    'slp': 1,
     'get_txt_slp': 1,
     'is_force': True,
     'batch_size': 5,
@@ -22,6 +23,7 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
+    'mops_fin_path': 'mops_fin_0106',
 }
 
 dic_fb_main = {
@@ -89,6 +91,36 @@ dic_wantrich_main = {
     'tech': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
              '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[3]/div[1]/div[2]'],
 
+}
+
+
+dic_mops_fin_roe = {
+    'page': 'MOPS_FIN_ROE',
+    'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
+    'btn_ROE':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[5]/a'],
+    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+}
+
+dic_mops_fin_roa = {
+    'page': 'MOPS_FIN_ROA',
+    'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
+    'btn_ROA':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[4]/a'],
+    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+}
+
+dic_mops_fin = {
+    'ROE': dic_mops_fin_roe,
+    'ROA': dic_mops_fin_roa,
+}
+
+
+dic_fin = {
+    '權益報酬率': 'ROE',
+    '資產報酬率': 'ROA',
 }
 
 
@@ -367,19 +399,91 @@ def fn_mops_twse_parser():
     df_mops.to_csv('mops.csv', encoding='utf_8_sig', index=False)
 
 
+def fn_mops_fin_download(dic, sids):
+    assert len(sids) <= 10, f'MOPS FIN allow 10 sid max and input len(sids) = {len(sids)}'
+    link = r'https://mopsfin.twse.com.tw/'
+    drv, act = fn_web_init(link, is_headless=False)
+    time.sleep(1)
+
+    for k in dic.keys():
+        if k != 'page':
+            typ, slp, by, val = dic[k]
+
+            if typ == 'click':
+                fn_web_click(drv, val, slp=slp)
+            elif typ == 'keyin':
+                for sid in sids:
+                    idx = sids.index(sid) + 1
+                    col = int(idx/6) + 1
+                    row = idx - 5*(col-1)
+                    val_new = val.replace('/div[1]/input[1]', f'/div[{col}]/input[{row}]')
+                    fn_web_send_keys(drv, val_new, sid, slp=slp)
+
+    time.sleep(2)
+    drv.close()
+
+
+def fn_mops_fin_excl_2_csv(fin):
+    df_mops_fin = pd.DataFrame()
+    for root, dirs, files in os.walk(dic_cfg['mops_fin_path']):
+        for name in files:
+            if fin in name:
+                xlsx = os.path.join(root, name)
+                df = pd.read_excel(xlsx)
+                df = df[df["年度/季度"].apply(lambda x: '(' in x)]
+                df_mops_fin = pd.concat([df_mops_fin, df], ignore_index=True)
+
+    df_mops_fin['sid'] = df_mops_fin["年度/季度"].apply(lambda x: x.split(' ')[0])
+    df_mops_fin['name'] = df_mops_fin["年度/季度"].apply(lambda x: x.split(' ')[1])
+    df_mops_fin['產業'] = df_mops_fin["年度/季度"].apply(lambda x: x.split(' ')[2])
+    df_mops_fin['產業'] = df_mops_fin["產業"].apply(lambda x: x.replace("(", "").replace(")", ""))
+    df_mops_fin['market'] = df_mops_fin["產業"].apply(lambda x: x[:2])
+    df_mops_fin['產業'] = df_mops_fin["產業"].apply(lambda x: x[2:])
+
+    cols = ['sid', 'name', 'market', '產業']
+    df_mops_fin = df_mops_fin[cols + [c for c in df_mops_fin.columns if c not in ["年度/季度"]+cols]]
+    df_mops_fin = df_mops_fin.sort_values(by=['market', '產業', 'sid'])
+    df_mops_fin.to_csv(f'mops_fin_{dic_fin[fin]}.csv', encoding='utf_8_sig', index=False)
+
+
+def fn_mops_fin():
+
+    df_sid = pd.read_csv('stock.csv')
+    sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4]
+    fr, to = 0, min(10, len(sids)+1)
+
+    while fr < len(sids):
+        sids_sub = sids[fr:to]
+        print(len(sids), fr, to, sids_sub)
+
+        if len(sids_sub) == 0:
+            break
+        else:
+            for it in dic_mops_fin.keys():
+                dic = dic_mops_fin[it]
+                fn_mops_fin_download(dic, sids_sub)
+                time.sleep(1)
+
+        fr = to
+        to = min(to + 10, len(sids))
+
+
 def fn_main():
     t = time.time()
 
     # fn_test()
     # fn_twstock('1514')
     # fn_gen_stock_field_info()
-
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
-        # fn_want_rich(df, dic_cfg["stocks"])
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
+    #     # fn_want_rich(df, dic_cfg["stocks"])
+
+    # fn_mops_fin()
+    for fin in dic_fin.keys():
+        fn_mops_fin_excl_2_csv(fin)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)

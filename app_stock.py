@@ -64,6 +64,8 @@ dic_field_id = {
     '電子零組件': '23075',
 }
 
+dic_mops = {}
+
 
 def fn_make_clickable(x):
     name = x
@@ -168,25 +170,29 @@ def fn_twstock(sid):
 
 def fn_stock_sel(df_all):
     for idx in df_all.index:
+        lead = df_all.loc[idx, '產業領先指標']
+        market = df_all.loc[idx, '市場別']
         for c in df_all.columns:
             if '勝率' in c:
                 v = df_all.loc[idx, c]
                 corr = df_all.loc[idx, '相關性_' + c.split('_')[-1]].split(' ')[-1]
-                lead = df_all.loc[idx, '產業領先指標']
                 if v != '' and corr != '':
                     if int(v) >= dic_cfg["sel_rat"] and float(corr) > dic_cfg["sel_corr"]:
                         if dic_cfg["sel_lead"] == '極佳':
                             if lead == '極佳':
-                                df_all.at[idx, "篩選"] = 1
-                                break
+                                if '櫃' in dic_cfg['sel_market'] or market == '上市':
+                                    df_all.at[idx, "篩選"] = 1
+                                    break
                         elif dic_cfg["sel_lead"] == '佳':
                             if lead == '佳' or lead == '極佳':
-                                df_all.at[idx, "篩選"] = 1
-                                break
+                                if '櫃' in dic_cfg['sel_market'] or market == '上市':
+                                    df_all.at[idx, "篩選"] = 1
+                                    break
                         elif dic_cfg["sel_lead"] == '中等':
                             if lead == '佳' or lead == '極佳' or lead == '中等':
-                                df_all.at[idx, "篩選"] = 1
-                                break
+                                if '櫃' in dic_cfg['sel_market'] or market == '上市':
+                                    df_all.at[idx, "篩選"] = 1
+                                    break
                         else:
                             df_all.at[idx, "篩選"] = 1
                             break
@@ -323,12 +329,13 @@ def fn_st_stock_sel(df_all):
     with st.form(key='sel'):
         st.markdown(f'#### 🎚️ 篩選條件設定:')
         fn_st_add_space(1)
-        sels = st.columns([1, 1, 1, 1])
+        sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
         dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
         dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=300)
-        dic_cfg["sel_lead"] = sels[3].radio('產業領先指標', ('中等', '佳', '極佳'), index=1, horizontal=True)
+        dic_cfg["sel_lead"] = sels[4].radio('產業領先指標', ('極佳', '佳'), index=0, horizontal=False)
+        dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=0, horizontal=False)
 
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
@@ -780,6 +787,12 @@ def fn_pick_stock(df, df_mops):
             cols[1].markdown('# 🙅‍♂️')
 
 
+def fn_get_mops_fin(df_fin, sid, years=None):
+    df_mops_fin = df_fin[df_fin['sid'] == sid]
+
+    return df_mops_fin
+
+
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -803,6 +816,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     url_dog = rf'{dic_url["dog"]}{sid}'
 
     df_mop = fn_get_mops(df_mops, sid)
+    df_roe = fn_get_mops_fin(dic_mops["ROE"], sid)
+    df_roa = fn_get_mops_fin(dic_mops["ROA"], sid)
     basic = fn_basic_rule(sid, df_mops)
 
     mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
@@ -824,6 +839,13 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         cols[1].write(df_mop)
         cols[1].markdown(
             f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+        cols[1].write('TBD')
+
+        cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 權益報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].write(df_roe)
+
+        cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 資產報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].write(df_roa)
 
 
 def fn_st_chart_bar(df):
@@ -1015,6 +1037,8 @@ def fn_st_stock_main():
 
     df = fn_st_stock_all(df_all)
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
+    dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
     tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
 
     with tab_index:
