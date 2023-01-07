@@ -455,7 +455,7 @@ def fn_mops_fin_excl_2_csv(fin):
 
     cols_h = ['sid', 'name', 'market', '產業']
     cols_q = [c for c in df_mops_fin.columns if 'Q' in c]
-    cols_q.reverse()
+    # cols_q.reverse()
     cols = cols_h + cols_q
     df_mops_fin = df_mops_fin[cols]  # [c for c in df_mops_fin.columns if c not in ["年度/季度"]+cols]]
     df_mops_fin = df_mops_fin.sort_values(by=['market', '產業', 'sid'])
