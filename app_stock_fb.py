@@ -112,15 +112,28 @@ dic_mops_fin_roa = {
     'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
 
+
+dic_mops_fin_opm = {
+    'page': 'MOPS_FIN_OPM',
+    'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
+    'btn_OPM':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[2]/a'],
+    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+}
+
+
 dic_mops_fin = {
     'ROE': dic_mops_fin_roe,
     'ROA': dic_mops_fin_roa,
+    'Operating_Margin': dic_mops_fin_opm,
 }
 
 
 dic_fin = {
     '權益報酬率': 'ROE',
     '資產報酬率': 'ROA',
+    '營業利益率': 'Operating_Margin',
 }
 
 
@@ -440,8 +453,11 @@ def fn_mops_fin_excl_2_csv(fin):
     df_mops_fin['market'] = df_mops_fin["產業"].apply(lambda x: x[:2])
     df_mops_fin['產業'] = df_mops_fin["產業"].apply(lambda x: x[2:])
 
-    cols = ['sid', 'name', 'market', '產業']
-    df_mops_fin = df_mops_fin[cols + [c for c in df_mops_fin.columns if c not in ["年度/季度"]+cols]]
+    cols_h = ['sid', 'name', 'market', '產業']
+    cols_q = [c for c in df_mops_fin.columns if 'Q' in c]
+    cols_q.reverse()
+    cols = cols_h + cols_q
+    df_mops_fin = df_mops_fin[cols]  # [c for c in df_mops_fin.columns if c not in ["年度/季度"]+cols]]
     df_mops_fin = df_mops_fin.sort_values(by=['market', '產業', 'sid'])
     df_mops_fin.to_csv(f'mops_fin_{dic_fin[fin]}.csv', encoding='utf_8_sig', index=False)
 
@@ -476,14 +492,14 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
-        # fn_want_rich(df, dic_cfg["stocks"])
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
+    #     # fn_want_rich(df, dic_cfg["stocks"])
 
     # fn_mops_fin()
-    # for fin in dic_fin.keys():
-    #     fn_mops_fin_excl_2_csv(fin)
+    for fin in dic_fin.keys():
+        fn_mops_fin_excl_2_csv(fin)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)

@@ -818,6 +818,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin(dic_mops["ROE"], sid)
     df_roa = fn_get_mops_fin(dic_mops["ROA"], sid)
+    df_opm = fn_get_mops_fin(dic_mops["OPM"], sid)
     basic = fn_basic_rule(sid, df_mops)
 
     mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
@@ -835,17 +836,21 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     if df_sid.shape[0] > 0:
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
-        cols[1].markdown(f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
-        cols[1].write(df_mop)
-        cols[1].markdown(
-            f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
-        cols[1].write('TBD')
 
         cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 權益報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
         cols[1].write(df_roe)
 
         cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 資產報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
         cols[1].write(df_roa)
+
+        cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 營業利益率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].write(df_opm)
+
+        cols[1].markdown(f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+        cols[1].write(df_mop)
+        cols[1].markdown(
+            f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+        cols[1].write('TBD')
 
 
 def fn_st_chart_bar(df):
@@ -1039,6 +1044,7 @@ def fn_st_stock_main():
     df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
     dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
     dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
+    dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
     tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
 
     with tab_index:
