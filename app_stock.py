@@ -856,7 +856,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_fin.reset_index(names='年/季', inplace=True)
     df_fin['year'] = df_fin['年/季'].apply(lambda x: x.split('Q')[0])
     df_fin['season'] = df_fin['年/季'].apply(lambda x: x.split('Q')[-1])
-    df_fin.sort_values(by=['year', 'season'], ascending=[False, False], inplace=True)
+    df_fin.sort_values(by=['year', 'season'], ascending=[False, False], inplace=True, ignore_index=True)
     del df_fin['year']
     del df_fin['season']
     basic = fn_basic_rule(sid, df_mops)
