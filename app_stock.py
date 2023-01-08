@@ -861,7 +861,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     del df_fin['season']
     basic = fn_basic_rule(sid, df_mops)
 
-    mkd_space = f'{3*dic_mkd["4sp"]}{dic_mkd["2sp"]}'
+    mkd_space = f'{7*dic_mkd["2sp"]}'
     for _ in range(1):
         cols[0].write('')
 
