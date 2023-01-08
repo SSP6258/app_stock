@@ -635,7 +635,7 @@ def fn_basic_rule(sid, df_mops):
 
 def fn_stock_basic(df, df_mops, y, col):
     txt = f'''
-           #### 🎯 [基本面指標](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69): ❌ ⭕ ✔️
+           ##### 🎯 [$基本面指標$](https://youtu.be/ShNI41_rFv4?list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&t=69):✔️ ⭕  ❌ 
            1. ROE: __> 8%__ (公司錢滾錢的能力)
            2. 營業利益率: __> 0%__ (本業有沒有賺錢)
            3. 本業收入率: __> 80%__ (本業收入的比例)
@@ -871,11 +871,11 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
 
-        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["4sp"]} 基本面指標:')
+        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
         cols[1].write(df_fin)
 
         cols[1].write('')
-        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["4sp"]} 權益報酬率(ROE) / 年:')
+        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
         df_mop = df_mop.sort_values(by=['year'], ascending=[False])
         cols[1].write(df_mop)
 
