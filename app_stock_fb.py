@@ -123,10 +123,32 @@ dic_mops_fin_opm = {
 }
 
 
+dic_mops_fin_debt_ratio = {
+    'page': 'MOPS_FIN_DR',
+    'btn_fin_structure ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[3]/a'],
+    'btn_DR':             ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[3]/div/ul/li[1]/a'],
+    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+}
+
+
+dic_mops_fin_cash_flow = {
+    'page': 'MOPS_FIN_CF',
+    'btn_cash_flow ':     ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/a'],
+    'btn_CF':             ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/div/ul/li[2]/a'],
+    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+}
+
+
 dic_mops_fin = {
     'ROE': dic_mops_fin_roe,
     'ROA': dic_mops_fin_roa,
     'Operating_Margin': dic_mops_fin_opm,
+    'DR': dic_mops_fin_debt_ratio,
+    'CF': dic_mops_fin_cash_flow,
 }
 
 
@@ -134,6 +156,8 @@ dic_fin = {
     '權益報酬率': 'ROE',
     '資產報酬率': 'ROA',
     '營業利益率': 'Operating_Margin',
+    '負債佔資產比率': 'Debt_Ratio',
+    '營業現金對負債比': 'Cash_Flow'
 }
 
 

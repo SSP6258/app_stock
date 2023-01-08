@@ -70,6 +70,8 @@ dic_fin_name = {
     'ROE': '權益報酬率',
     'ROA': '資產報酬率',
     'OPM': '營業利益率',
+    'DR' : '負債佔資產比率',
+    'CF' : '營業現金對負債比',
 }
 
 dic_mkd = {
@@ -841,10 +843,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_roe = fn_get_mops_fin("ROE", sid)
     df_roa = fn_get_mops_fin("ROA", sid)
     df_opm = fn_get_mops_fin("OPM", sid)
-    df_fin = pd.concat([df_roe, df_roa, df_opm], axis=1)
+    df_dr = fn_get_mops_fin("DR", sid)
+    dr_cf = fn_get_mops_fin("CF", sid)
+    df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
     basic = fn_basic_rule(sid, df_mops)
 
-    mkd_space = f'{3*"&emsp;"}{2*"&nbsp;"}'
+    mkd_space = f'{3*dic_mkd["4sp"]}{dic_mkd["2sp"]}'
     for _ in range(1):
         cols[0].write('')
 
@@ -860,35 +864,22 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         fig = fn_get_stock_price_plt(df_sid, height=200)
         cols[1].plotly_chart(fig, use_container_width=True)
 
-        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["4sp"]} ROE, ROA, OPM / 季:')
+        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["4sp"]} 基本面指標:')
         cols[1].write(df_fin)
 
         cols[1].write('')
-
-        # cols[1].markdown('##### 權益報酬率(ROE)/季:')
-        # cols[1].write(df_roe)
-        # cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 權益報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        # cols[1].write('')
-        #
-        # cols[1].markdown('##### 資產報酬率(ROA)/季:')
-        # cols[1].write(df_roa)
-        # cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 資產報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        # cols[1].write('')
-        #
-        # cols[1].markdown('##### 營業利益率(Operating Margin)/季:')
-        # cols[1].write(df_opm)
-        # cols[1].markdown(f'[公開資訊觀測站 > 獲利能力 > 營業利益率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        # cols[1].write('')
-
         cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["4sp"]} 權益報酬率(ROE) / 年:')
         df_mop = df_mop.sort_values(by=['year'], ascending=[False])
         cols[1].write(df_mop)
 
-        cols[1].markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        cols[1].markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        cols[1].markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率 > ](https://mopsfin.twse.com.tw/) (每季更新)')
-        cols[1].markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
         cols[1].write('')
+        cols[1].markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].markdown(f'CF:{dic_mkd["2sp"]} [公開資訊觀測站 > 現金流量 > 營業現金對負債比](https://mopsfin.twse.com.tw/) (每季更新)')
+        cols[1].markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+
 
         # cols[1].markdown(
         #     f'[公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
@@ -1087,6 +1078,8 @@ def fn_st_stock_main():
     dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
     dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
     dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
+    dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
+    dic_mops['CF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
     tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
 
     with tab_index:
