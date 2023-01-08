@@ -812,7 +812,14 @@ def fn_get_mops_fin(fin, sid, years=None):
     df_mops_fin['year'] = df_mops_fin.index
     df_mops_fin['year'] = df_mops_fin['year'].apply(lambda x: x.split('Q')[0])
     df_mops_fin = df_mops_fin.sort_values(by='year', ascending=False)
-    del df_mops_fin['year']
+
+    for c in df_mops_fin.columns:
+        if fin in c:
+            pass
+        else:
+            del df_mops_fin[c]
+
+    # st.write(df_mops_fin)
 
     return df_mops_fin
 
