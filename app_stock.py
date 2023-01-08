@@ -814,7 +814,7 @@ def fn_get_mops_fin(fin, sid, years=None):
     df_mops_fin = df_mops_fin.sort_values(by='year', ascending=False)
 
     for c in df_mops_fin.columns:
-        if fin in c:
+        if fin in str(c):
             pass
         else:
             del df_mops_fin[c]
