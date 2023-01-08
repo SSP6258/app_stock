@@ -490,6 +490,7 @@ def fn_mops_fin_excl_2_csv(fin, is_new_season=False):
     else:
         if os.path.isfile(mops_fin_csv):
             df_mops_fin_old = pd.read_csv(mops_fin_csv)
+            df_mops_fin_old = df_mops_fin_old[cols]
             df_mops_fin_new = pd.concat([df_mops_fin_old, df_mops_fin], ignore_index=True)
         else:
             df_mops_fin_new = df_mops_fin
