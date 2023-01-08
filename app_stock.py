@@ -853,6 +853,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_dr = fn_get_mops_fin("DR", sid)
     dr_cf = fn_get_mops_fin("OCF", sid)
     df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
+    df_fin.reset_index(names='年/季', inplace=True)
+    df_fin['year'] = df_fin['年/季'].apply(lambda x: x.split('Q')[0])
+    df_fin['season'] = df_fin['年/季'].apply(lambda x: x.split('Q')[-1])
+    df_fin.sort_values(by=['year', 'season'], ascending=[False, False], inplace=True)
+    del df_fin['year']
+    del df_fin['season']
     basic = fn_basic_rule(sid, df_mops)
 
     mkd_space = f'{3*dic_mkd["4sp"]}{dic_mkd["2sp"]}'
