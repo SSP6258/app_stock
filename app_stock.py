@@ -862,9 +862,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     basic = fn_basic_rule(sid, df_mops)
 
     mkd_space = f'{7*dic_mkd["2sp"]}'
-    for _ in range(1):
-        cols[0].write('')
 
+    cols[0].write('')
     cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
     cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
     cols[0].markdown(f'基本面: {basic}')
