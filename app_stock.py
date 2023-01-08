@@ -71,7 +71,7 @@ dic_fin_name = {
     'ROA': '資產報酬率',
     'OPM': '營業利益率',
     'DR' : '負債佔資產比率',
-    'CF' : '營業現金對負債比',
+    'OCF' : '營業現金對負債比',
 }
 
 dic_mkd = {
@@ -844,7 +844,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_roa = fn_get_mops_fin("ROA", sid)
     df_opm = fn_get_mops_fin("OPM", sid)
     df_dr = fn_get_mops_fin("DR", sid)
-    dr_cf = fn_get_mops_fin("CF", sid)
+    dr_cf = fn_get_mops_fin("OCF", sid)
     df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
     basic = fn_basic_rule(sid, df_mops)
 
@@ -878,10 +878,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         cols[1].markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
         cols[1].markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
         cols[1].markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
-        cols[1].markdown(f'CF:{dic_mkd["2sp"]} [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
+        cols[1].markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
         cols[1].markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
         cols[1].markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
-
 
 
 def fn_st_chart_bar(df):
@@ -1017,13 +1016,14 @@ def fn_st_reference():
         st.markdown('### 📚 參考資料:')
         cols = st.columns([1, 2, 1, 1, 1])
         cols[0].markdown('#### 數據來源')
-        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw)')
-        cols[0].markdown('- [財務比較E點通](https://mopsfin.twse.com.tw)')
         cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
+        cols[0].markdown('- [財務比較E點通](https://mopsfin.twse.com.tw)')
+        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw)')
 
         cols[1].markdown('#### 基本概念')
         cols[1].markdown(
             '- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
+        cols[1].markdown('- [Mr. Market市場先生](https://rich01.com/learn-stock-all/#%E8%B2%A1%E5%A0%B1%E8%88%87%E8%B2%A1%E5%8B%99%E6%8C%87%E6%A8%99)')
         cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
 
         cols[-1].form_submit_button('')
@@ -1072,12 +1072,13 @@ def fn_st_stock_main():
     # cols[2].title(' 🥕 🐇')
 
     df = fn_st_stock_all(df_all)
-    df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    dic_mops['MOPS'] = pd.read_csv('mops.csv', na_filter=False, dtype=str)
     dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
     dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
     dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
     dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
-    dic_mops['CF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
+    dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
     tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
 
     with tab_index:
@@ -1085,7 +1086,7 @@ def fn_st_stock_main():
         # fn_show_raw(df)
 
     with tab_pick:
-        fn_pick_stock(df, df_mops)
+        fn_pick_stock(df, dic_mops['MOPS'])
 
     with tab_watch:
         fn_st_stock_sel(df_all)

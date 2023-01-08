@@ -460,7 +460,7 @@ def fn_mops_fin_download(dic, sids):
     drv.close()
 
 
-def fn_mops_fin_excl_2_csv(fin):
+def fn_mops_fin_excl_2_csv(fin, is_new_season=False):
     df_mops_fin = pd.DataFrame()
     for root, dirs, files in os.walk(dic_cfg['mops_fin_path']):
         for name in files:
@@ -482,30 +482,48 @@ def fn_mops_fin_excl_2_csv(fin):
     # cols_q.reverse()
     cols = cols_h + cols_q
     df_mops_fin = df_mops_fin[cols]  # [c for c in df_mops_fin.columns if c not in ["年度/季度"]+cols]]
-    df_mops_fin = df_mops_fin.sort_values(by=['market', '產業', 'sid'])
-    df_mops_fin.to_csv(f'mops_fin_{dic_fin[fin]}.csv', encoding='utf_8_sig', index=False)
+
+    mops_fin_csv = f'mops_fin_{dic_fin[fin]}.csv'
+
+    if is_new_season:
+        df_mops_fin_new = df_mops_fin
+    else:
+        if os.path.isfile(mops_fin_csv):
+            df_mops_fin_old = pd.read_csv(mops_fin_csv)
+            df_mops_fin_new = pd.concat([df_mops_fin_old, df_mops_fin], ignore_index=True)
+        else:
+            df_mops_fin_new = df_mops_fin
+
+    df_mops_fin_new = df_mops_fin_new.sort_values(by=['market', '產業', 'sid'], ignore_index=True)
+    df_mops_fin_new.to_csv(mops_fin_csv, encoding='utf_8_sig', index=False)
 
 
-def fn_mops_fin():
+def fn_mops_fin(is_new_season=False):
 
     df_sid = pd.read_csv('stock.csv')
-    sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4]
-    fr, to = 0, min(10, len(sids)+1)
+    df_fin = pd.read_csv('mops_fin_ROE.csv')
+    sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4] + ['1905']
+    sids = [s for s in sids if int(s) not in df_fin['sid'].values]
 
-    while fr < len(sids):
-        sids_sub = sids[fr:to]
-        print(len(sids), fr, to, sids_sub)
+    print(f'New Stock ID num: {len(sids)}')
 
-        if len(sids_sub) == 0:
-            break
-        else:
-            for it in dic_mops_fin.keys():
-                dic = dic_mops_fin[it]
-                fn_mops_fin_download(dic, sids_sub)
-                time.sleep(1)
+    if len(sids) > 0 or is_new_season:
+        fr, to = 0, min(10, len(sids)+1)
 
-        fr = to
-        to = min(to + 10, len(sids))
+        while fr < len(sids):
+            sids_sub = sids[fr:to]
+            print(len(sids), fr, to, sids_sub)
+
+            if len(sids_sub) == 0:
+                break
+            else:
+                for it in dic_mops_fin.keys():
+                    dic = dic_mops_fin[it]
+                    fn_mops_fin_download(dic, sids_sub)
+                    time.sleep(1)
+
+            fr = to
+            to = min(to + 10, len(sids))
 
 
 def fn_main():
@@ -521,9 +539,11 @@ def fn_main():
     #     fn_find_billion(df, dic_cfg["stocks"])
     #     # fn_want_rich(df, dic_cfg["stocks"])
 
-    # fn_mops_fin()
+    is_new_season = False
+    fn_mops_fin(is_new_season=is_new_season)
+    ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin)
+        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
