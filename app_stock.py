@@ -824,6 +824,32 @@ def fn_get_mops_fin(fin, sid, years=None):
     return df_mops_fin
 
 
+def fn_idea():
+    fig = go.Figure(go.Funnelarea(
+        text=["搜尋網站推薦", "基本面分析", "擬訂策略", "觀察驗證"],
+        values=[5, 4, 3, 2],
+        textinfo='text',
+        textfont={'size': [18, 18, 18, 18]},
+        showlegend=False,
+    ))
+
+    fig.update_layout(
+        autosize=False,
+        width=600,
+        height=500,
+        margin=dict(
+            l=50,
+            r=50,
+            b=120,
+            t=50,
+            pad=4
+        ),
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+
+
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1091,7 +1117,10 @@ def fn_st_stock_main():
     dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
     dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
     dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
-    tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['指標分布', '策略選股', '觀察驗證', '參考資料'])
+    tab_idea, tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料'])
+
+    with tab_idea:
+        fn_idea()
 
     with tab_index:
         fn_st_chart_bar(df)
