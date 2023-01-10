@@ -1006,7 +1006,27 @@ def fn_st_chart_bar(df):
             df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
             df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
             fn_st_add_space(1)
-            st.write(df_show)
+            # st.dataframe(df_show, height=500)
+
+            def fn_color_df(x):
+                css = 'background-color: white; color: black'
+                css_h = 'background-color: pink; color: black'
+                if float(x) > 4.5:
+                    css = css_h
+
+                if float(x) > 4.9:
+                    css = 'background-color: orangered; color: white'
+
+                return css
+
+            pd.options.display.float_format = "{:.2f}".format
+            for c in df_show.columns:
+                if '_' in c or '股價' in c:
+                    df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
+            st.dataframe(df_color, height=500)
+
+
 
 
 def fn_st_stock_all(df_all):
