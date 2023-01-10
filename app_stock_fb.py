@@ -418,6 +418,10 @@ def fn_twstock(sid):
     print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
 
 
+def fn_mops_file_move():
+    pass
+
+
 def fn_mops_twse_parser():
     df_mops = pd.DataFrame()
     for root, dirs, files in os.walk(dic_cfg['mops_path']):
@@ -543,6 +547,7 @@ def fn_main():
     # is_new_season = False
     # fn_mops_fin(is_new_season=is_new_season)
     # ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
+    # fn_mops_file_move()
     # for fin in dic_fin.keys():
     #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 

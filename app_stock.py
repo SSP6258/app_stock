@@ -989,6 +989,13 @@ def fn_st_chart_bar(df):
         with tab_d:
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
+            cols = ['名稱', '代碼', '股價_new',
+                    '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
+                    '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
+                    '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
+                    '大盤領先指標_new', '產業領先指標_new']
+
+            st.write(df_sids[cols])
 
 
 def fn_st_stock_all(df_all):
