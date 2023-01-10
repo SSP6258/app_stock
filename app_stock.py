@@ -1019,14 +1019,12 @@ def fn_st_chart_bar(df):
 
                 return css
 
-
             pd.options.display.float_format = "{:.2f}".format
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
             df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
             st.dataframe(df_color, height=500)
-
 
 
 def fn_st_stock_all(df_all):
