@@ -1019,6 +1019,7 @@ def fn_st_chart_bar(df):
 
                 return css
 
+
             pd.options.display.float_format = "{:.2f}".format
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
