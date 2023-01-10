@@ -852,7 +852,7 @@ def fn_idea():
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
-    cols = st.columns([1, 0.2, 2.8])
+    cols = st.columns([1, 0.1, 2.9])
 
     with cols[0].form(key=f'form_{key}'):
 
