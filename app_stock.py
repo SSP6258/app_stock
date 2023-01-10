@@ -972,21 +972,27 @@ def fn_st_chart_bar(df):
              f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         with tab_p:
+            fn_st_add_space(1)
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_p5:
+            fn_st_add_space(1)
             fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_n:
+            fn_st_add_space(1)
             fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_n5:
+            fn_st_add_space(1)
             fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_e:
+            fn_st_add_space(1)
             fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_d:
+            fn_st_add_space(1)
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
             cols = ['名稱', '代碼', '股價_new',
@@ -998,7 +1004,8 @@ def fn_st_chart_bar(df):
             df_show = df_sids[cols]
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
             df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
-            df_show.sort_values(by='勝率_營收', ascending=False, inplace=True, ignore_index=True)
+            df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
+            fn_st_add_space(1)
             st.write(df_show)
 
 
