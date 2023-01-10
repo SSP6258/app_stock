@@ -849,7 +849,6 @@ def fn_idea():
     st.plotly_chart(fig, use_container_width=True)
 
 
-
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -899,27 +898,56 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
-        fig = fn_get_stock_price_plt(df_sid, height=200)
-        cols[1].plotly_chart(fig, use_container_width=True)
+        # fig = fn_get_stock_price_plt(df_sid, height=200)
+        # cols[1].plotly_chart(fig, use_container_width=True)
+        #
+        # cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
+        # cols[1].write(df_fin)
+        #
+        # cols[1].write('')
+        # cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
+        # df_mop = df_mop.sort_values(by=['year'], ascending=[False])
+        # cols[1].write(df_mop)
+        #
+        # cols[1].write('')
+        # url = r'https://mopsfin.twse.com.tw/'
+        # cols[1].markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
+        # cols[1].markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
+        # cols[1].markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
+        # cols[1].markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
+        # cols[1].markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
+        # cols[1].markdown(
+        #     f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+        # cols[1].markdown(
+        #     f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+        # cols[1].markdown(f'月營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](h
 
-        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
-        cols[1].write(df_fin)
+        tab_basic, tab_tech = cols[1].tabs(['基本面', '技術面'])
 
-        cols[1].write('')
-        cols[1].markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
-        df_mop = df_mop.sort_values(by=['year'], ascending=[False])
-        cols[1].write(df_mop)
+        with tab_basic:
 
-        cols[1].write('')
-        url = r'https://mopsfin.twse.com.tw/'
-        cols[1].markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
-        cols[1].markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
-        cols[1].markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
-        cols[1].markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
-        cols[1].markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
-        cols[1].markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
-        cols[1].markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
-        cols[1].markdown(f'月營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) (每月更新)')
+            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
+            st.write(df_fin)
+
+            st.write('')
+            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
+            df_mop = df_mop.sort_values(by=['year'], ascending=[False])
+            st.write(df_mop)
+
+            st.write('')
+            url = r'https://mopsfin.twse.com.tw/'
+            st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
+            st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
+            st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
+            st.markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
+            st.markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
+            st.markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+            st.markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+            st.markdown(f'月營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) (每月更新)')
+
+        with tab_tech:
+            fig = fn_get_stock_price_plt(df_sid, height=200)
+            st.plotly_chart(fig, use_container_width=True)
 
 
 def fn_st_chart_bar(df):
