@@ -999,7 +999,7 @@ def fn_st_chart_bar(df):
                     '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
                     '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
                     '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
-                    '大盤領先指標_new', '產業領先指標_new']
+                    '大盤領先指標_new', '產業領先指標_new', '產業別']
 
             df_show = df_sids[cols]
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
@@ -1025,7 +1025,6 @@ def fn_st_chart_bar(df):
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
             df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
             st.dataframe(df_color, height=500)
-
 
 
 
