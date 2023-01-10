@@ -535,16 +535,16 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"])
-    #     # fn_want_rich(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"])
+        # fn_want_rich(df, dic_cfg["stocks"])
 
-    is_new_season = False
-    fn_mops_fin(is_new_season=is_new_season)
-    ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
-    for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    # is_new_season = False
+    # fn_mops_fin(is_new_season=is_new_season)
+    # ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
+    # for fin in dic_fin.keys():
+    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
