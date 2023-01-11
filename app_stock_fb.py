@@ -321,6 +321,9 @@ def fn_find_billion(df, stocks=None):
         df_all = df_all[df_all['股價'].apply(lambda x: str(x) != 'nan' and str(x) != '')]
         df_all = df_all[df_all['sid_name'].apply(lambda x: str(x) != 'nan')]
 
+        recommend = df['sid'].unique().tolist()
+        df_all['Recommend'] = df_all['sid'].apply(lambda x: 1 if x in recommend else 0)
+
         df_all.reset_index(drop=True, inplace=True)
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 

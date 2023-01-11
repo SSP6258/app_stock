@@ -826,10 +826,11 @@ def fn_get_mops_fin(fin, sid, years=None):
 
 def fn_idea():
     fig = go.Figure(go.Funnelarea(
-        text=["搜尋網站推薦", "基本面分析", "擬訂策略", "觀察驗證"],
+        # text=["搜尋網站選股", "基本面分析", "擬訂策略", "觀察驗證"],
+        text=["搜尋網站選股", "基本面分析", "擬訂策略", "驗證"],
         values=[5, 4, 3, 2],
         textinfo='text',
-        textfont={'size': [18, 18, 18, 18]},
+        textfont={'size': [20, 20, 20, 20]},
         showlegend=False,
     ))
 
@@ -840,7 +841,7 @@ def fn_idea():
         margin=dict(
             l=50,
             r=50,
-            b=120,
+            b=140,
             t=40,
             pad=4
         ),
@@ -966,13 +967,17 @@ def fn_st_chart_bar(df):
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
         fn_st_add_space(2)
 
+        df_sids = df_sids[df_sids['代碼'] != '6411']
         df_p = df_sids[df_sids['績效(%)'].apply(lambda x: 1 < x < 5)]
         df_p5 = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 5)]
         df_n = df_sids[df_sids['績效(%)'].apply(lambda x: -5 < x < -1)]
         df_n5 = df_sids[df_sids['績效(%)'].apply(lambda x: x <= -5)]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
-        fig, watch = fn_kpi_plt(kpis, df_sids)
+        # fig, watch = fn_kpi_plt(kpis, df_sids)
+
+        df_rcmd = df_sids[df_sids['Recommend'] == str(1)]
+        fig, watch = fn_kpi_plt(kpis, df_rcmd)
 
         tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
             [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
@@ -1003,13 +1008,14 @@ def fn_st_chart_bar(df):
             fn_st_add_space(1)
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
+
             cols = ['名稱', '代碼', '股價_new',
                     '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
                     '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
                     '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
                     '大盤領先指標_new', '產業領先指標_new', '產業別']
 
-            df_show = df_sids[cols]
+            df_show = df_rcmd[cols]
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
             df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
             df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
