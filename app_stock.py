@@ -1167,7 +1167,7 @@ def fn_st_stock_main():
     dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
     dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
     dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
-    tab_idea, tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料'])
+    tab_idea, tab_index, tab_pick, tab_watch, tab_ref = st.tabs(['實驗設計', '指標分布', '策略選股', '觀察驗證', '參考資料'])
 
     with tab_idea:
         fn_idea()
