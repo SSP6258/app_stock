@@ -96,8 +96,7 @@ def fn_click_name(sid, name, url):
 
 
 def fn_color_map(x):
-    css = ""
-    # 'background-color: white; color: black'
+    css = ""  # 'background-color: white; color: black'
     css_h = 'background-color: pink; color: black'
     if '%' in str(x) and '%%' not in str(x):
         if float(x.replace('%', '')) >= 50.0:
@@ -1022,7 +1021,8 @@ def fn_st_chart_bar(df):
             # st.dataframe(df_show, height=500)
 
             def fn_color_df(x):
-                css = 'background-color: white; color: black'
+                # css = 'background-color: white; color: black'
+                css = ''
                 css_h = 'background-color: pink; color: black'
                 if float(x) > 4.5:
                     css = css_h
