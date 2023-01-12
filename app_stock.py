@@ -95,9 +95,9 @@ def fn_click_name(sid, name, url):
     return '<a href="{}">{}</a>'.format(url, name)
 
 
-
 def fn_color_map(x):
-    css = ''  # 'background-color: white; color: black'
+    css = ""
+    # 'background-color: white; color: black'
     css_h = 'background-color: pink; color: black'
     if '%' in str(x) and '%%' not in str(x):
         if float(x.replace('%', '')) >= 50.0:
