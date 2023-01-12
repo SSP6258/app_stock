@@ -33,7 +33,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       barmode=barmode,
                       font=dict(
                           # family="Courier New, monospace",
-                          size=16,
+                          size=14,
                           ),
                       # legend=dict(
                       #     title=lg_title,
@@ -50,6 +50,9 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                               yanchor="bottom",
                               y=1.02,
                               xanchor="right",
-                              x=lg_x))
+                              x=lg_x),
+                          font=dict(size=14,))
+
+
 
     return fig
