@@ -50,8 +50,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                               yanchor="bottom",
                               y=1.02,
                               xanchor="right",
-                              x=lg_x),
-                          font=dict(size=14,))
+                              x=lg_x),)
 
 
 
