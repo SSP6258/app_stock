@@ -96,7 +96,7 @@ def fn_click_name(sid, name, url):
 
 
 def fn_color_map(x):
-    css = 'background-color: white; color: black'
+    css = ''  # 'background-color: white; color: black'
     css_h = 'background-color: pink; color: black'
     if '%' in str(x) and '%%' not in str(x):
         if float(x.replace('%', '')) >= 50.0:
@@ -975,9 +975,7 @@ def fn_st_chart_bar(df):
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         # fig, watch = fn_kpi_plt(kpis, df_sids)
-
-        df_rcmd = df_sids[df_sids['Recommend'] == str(1)]
-        fig, watch = fn_kpi_plt(kpis, df_rcmd)
+        fig, watch = fn_kpi_plt(kpis, df_sids)
 
         tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
             [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
@@ -1015,7 +1013,7 @@ def fn_st_chart_bar(df):
                     '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
                     '大盤領先指標_new', '產業領先指標_new', '產業別']
 
-            df_show = df_rcmd[cols]
+            df_show = df_sids[cols]
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
             df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
             df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
@@ -1160,6 +1158,7 @@ def fn_st_stock_main():
     # cols[2].title(' 🥕 🐇')
 
     df = fn_st_stock_all(df_all)
+    df_rcmd = df[df['Recommend'] == '1']
     # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
     dic_mops['MOPS'] = pd.read_csv('mops.csv', na_filter=False, dtype=str)
     dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
@@ -1173,11 +1172,11 @@ def fn_st_stock_main():
         fn_idea()
 
     with tab_index:
-        fn_st_chart_bar(df)
+        fn_st_chart_bar(df_rcmd)
         # fn_show_raw(df)
 
     with tab_pick:
-        fn_pick_stock(df, dic_mops['MOPS'])
+        fn_pick_stock(df_rcmd, dic_mops['MOPS'])
 
     with tab_watch:
         fn_st_stock_sel(df_all)
