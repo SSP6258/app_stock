@@ -870,7 +870,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     url_CMoney = rf'{dic_url["CMoney"]}{sid}'
     url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
-    url_dog = rf'{dic_url["dog"]}{sid}'
+    url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
 
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin("ROE", sid)
