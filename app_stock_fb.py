@@ -83,15 +83,7 @@ dic_s_rename = {
     '現金股利': '策略_殖利率',
 }
 
-dic_wantrich_main = {
-    'time': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[1]/div[1]/div[2]'],
-    'grow': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[2]/div[1]/div[2]'],
-    'tech': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[3]/div[1]/div[2]'],
 
-}
 
 
 dic_mops_fin_roe = {
@@ -142,6 +134,37 @@ dic_mops_fin_cash_flow = {
     'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
 
+dic_dog = {
+    'page': 'Dog',
+    'risk_chk ':          ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]'],
+    'time_deposit_chk':   ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]'],
+
+}
+
+dic_wantrich_main = {
+    'time': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[1]/div[1]/div[2]'],
+    'grow': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[2]/div[1]/div[2]'],
+    'tech': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
+             '/html/body/div[4]/div[2]/div/div/article/div/div/div/div/section[1]/div/div[2]/ul/li[3]/div[1]/div[2]'],
+
+}
+
+
+dic_cmoney = {
+    'ave_score ': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[1]/span'],
+    'comment':    ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[2]'],
+
+}
+
+
+dic_web_handle = {
+    'dog': dic_dog,
+    'WantRich': dic_wantrich_main,
+    'CMoney': dic_cmoney,
+}
+
 
 dic_mops_fin = {
     'ROE': dic_mops_fin_roe,
@@ -158,6 +181,20 @@ dic_fin = {
     '營業利益率': 'Operating_Margin',
     '負債佔資產比率': 'Debt_Ratio',
     '營業現金對負債比': 'Cash_Flow'
+}
+
+
+dic_url = {
+    'FindBillion': 'https://www.findbillion.com/twstock/',
+    'Yahoo': 'https://tw.stock.yahoo.com/quote/',
+    'CMoney': 'https://www.cmoney.tw/forum/stock/',
+    'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
+    'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
+    'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
+    'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
+    'Wantgoo': r'https://www.wantgoo.com/stock/',
+    'Cnyes': r'https://invest.cnyes.com/twstock/tws/',
+    'dog': r'https://statementdog.com/analysis/',
 }
 
 
@@ -534,6 +571,36 @@ def fn_mops_fin(is_new_season=False):
             to = min(to + 10, len(sids))
 
 
+def fn_get_web_info(sid, web):
+    sid_info = sid
+    if web == 'dog':
+        sid_info = sid_info + '/stock-health-check'
+    link = dic_url[web] + sid_info
+
+    drv, action = fn_web_init(link, is_headless=False)
+    time.sleep(1)
+    print(link)
+
+    dic = dic_web_handle[web]
+
+    for k in dic.keys():
+        if k == 'page':
+            pass
+        else:
+            typ, slp, by, val = dic[k]
+            if typ == 'getText':
+                txt = fn_web_get_text(drv, val, slp=slp)
+                print(k, txt)
+                # try:
+                #     txt = fn_web_get_text(drv, val, slp=slp)
+                #     print(txt)
+                # except:
+                #     pass
+
+    time.sleep(2)
+    drv.close()
+
+
 def fn_main():
     t = time.time()
 
@@ -542,10 +609,14 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
-        # fn_want_rich(df, dic_cfg["stocks"])
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
+    #     # fn_want_rich(df, dic_cfg["stocks"])
+
+    webs = ['CMoney']
+    for w in webs:
+        fn_get_web_info('3661', w)
 
     # is_new_season = False
     # fn_mops_fin(is_new_season=is_new_season)
@@ -553,6 +624,7 @@ def fn_main():
     # fn_mops_file_move()
     # for fin in dic_fin.keys():
     #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+
 
     dur = int(time.time() - t)
     h = int(dur / 3600)

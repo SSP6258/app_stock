@@ -13,18 +13,6 @@ from app_stock_fb import *
 from app_utils import *
 from workalendar.asia import Taiwan
 
-dic_url = {
-    'FindBillion': 'https://www.findbillion.com/twstock/',
-    'Yahoo': 'https://tw.stock.yahoo.com/quote/',
-    'CMoney': 'https://www.cmoney.tw/forum/stock/',
-    'FinLab': r'https://ai.finlab.tw/stock/?stock_id=',
-    'WantRich': r'https://wantrich.chinatimes.com/tw-market/listed/stock/',
-    'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
-    'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
-    'Wantgoo': r'https://www.wantgoo.com/stock/',
-    'Cnyes': r'https://invest.cnyes.com/twstock/tws/',
-    'dog': r'https://statementdog.com/analysis/',
-}
 
 dic_sel = {
     'pick': []
@@ -886,9 +874,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
     cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
     cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [旺得富]({url_WantRich})、[CMoney]({url_CMoney})、[PChome]({url_PC})、')
+    cols[0].markdown(f'專業的: [財報狗]({url_dog})、[旺得富]({url_WantRich})、[CMoney]({url_CMoney})、')
     cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})、[鉅亨網]({url_Cnyes})、')
-    cols[0].markdown(f'{mkd_space}[財報狗]({url_dog})、')
+    cols[0].markdown(f'{mkd_space}[PChome]({url_PC})、')
 
     df_sid = fn_get_stock_price(sid, days=300)
     if df_sid.shape[0] > 0:
