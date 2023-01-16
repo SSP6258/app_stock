@@ -1126,18 +1126,26 @@ def fn_st_stock_main():
             df_all.at[idx, '產業別'] = field
             df_all.at[idx, '市場別'] = market
 
-    cols = st.columns([1.8, 2.4, 0.8])
+    # cols = st.columns([1.8, 2.4, 0.8])
+    cols = st.columns([1.7, 0.7, 0.5, 1.5])
 
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
     url = r'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD77cetO5GgS7c2YGH7ai5ocF_ZGMC64Wdqg&usqp=CAU'
+    img_plan = r'Plan.png'
+    img_b = r'B.png'
 
     img = fn_show_img(url)
+
+    img_Plan = fn_show_img(img_plan)
+    img_B = fn_show_img(img_b)
+
+
     # 👨‍💻  🐰
-    cols[0].title(r'')
+    # cols[0].title(r'')
     cols[0].title(r'👨‍💻 [$傑克潘$](https://www.facebook.com/jack.pan.96) $的$ :red[${\bf B}$] $計劃$ ')
-    cols[1].image(img)
-    # cols[2].title(r'')
-    # cols[2].title(' 🥕 🐇')
+    # cols[1].image(img)
+    cols[1].image(img_Plan)
+    cols[2].image(img_B)
 
     df = fn_st_stock_all(df_all)
     df_rcmd = df[df['Recommend'] == '1']
