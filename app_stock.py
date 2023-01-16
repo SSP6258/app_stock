@@ -828,7 +828,15 @@ def fn_idea():
         ),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    cols = st.columns([0.3, 0.8, 3, 0.8, 0.3])
+    cols[2].plotly_chart(fig, use_container_width=True)
+
+    for _ in range(3):
+        cols[1].write('')
+        cols[3].write('')
+
+    cols[1].image('NoPen.png')
+    cols[3].image('NoCmt.png')
 
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
@@ -1138,7 +1146,6 @@ def fn_st_stock_main():
 
     img_Plan = fn_show_img(img_plan)
     img_B = fn_show_img(img_b)
-
 
     # 👨‍💻  🐰
     # cols[0].title(r'')
