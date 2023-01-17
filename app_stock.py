@@ -894,7 +894,24 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         with tab_basic:
             fn_st_add_space(1)
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (季度):')
-            st.dataframe(df_fin)
+
+            def fn_color_roe_season(x):
+                val = 4.0
+                css = ''
+                css_h = 'background-color: pink; color: black'
+                css_l = 'background-color: lightgreen; color: black'
+
+                if len(str(x)) > 0:
+                    if float(x) >= val:
+                        css = css_h
+                    else:
+                        css = css_l
+
+                return css
+
+            df_fin_show = df_fin.style.applymap(fn_color_roe_season,
+                                                subset=[c for c in df_fin.columns if '權益' in c])
+            st.dataframe(df_fin_show)
 
             st.write('')
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (年度):')
@@ -904,7 +921,24 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             df_mop = df_mop[['年度']+[c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
             df_mop.sort_values(by=['年度'], ascending=[False], ignore_index=True, inplace=True)
 
-            st.dataframe(df_mop)
+            def fn_color_roe_year(x):
+                val = 15.0
+                css = ''
+                css_h = 'background-color: pink; color: black'
+                css_l = 'background-color: lightgreen; color: black'
+
+                if len(str(x)) > 0:
+                    if float(x) >= val:
+                        css = css_h
+                    else:
+                        css = css_l
+
+                return css
+
+            df_mop_show = df_mop.style.applymap(fn_color_roe_year,
+                                                subset=[c for c in df_mop.columns if '權益' in c])
+
+            st.dataframe(df_mop_show)
 
             st.write('')
             url = r'https://mopsfin.twse.com.tw/'
