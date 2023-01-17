@@ -893,11 +893,11 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
         with tab_basic:
             fn_st_add_space(1)
-            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
+            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (季度):')
             st.dataframe(df_fin)
 
             st.write('')
-            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
+            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (年度):')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
