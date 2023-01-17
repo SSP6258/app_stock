@@ -894,12 +894,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         with tab_basic:
             fn_st_add_space(1)
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標:')
-            st.write(df_fin)
+            st.dataframe(df_fin)
 
             st.write('')
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
             df_mop = df_mop.sort_values(by=['year'], ascending=[False])
-            st.write(df_mop)
+            st.dataframe(df_mop)
 
             st.write('')
             url = r'https://mopsfin.twse.com.tw/'
