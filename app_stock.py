@@ -1049,13 +1049,13 @@ def fn_st_chart_bar(df):
             # st.dataframe(df_show, height=500)
 
             def fn_color_df(x):
-                # css = 'background-color: white; color: black'
                 css = ''
                 css_h = 'background-color: pink; color: black'
-                if float(x) > 4.5:
+                f = float(x)
+                if f > 4.5 or f < -1.4:
                     css = css_h
 
-                if float(x) > 4.9:
+                if f > 4.9:
                     css = 'background-color: orangered; color: white'
 
                 return css
@@ -1064,7 +1064,7 @@ def fn_st_chart_bar(df):
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '價差' in c])
             st.dataframe(df_color, height=500)
 
 
