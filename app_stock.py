@@ -1052,19 +1052,19 @@ def fn_st_chart_bar(df):
                 css = ''
                 css_h = 'background-color: pink; color: black'
                 f = float(x)
-                if f > 4.5 or f < -1.4:
+                if 4.5 < f < 4.91 or f < -1.4:
                     css = css_h
 
-                if f > 4.9:
+                if 4.9 < f < 10.1:
                     css = 'background-color: orangered; color: white'
 
                 return css
 
-            pd.options.display.float_format = "{:.2f}".format
+            # pd.options.display.float_format = "{:.2f}".format
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '價差' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
             st.dataframe(df_color, height=500)
 
 
