@@ -898,7 +898,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
             st.write('')
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 權益報酬率(ROE) / 年:')
-            df_mop = df_mop.sort_values(by=['year'], ascending=[False])
+
+            df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
+            cols = [c for c in df_mop.columns if '-' in c]
+            df_mop = df_mop[['年度']+[c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
+            df_mop.sort_values(by=['年度'], ascending=[False], ignore_index=True, inplace=True)
+
             st.dataframe(df_mop)
 
             st.write('')
