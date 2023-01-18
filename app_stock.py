@@ -896,14 +896,17 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (季度):')
 
             def fn_color_roe_season(x):
-                val = 4.0
                 css = ''
                 css_h = 'background-color: pink; color: black'
+                css_m = 'background-color: lightyellow; color: black'
                 css_l = 'background-color: lightgreen; color: black'
 
                 if len(str(x)) > 0:
-                    if float(x) >= val:
+                    v = float(x)
+                    if v >= 4.0:
                         css = css_h
+                    elif v >= 2.0:
+                        css = css_m
                     else:
                         css = css_l
 
