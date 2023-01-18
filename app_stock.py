@@ -923,6 +923,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             cols = [c for c in df_mop.columns if '-' in c]
             df_mop = df_mop[['年度']+[c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
             df_mop.sort_values(by=['年度'], ascending=[False], ignore_index=True, inplace=True)
+            df_mop['年度'] = df_mop['年度'].apply(lambda x: str(x)+' 年')
 
             def fn_color_roe_year(x):
                 css = ''
