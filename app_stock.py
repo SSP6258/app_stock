@@ -1140,7 +1140,7 @@ def fn_st_reference():
         cols = st.columns([1, 1, 1, 1, 0.1])
         cols[0].markdown('#### :orange[$數據來源$]')
         cols[0].markdown('- [$FindBillion$](https://www.findbillion.com/)')
-        cols[0].markdown('- [$財務比較E點通$](https://mopsfin.twse.com.tw)')
+        cols[0].markdown('- [$財務比較e點通$](https://mopsfin.twse.com.tw)')
         cols[0].markdown('- [$公開資訊觀測站$](https://mops.twse.com.tw)')
         cols[0].markdown('- [$臺灣證券交易所$](https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU_d.html)')
         cols[0].markdown('- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
