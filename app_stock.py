@@ -925,14 +925,17 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             df_mop.sort_values(by=['年度'], ascending=[False], ignore_index=True, inplace=True)
 
             def fn_color_roe_year(x):
-                val = 15.0
                 css = ''
                 css_h = 'background-color: pink; color: black'
+                css_m = 'background-color: lightyellow; color: black'
                 css_l = 'background-color: lightgreen; color: black'
 
                 if len(str(x)) > 0:
-                    if float(x) >= val:
+                    v = float(x)
+                    if v >= 16.0:
                         css = css_h
+                    elif v >= 8.0:
+                        css = css_m
                     else:
                         css = css_l
 
