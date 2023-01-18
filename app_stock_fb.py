@@ -153,7 +153,7 @@ dic_wantrich_main = {
 
 
 dic_cmoney = {
-    'ave_score ': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[1]/span'],
+    'ave_score ': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div'],
     'comment':    ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[2]'],
 
 }
@@ -609,14 +609,14 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"])
-    #     # fn_want_rich(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"])
+        # fn_want_rich(df, dic_cfg["stocks"])
 
-    webs = ['CMoney']
-    for w in webs:
-        fn_get_web_info('3661', w)
+    # webs = ['CMoney']
+    # for w in webs:
+    #     fn_get_web_info('3661', w)
 
     # is_new_season = False
     # fn_mops_fin(is_new_season=is_new_season)

@@ -828,7 +828,7 @@ def fn_idea():
         ),
     )
 
-    cols = st.columns([0.3, 0.8, 3, 0.8, 0.3])
+    cols = st.columns([0.2, 0.9, 3, 0.9, 0.2])
     cols[2].plotly_chart(fig, use_container_width=True)
 
     for _ in range(3):
@@ -1127,19 +1127,24 @@ def fn_st_stock_all(df_all):
 
 def fn_st_reference():
     fn_st_add_space(1)
+    st.markdown('### 📚 參考資料:')
     with st.form(key='ref'):
-        st.markdown('### 📚 參考資料:')
-        cols = st.columns([1, 2, 1, 1, 1])
-        cols[0].markdown('#### 數據來源')
-        cols[0].markdown('- [FindBillion](https://www.findbillion.com/)')
-        cols[0].markdown('- [財務比較E點通](https://mopsfin.twse.com.tw)')
-        cols[0].markdown('- [公開資訊觀測站](https://mops.twse.com.tw)')
 
-        cols[1].markdown('#### 基本概念')
-        cols[1].markdown(
-            '- [下班經濟學-股魚](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
-        cols[1].markdown('- [Mr. Market市場先生](https://rich01.com/learn-stock-all/#%E8%B2%A1%E5%A0%B1%E8%88%87%E8%B2%A1%E5%8B%99%E6%8C%87%E6%A8%99)')
-        cols[1].markdown('- [FindBillion-財經AI與資料科學分析平台](https://www.youtube.com/@findbillion-ai563)')
+        cols = st.columns([1, 1, 1, 1, 0.1])
+        cols[0].markdown('#### :orange[$數據來源$]')
+        cols[0].markdown('- [$FindBillion$](https://www.findbillion.com/)')
+        cols[0].markdown('- [$財務比較E點通$](https://mopsfin.twse.com.tw)')
+        cols[0].markdown('- [$公開資訊觀測站$](https://mops.twse.com.tw)')
+        cols[0].markdown('- [$臺灣證券交易所$](https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU_d.html)')
+        cols[0].markdown('- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
+
+        cols[1].markdown('#### :orange[$基本概念$]')
+        cols[1].markdown('- [$下班經濟學-股魚$](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
+        cols[1].markdown('- [$Mr. Market市場先生$](https://rich01.com/learn-stock-all/#%E8%B2%A1%E5%A0%B1%E8%88%87%E8%B2%A1%E5%8B%99%E6%8C%87%E6%A8%99)')
+        cols[1].markdown('- [$財經AI與資料科學分析平台$](https://www.youtube.com/@findbillion-ai563)')
+
+        cols[2].markdown('#### :orange[$專業網站$]')
+        cols[2].markdown('- [$財報狗$](https://statementdog.com/)')
 
         cols[-1].form_submit_button('')
 
