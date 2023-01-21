@@ -1223,7 +1223,7 @@ def fn_read_per():
                 header = 3 if 'pera' in name else 1
                 market = '櫃' if 'pera' in name else '市'
                 # df = pd.read_csv(csv, na_filter=False, encoding='ANSI', index_col=None, dtype=str, header=header)
-                df = pd.read_csv(csv, na_filter=False, encoding='gb2312', index_col=None, dtype=str, header=header)
+                df = pd.read_csv(csv, na_filter=False, encoding='cp1252', index_col=None, dtype=str, header=header)
                 df['市場別'] = market
                 df['File'] = name
                 df = df.rename(columns=dic_rename)
