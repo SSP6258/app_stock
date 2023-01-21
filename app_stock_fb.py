@@ -24,8 +24,8 @@ dic_cfg = {
     },
     'mops_path': 'mops',
     'mops_fin_path': 'mops_fin_0106',
-    'per_latest_path': r'.\PER\PER_Latest',
-    'per_history_path': r'.\PER\PER_History',
+    'per_latest_path': r'./PER/PER_Latest',
+    'per_history_path': r'./PER/PER_History',
 }
 
 dic_fb_main = {
