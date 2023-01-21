@@ -1225,7 +1225,7 @@ def fn_read_per():
                 try:
                     df = pd.read_csv(csv, na_filter=False, encoding='ANSI', index_col=None, dtype=str, header=header)
                 except:
-                    df = pd.read_csv(csv, na_filter=False, encoding='gbk', index_col=None, dtype=str, header=header)
+                    df = pd.read_csv(csv, na_filter=False, encoding='big5', index_col=None, dtype=str, header=header)
                 df['市場別'] = market
                 df['File'] = name
                 df = df.rename(columns=dic_rename)
