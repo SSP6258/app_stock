@@ -1228,6 +1228,7 @@ def fn_read_per():
                 df = df.rename(columns=dic_rename)
                 df_per = pd.concat([df, df_per])
 
+
     df_per['日期'] = latest
     df_per = df_per[[c for c in df_per.columns if 'Unnamed' not in c and 'File' not in c] + ['File']]
     df_per = df_per[df_per['本益比'].apply(lambda x: str(x) != '' and str(x) != 'N/A' and str(x) != '-')]
