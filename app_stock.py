@@ -59,7 +59,7 @@ dic_fin_name = {
     'ROA': '資產報酬率',
     'OPM': '營業利益率',
     'DR' : '負債佔資產比率',
-    'OCF' : '營業現金對負債比',
+    'OCF': '營業現金對負債比',
 }
 
 dic_mkd = {
@@ -911,8 +911,21 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
 
         with tab_basic:
+            df_per = dic_mops['per']
+            if str(sid) in df_per['股票代號'].values:
+                df_per_sid = df_per[df_per['股票代號']==str(sid)]
+                per = df_per_sid['本益比'].values[0]
+                yr = df_per_sid['殖利率(%)'].values[0]
+                date_info = df_per_sid['日期'].values[0]
+            else:
+                per, yr, date_info = 'NA', 'NA', 'NA'
+
             fn_st_add_space(1)
-            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (季度):')
+            br = dic_mkd["2sp"]
+            st.markdown(f'##### :red[{sid_name}] {br}  :blue[本益比: {per} 倍] {br}  '
+                        f':orange[殖利率: {yr} %] {br} :green[日期: {date_info}]')
+            fn_st_add_space(1)
+            st.markdown(f'##### 基本面指標 (季度):')
 
             def fn_color_roe_season(x):
                 css = ''
@@ -936,7 +949,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             st.dataframe(df_fin_show)
 
             st.write('')
-            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 基本面指標 (年度):')
+            st.markdown(f'##### 基本面指標 (年度):')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
@@ -1184,7 +1197,6 @@ def fn_show_raw(df_all):
     st.dataframe(df_all_show, width=None, height=500)
 
 
-
 def fn_book():
 
     for b in dic_book_img.keys():
@@ -1193,6 +1205,35 @@ def fn_book():
         cols[1].image(dic_book_img[b], use_column_width=True)
         cols[2].markdown(f'《 [${b}$]({dic_book_lnk[b]}) 》')
         cols[2].markdown(dic_book_cmt[b])
+
+
+def fn_read_per():
+    latest = '0117'
+
+    dic_rename = {
+        '證券代號': '股票代號',
+        '證券名稱': '名稱',
+        }
+
+    df_per = pd.DataFrame()
+    for root, dirs, files in os.walk(dic_cfg['per_latest_path']):
+        for name in files:
+            if latest in name:
+                csv = os.path.join(root, name)
+                header = 3 if 'pera' in name else 1
+                market = '櫃' if 'pera' in name else '市'
+                df = pd.read_csv(csv, na_filter=False, encoding='ANSI', index_col=None, dtype=str, header=header)
+                df['市場別'] = market
+                df['File'] = name
+                df = df.rename(columns=dic_rename)
+                df_per = pd.concat([df, df_per])
+
+    df_per['日期'] = latest
+    df_per = df_per[[c for c in df_per.columns if 'Unnamed' not in c and 'File' not in c] + ['File']]
+    df_per = df_per[df_per['本益比'].apply(lambda x: str(x) != '' and str(x) != 'N/A' and str(x) != '-')]
+    df_per = df_per.sort_values(by=['股票代號'], ignore_index=True)
+    # st.write(df_per)
+    dic_mops['per'] = df_per
 
 
 def fn_st_stock_main():
@@ -1244,6 +1285,9 @@ def fn_st_stock_main():
     dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
     dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
     dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
+
+    fn_read_per()
+
     tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book = st.tabs(['實驗設計', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單'])
 
     with tab_idea:

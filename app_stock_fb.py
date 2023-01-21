@@ -24,6 +24,8 @@ dic_cfg = {
     },
     'mops_path': 'mops',
     'mops_fin_path': 'mops_fin_0106',
+    'per_latest_path': r'.\PER\PER_Latest',
+    'per_history_path': r'.\PER\PER_History',
 }
 
 dic_fb_main = {
@@ -612,7 +614,6 @@ def fn_main():
     if fn_is_parsing():
         df = fn_fb_recommend_stock()
         fn_find_billion(df, dic_cfg["stocks"])
-        # fn_want_rich(df, dic_cfg["stocks"])
 
     # webs = ['CMoney']
     # for w in webs:
@@ -624,6 +625,8 @@ def fn_main():
     # fn_mops_file_move()
     # for fin in dic_fin.keys():
     #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+
+
 
 
     dur = int(time.time() - t)
