@@ -69,6 +69,25 @@ dic_mkd = {
 }
 
 
+dic_book_img = {
+    '我的職業是股東': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/080/05/0010800551.jpg&v=5baa0e38k&w=348&h=348',
+    '大會計師教你從財報數字看懂經營本質': r'https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/082/53/0010825332.jpg&v=5d038542k&w=348&h=348',
+}
+
+dic_book_lnk = {
+    '我的職業是股東': r'https://www.books.com.tw/products/0010800551?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-201809',
+    '大會計師教你從財報數字看懂經營本質': r'https://www.books.com.tw/products/0010825332?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-202205',
+}
+
+dic_book_cmt = {
+    '我的職業是股東': '''這是一本很完整的投資方法大全，談到各種投資方法優缺點，  
+                       講的比教科書好，非常適合投資新手入門。''',
+
+    '大會計師教你從財報數字看懂經營本質': '''這是一本十分淺顯易懂的財報入門書籍，會從基礎三大報表開始談起告訴你如何分析，  
+                                       內容有附上許多實際案例與比較，讓人更清楚每個財報項目與指標的作用。''',
+}
+
+
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
@@ -1165,33 +1184,15 @@ def fn_show_raw(df_all):
     st.dataframe(df_all_show, width=None, height=500)
 
 
-dic_book_img = {
-    '我的職業是股東': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/080/05/0010800551.jpg&v=5baa0e38k&w=348&h=348',
-    '大會計師教你從財報數字看懂經營本質': r'https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/082/53/0010825332.jpg&v=5d038542k&w=348&h=348',
-}
-
-dic_book_lnk = {
-    '我的職業是股東': r'https://www.books.com.tw/products/0010800551?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-201809',
-    '大會計師教你從財報數字看懂經營本質': r'https://www.books.com.tw/products/0010825332?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-202205',
-}
-
-dic_book_cmt = {
-    '我的職業是股東': '''這是一本很完整的投資方法大全，談到各種投資方法優缺點，  
-                       講的比教科書好，非常適合投資新手入門。''',
-
-    '大會計師教你從財報數字看懂經營本質': '''這是一本十分淺顯易懂的財報入門書籍，會從基礎三大報表開始談起告訴你如何分析，  
-                                       內容有附上許多實際案例與比較，讓人更清楚每個財報項目與指標的作用。''',
-}
-
 
 def fn_book():
 
     for b in dic_book_img.keys():
         fn_st_add_space(1)
-        cols = st.columns([1, 3, 1])
-        cols[0].image(dic_book_img[b], use_column_width=True)
-        cols[1].markdown(f'[${b}$]({dic_book_lnk[b]})')
-        cols[1].markdown(dic_book_cmt[b])
+        cols = st.columns([0.5, 1, 3])
+        cols[1].image(dic_book_img[b], use_column_width=True)
+        cols[2].markdown(f'[${b}$]({dic_book_lnk[b]})')
+        cols[2].markdown(dic_book_cmt[b])
 
 
 def fn_st_stock_main():
