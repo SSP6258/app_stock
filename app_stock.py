@@ -865,7 +865,7 @@ def fn_idea():
     cols[3].image('NoCmt.png')
 
     cols2 = st.columns(3)
-    head_sp = 6*dic_mkd["4sp"]
+    head_sp = 7*dic_mkd["4sp"]
     cols2[0].markdown(f'#### {head_sp}$選對菜苗$ ')
     cols2[0].image(r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/309388090_10222161832020359_7338223477996003798_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=fKbiwm7ubXYAX8T9jTy&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfCfTlhW9PAkRr-1NDsa_c8PR8HpJgMOKawaFKKezdHaOg&oe=63D26002')
     cols2[1].markdown(f'#### {head_sp}$假以時日$')
