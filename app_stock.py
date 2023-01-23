@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 from app_stock_fb import *
 from app_utils import *
 from workalendar.asia import Taiwan
-# from streamlit_player import st_player
+from streamlit_player import st_player
 
 
 dic_sel = {
@@ -864,20 +864,46 @@ def fn_idea():
     cols[1].image('NoPen.png')
     cols[3].image('NoCmt.png')
 
-    cols2 = st.columns(3)
-    head_sp = 7*dic_mkd["4sp"]
-    cols2[0].markdown(f'#### {head_sp}$選對菜苗$ ')
-    # cols2[0].image(r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/309388090_10222161832020359_7338223477996003798_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=fKbiwm7ubXYAX8T9jTy&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfCfTlhW9PAkRr-1NDsa_c8PR8HpJgMOKawaFKKezdHaOg&oe=63D26002')
-    cols2[0].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
-    cols2[0].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0')
+    tab_1, tab_2 = st.tabs(['蘿蔔', '芥菜'])
+    head_sp = 4*dic_mkd["4sp"]
 
-    cols2[1].markdown(f'#### {head_sp}$假以時日$')
-    cols2[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XThoNff5llgAX-FTN4p&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDOK_dHCgUBiCvLoMWSQm3gVT1wkvNEMqR46tBWYmbgSg&oe=63D315C9')
-    cols2[1].image(r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0')
+    with tab_1:
+        cols = st.columns(4)
 
-    cols2[2].markdown(f'#### {head_sp}$擁抱收穫$')
-    cols2[2].image(r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=3OX4-5R4IYsAX8FXVB6&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfAKHC3ipF0WV9-nXw3_rIr6CzLi8hbZLV9onwZX11WRoA&oe=63D38BFB')
-    cols2[2].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC')
+        with cols[0]:
+            st.markdown(f'#### {head_sp}$教學參考$ ')
+            video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
+            st_player(video, key='video_radish', playing=False, loop=False, volume=1, height=440, light=True)
+
+        cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
+        cols[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
+
+        cols[2].markdown(f'#### {head_sp}$耐心等待$')
+        cols[2].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XThoNff5llgAX-FTN4p&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDOK_dHCgUBiCvLoMWSQm3gVT1wkvNEMqR46tBWYmbgSg&oe=63D315C9')
+
+        cols[3].markdown(f'#### {head_sp}$擁抱收穫$')
+        cols[3].image(r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=3OX4-5R4IYsAX8FXVB6&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfAKHC3ipF0WV9-nXw3_rIr6CzLi8hbZLV9onwZX11WRoA&oe=63D38BFB')
+
+    with tab_2:
+        cols = st.columns(4)
+
+        with cols[0]:
+            st.markdown(f'#### {head_sp}$教學參考$ ')
+            video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
+            st_player(video, key='video_leaf_mustard', playing=False, loop=False, volume=1, height=440, light=True)
+
+        cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
+        cols[1].image(
+            r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0')
+
+        cols[2].markdown(f'#### {head_sp}$耐心等待$')
+        cols[2].image(
+            r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0')
+
+        cols[3].markdown(f'#### {head_sp}$擁抱收穫$')
+        cols[3].image(
+            r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC')
+
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
@@ -944,7 +970,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             fn_st_add_space(1)
             br = dic_mkd["2sp"]
             st.markdown(f'##### :red[{sid_name}] {br}  :blue[本益比: {per} 倍] {br}  '
-                        f':orange[殖利率: {yr} %] {br} :green[日期: {date_info}]')
+                        f':orange[殖利率: {yr} %] {br} :green[日期: {date_info}]  ')
+
             fn_st_add_space(1)
             st.markdown(f'##### 基本面指標 (季度):')
 
