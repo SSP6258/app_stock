@@ -865,7 +865,7 @@ def fn_idea():
     cols[3].image('NoCmt.png')
 
     tab_1, tab_2 = st.tabs(['白蘿蔔', '芥菜'])
-    head_sp = 4*dic_mkd["4sp"]
+    head_sp = 5*dic_mkd["4sp"]
 
     with tab_1:
         cols = st.columns(4)
