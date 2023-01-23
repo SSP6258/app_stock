@@ -867,7 +867,8 @@ def fn_idea():
     cols2 = st.columns(3)
     head_sp = 7*dic_mkd["4sp"]
     cols2[0].markdown(f'#### {head_sp}$選對菜苗$ ')
-    cols2[0].image(r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/309388090_10222161832020359_7338223477996003798_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=fKbiwm7ubXYAX8T9jTy&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfCfTlhW9PAkRr-1NDsa_c8PR8HpJgMOKawaFKKezdHaOg&oe=63D26002')
+    # cols2[0].image(r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/309388090_10222161832020359_7338223477996003798_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=fKbiwm7ubXYAX8T9jTy&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfCfTlhW9PAkRr-1NDsa_c8PR8HpJgMOKawaFKKezdHaOg&oe=63D26002')
+    cols2[0].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
     cols2[0].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0')
 
     cols2[1].markdown(f'#### {head_sp}$假以時日$')
