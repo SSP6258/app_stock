@@ -864,7 +864,7 @@ def fn_idea():
     cols[1].image('NoPen.png')
     cols[3].image('NoCmt.png')
 
-    tab_1, tab_2 = st.tabs(['蘿蔔', '芥菜'])
+    tab_1, tab_2 = st.tabs(['白蘿蔔', '芥菜'])
     head_sp = 4*dic_mkd["4sp"]
 
     with tab_1:
@@ -873,7 +873,7 @@ def fn_idea():
         with cols[0]:
             st.markdown(f'#### {head_sp}$教學參考$ ')
             video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
-            st_player(video, key='video_radish', playing=False, loop=False, volume=1, height=440, light=True)
+            st_player(video, key='video_tab1', playing=False, loop=False, volume=1, height=440, light=True)
 
         cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
         cols[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
@@ -890,7 +890,7 @@ def fn_idea():
         with cols[0]:
             st.markdown(f'#### {head_sp}$教學參考$ ')
             video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
-            st_player(video, key='video_leaf_mustard', playing=False, loop=False, volume=1, height=440, light=True)
+            st_player(video, key='video_tab2', playing=False, loop=False, volume=1, height=440, light=True)
 
         cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
         cols[1].image(
