@@ -385,6 +385,9 @@ def fn_st_stock_sel(df_all):
         df_sel.sort_values(by=['max'], ascending=False, inplace=True, ignore_index=True)
 
         sel_sid = list(df_sel["sid_name"].unique())
+
+
+
         sel_num = df_sel["sid"].nunique()
         c1, c2 = st.columns([2.5, 1])
         st.info(txt)
@@ -1290,6 +1293,15 @@ def fn_read_per():
     dic_mops['per'] = df_per
 
 
+def fn_proj():
+
+    fn_st_add_space(1)
+    st.markdown('### 🗃️ 其它專案:')
+    st.markdown(f'#### 📌 $專案:$ 🏠 [$尋找夢想家$](https://taipei-house-price.streamlit.app/)')
+    st.markdown(f'#### 📌 $專案:$ 🌏 [$利用座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
+    st.markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
+
+
 def fn_st_stock_main():
     stock_file = dic_cfg['stock_file']
     if not os.path.exists(stock_file):
@@ -1342,7 +1354,7 @@ def fn_st_stock_main():
 
     fn_read_per()
 
-    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單'])
+    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其他專案'])
 
     with tab_idea:
         fn_idea()
@@ -1363,6 +1375,8 @@ def fn_st_stock_main():
     with tab_book:
         fn_book()
 
+    with tab_proj:
+        fn_proj()
 
 
 def fn_st_init():
