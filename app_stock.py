@@ -848,7 +848,7 @@ def fn_idea():
         ),
     )
 
-    cols = st.columns([0.1, 0.9, 3, 0.9, 0.1])
+    cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
     cols[2].plotly_chart(fig, use_container_width=True)
 
     for _ in range(3):
@@ -861,8 +861,11 @@ def fn_idea():
     #     st.image(r'https://media.tenor.com/A4sSB_2oepAAAAAM/impressive-slam-dunk.gif', use_column_width=True)
     #     st_player(Music, key='music', playing=True, loop=True, volume=0.3, height=100, light=True)
 
-    cols[1].image('NoPen.png')
-    cols[3].image('NoCmt.png')
+    cols[3].image('NoPenCmt.png')
+    # cols[3].image('NoCmt.png')
+    cols[1].image('sign.png')
+    # cols[1].image('yr.png')
+    # cols[1].image('name.png')
 
     tab_1, tab_2 = st.tabs(['白蘿蔔', '芥菜'])
     head_sp = 5*dic_mkd["4sp"]
@@ -875,24 +878,24 @@ def fn_idea():
             video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
             st_player(video, key='video_tab1', playing=False, loop=False, volume=1, height=440, light=True)
 
-        cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
+        cols[1].markdown(f'#### {head_sp}:red[$慎選$]$標的$')
         cols[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
 
         cols[2].markdown(f'#### {head_sp}$耐心等待$')
         cols[2].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XThoNff5llgAX-FTN4p&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDOK_dHCgUBiCvLoMWSQm3gVT1wkvNEMqR46tBWYmbgSg&oe=63D315C9')
 
-        cols[3].markdown(f'#### {head_sp}$擁抱收穫$')
+        cols[3].markdown(f'#### {head_sp}$期盼收穫$')
         cols[3].image(r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=3OX4-5R4IYsAX8FXVB6&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfAKHC3ipF0WV9-nXw3_rIr6CzLi8hbZLV9onwZX11WRoA&oe=63D38BFB')
 
     with tab_2:
         cols = st.columns(4)
 
         with cols[0]:
-            st.markdown(f'#### {head_sp}$教學參考$ ')
+            st.markdown(f'#### {head_sp}$教學參考$')
             video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
             st_player(video, key='video_tab2', playing=False, loop=False, volume=1, height=440, light=True)
 
-        cols[1].markdown(f'#### {head_sp}$慎選標的$ ')
+        cols[1].markdown(f'#### {head_sp}:red[$慎選$]$標的$')
         cols[1].image(
             r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0')
 
@@ -900,7 +903,7 @@ def fn_idea():
         cols[2].image(
             r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0')
 
-        cols[3].markdown(f'#### {head_sp}$擁抱收穫$')
+        cols[3].markdown(f'#### {head_sp}$期盼收穫$')
         cols[3].image(
             r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC')
 
