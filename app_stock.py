@@ -1342,7 +1342,7 @@ def fn_st_stock_main():
 
     fn_read_per()
 
-    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book = st.tabs(['實驗設計', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單'])
+    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單'])
 
     with tab_idea:
         fn_idea()
