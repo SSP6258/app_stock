@@ -872,7 +872,7 @@ def fn_idea():
     cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
     cols[2].plotly_chart(fig, use_container_width=True)
 
-    for _ in range(3):
+    for _ in range(4):
         cols[1].write('')
         cols[3].write('')
 
