@@ -392,19 +392,37 @@ def fn_st_stock_sel(df_all):
         st.error(f'#### 👉 篩選結果({sel_num}檔): {", ".join(sel_sid)}')
         fn_st_add_space(1)
 
+        df_sel['sid_and_name'] = df_sel['sid'] + df_sel['sid_name']
+        with st.form(key='watch'):
+            st.markdown(f'#### 👀 選擇關注個股:')
+            option_all = df_sel['sid_and_name'].unique().tolist()
+            option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
+            option_sel = st.multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='hidden')
 
+            st.form_submit_button('選擇')
+
+        fn_st_add_space(1)
+
+        watchs = [s in option_sel for s in df_sel['sid_and_name'].values]
+
+        df_sel = df_sel[watchs]
+        df_sel.reset_index(inplace=True, drop=True)
+
+        sel_sid = list(df_sel["sid_name"].unique())
+
+        # st.write(df_sel)
 
         sel_num_metric = sel_num  # min(sel_num, 8)
-
         # cs = st.columns(sel_num_metric + 1)
-        metric_cols = 9
+        metric_cols = 8
         cs = st.columns(metric_cols)
         # cs[0].markdown('# 👀')
         cs[0].metric('關注個股', '👀', '績效/天數', delta_color='inverse')
         # j = 1
         profs = []
         metrics = []
-        for i in range(sel_num_metric):
+        # for i in range(sel_num_metric):
+        for i in range(len(sel_sid)):
             sid_name = sel_sid[i]
 
             df_sid = df_sel[df_sel['sid_name'] == sid_name]
