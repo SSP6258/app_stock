@@ -1317,11 +1317,12 @@ def fn_read_per():
 
 def fn_proj():
 
-    fn_st_add_space(1)
-    st.markdown('### 🗃️ 其它專案:')
-    st.markdown(f'#### 📌 $專案:$ 🏠 [$尋找夢想家$](https://taipei-house-price.streamlit.app/)')
-    st.markdown(f'#### 📌 $專案:$ 🌏 [$利用座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
-    st.markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
+    fn_st_add_space(2)
+    cols = st.columns([1.4, 3])
+    cols[1].markdown('### 🗃️ 其它專案:')
+    cols[1].markdown(f'#### 📌 $專案:$ 🏠 [$尋找夢想家$](https://taipei-house-price.streamlit.app/)')
+    cols[1].markdown(f'#### 📌 $專案:$ 🌏 [$利用座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
+    cols[1].markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
 
 
 def fn_st_stock_main():
