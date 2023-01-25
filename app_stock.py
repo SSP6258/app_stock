@@ -400,9 +400,10 @@ def fn_st_stock_sel(df_all):
             st.markdown(f'#### 👀 選擇關注個股:')
             option_all = df_sel['sid_and_name'].unique().tolist()
             option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
-            option_sel = st.multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
-
-            st.form_submit_button('選擇')
+            cols = st.columns([6, 0.5, 1])
+            option_sel = cols[0].multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
+            cols[2].form_submit_button('選擇')
+            fn_st_add_space(1)
 
         fn_st_add_space(1)
 
