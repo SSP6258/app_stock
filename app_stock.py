@@ -386,13 +386,13 @@ def fn_st_stock_sel(df_all):
 
         sel_sid = list(df_sel["sid_name"].unique())
 
-
-
         sel_num = df_sel["sid"].nunique()
         c1, c2 = st.columns([2.5, 1])
         st.info(txt)
         st.error(f'#### 👉 篩選結果({sel_num}檔): {", ".join(sel_sid)}')
         fn_st_add_space(1)
+
+
 
         sel_num_metric = sel_num  # min(sel_num, 8)
 
@@ -864,11 +864,14 @@ def fn_idea():
     #     st.image(r'https://media.tenor.com/A4sSB_2oepAAAAAM/impressive-slam-dunk.gif', use_column_width=True)
     #     st_player(Music, key='music', playing=True, loop=True, volume=0.3, height=100, light=True)
 
-    cols[3].image('NoPenCmt.png')
-    # cols[3].image('NoCmt.png')
     cols[1].image('sign.png')
+    cols[1].image('word1.png')
     # cols[1].image('yr.png')
     # cols[1].image('name.png')
+
+    cols[3].image('NoPenCmt.png')
+    cols[3].image('word2.png')
+    # cols[3].image('NoCmt.png')
 
     tab_1, tab_2 = st.tabs(['白蘿蔔', '芥菜'])
     head_sp = 5*dic_mkd["4sp"]
@@ -882,7 +885,8 @@ def fn_idea():
             st_player(video, key='video_tab1', playing=False, loop=False, volume=1, height=440, light=True)
 
         cols[1].markdown(f'#### {head_sp}:red[$慎選$]$標的$')
-        cols[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264')
+        cols[1].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264',
+                      caption='')
 
         cols[2].markdown(f'#### {head_sp}$耐心等待$')
         cols[2].image(r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XThoNff5llgAX-FTN4p&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDOK_dHCgUBiCvLoMWSQm3gVT1wkvNEMqR46tBWYmbgSg&oe=63D315C9')
