@@ -1280,7 +1280,7 @@ def fn_book():
     fn_st_add_space(1)
     for b in dic_book_img.keys():
         fn_st_add_space(1)
-        cols = st.columns([0.5, 1, 3])
+        cols = st.columns([0.7, 1, 2.5])
         cols[1].image(dic_book_img[b], use_column_width=True)
         cols[2].markdown(f'《 [${b}$]({dic_book_lnk[b]}) 》')
         cols[2].markdown(dic_book_cmt[b])
