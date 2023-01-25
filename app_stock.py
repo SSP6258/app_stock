@@ -1274,7 +1274,7 @@ def fn_show_raw(df_all):
 
 
 def fn_book():
-
+    fn_st_add_space(1)
     for b in dic_book_img.keys():
         fn_st_add_space(1)
         cols = st.columns([0.5, 1, 3])
