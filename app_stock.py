@@ -84,9 +84,6 @@ dic_book_cmt = {
     '我的職業是股東': '''這本書概念性的介紹各種投資理論，並比較各門派投資方法的優缺點，  
                        沒有論及太多技術細節，讀起來相對輕鬆，適合當投資小白的入門書。''',
 
-    # '大會計師教你從財報數字看懂經營本質': '''這是一本十分淺顯易懂的財報入門書籍，會從基礎三大報表開始談起告訴你如何分析，
-    #                                    內容有附上許多實際案例與比較，讓人更清楚每個財報項目與指標的作用。''',
-
     '大會計師教你從財報數字看懂經營本質': '''這本書介紹三大財務報表(資產負債表、損益表、現金流量表)的各項指標，  
                                        以及如何由這些指標判斷公司的經營體質。  
                                        個人覺得若非財會背景還是不容易消化，需要多反芻幾次，才可內化成自身武功''',
@@ -873,6 +870,8 @@ def fn_idea():
             pad=4
         ),
     )
+    cols = st.columns([1, 3, 1])
+    cols[1].image('save.png')
 
     cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
     cols[2].plotly_chart(fig, use_container_width=True)
@@ -991,7 +990,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
 
         with tab_basic:
-            st.image('save.png', width=None)
+            # st.image('save.png', width=None)
             df_per = dic_mops['per']
             if str(sid) in df_per['股票代號'].values:
                 df_per_sid = df_per[df_per['股票代號']==str(sid)]
