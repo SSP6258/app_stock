@@ -990,6 +990,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
 
         with tab_basic:
+            st.image('save.png', width=None)
             df_per = dic_mops['per']
             if str(sid) in df_per['股票代號'].values:
                 df_per_sid = df_per[df_per['股票代號']==str(sid)]
