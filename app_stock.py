@@ -957,7 +957,8 @@ def fn_idea():
 
         cols[3].markdown(f'#### {head_sp}$期盼收穫$')
         cols[3].image(
-            r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC')
+            r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC',
+            caption='長年菜')
 
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
