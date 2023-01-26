@@ -1368,6 +1368,8 @@ def fn_st_stock_main():
     # cols[1].image(img)
     cols[1].image(img_Plan)
     cols[2].image(img_B)
+    cols[3].write('')
+    cols[3].image('use_pc.png')
 
     df = fn_st_stock_all(df_all)
     df_rcmd = df[df['Recommend'] == '1']
