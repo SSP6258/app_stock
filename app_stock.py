@@ -902,19 +902,23 @@ def fn_idea():
         cols = st.columns(4)
 
         video = r'https://www.youtube.com/watch?v=jQtHilLwA44'
+        tit0 = f'#### {head_sp}$教學參考$'
+        tit1 = f'#### {head_sp}:red[$慎選$]$標的$'
+        tit2 = f'#### {head_sp}$耐心等待$'
+        tit3 = f'#### {head_sp}$期盼收穫$'
         img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=ohpRhHXheQEAX8jSvVa&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfC8wHT36erJfTxiuU7owQ6jVf6kN9Cv7hzp3H6YhH58EQ&oe=63D7B6B7'
         img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=famxrze1V_AAX9ttIl3&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfB72Pp__53Wi5GXG6PfJ2jKFyXwnwIfwOro0t2pUn24Jw&oe=63D7610A'
         img3 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Ue4gNZR9BcwAX9mmkDW&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfC1Q64xhdXJVLxVUXUsdp7Sv0ui8pUSgDh9sMV9gy7YhA&oe=63D77E0C'
 
         with cols[0]:
-            st.markdown(f'#### {head_sp}$教學參考$ ')
+            st.markdown(tit0)
             st_player(video, key='video_tab0', playing=False, loop=False, volume=1, height=440, light=True)
 
-        cols[1].markdown(f'#### {head_sp}:red[$慎選$]$標的$')
+        cols[1].markdown(tit1)
         cols[1].image(img1, caption='很快就發芽了')
-        cols[2].markdown(f'#### {head_sp}$耐心等待$')
-        cols[2].image(img2, caption='薑黃開的白色花朵，美麗優雅~')
-        cols[3].markdown(f'#### {head_sp}$期盼收穫$')
+        cols[2].markdown(tit2)
+        cols[2].image(img2, caption='薑黃開的白色花朵，美麗優雅 ~')
+        cols[3].markdown(tit3)
         cols[3].image(img3, caption='小農婦自己種的薑')
 
     with tab_1:
