@@ -870,7 +870,7 @@ def fn_idea():
             pad=4
         ),
     )
-    cols = st.columns([1, 3, 1])
+    cols = st.columns([1.5, 3, 1.5])
     cols[1].image('save.png')
 
     cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
