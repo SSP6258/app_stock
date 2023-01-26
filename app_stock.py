@@ -1326,7 +1326,7 @@ def fn_proj():
     cols = st.columns([1.4, 3])
     cols[1].markdown('### 🗃️ 其它專案:')
     cols[1].markdown(f'#### 📌 $專案:$ 🏠 [$尋找夢想家$](https://taipei-house-price.streamlit.app/)')
-    cols[1].markdown(f'#### 📌 $專案:$ 🌏 [$利用座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
+    cols[1].markdown(f'#### 📌 $專案:$ 🌏 [$座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
     cols[1].markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
 
 
