@@ -886,6 +886,7 @@ def fn_idea():
     cols[3].image('NoPenCmt.png')
     cols[3].image('word2.png')
 
+    st.markdown(f'# 👨‍🌾 :blue[$碼農$]{dic_mkd["1sp"]}$與${dic_mkd["1sp"]} :green[$菜農$]')
     tab_0, tab_1, tab_2 = st.tabs(['薑', '白蘿蔔', '芥菜'])
     head_sp = 5*dic_mkd["4sp"]
 
@@ -948,6 +949,19 @@ def fn_idea():
         cols[3].markdown(tit3)
         cols[3].image(img3, caption='長年菜')
 
+    img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/326872786_498906945660644_8814746089160978641_n.jpg?stp=cp6_dst-jpg_p180x540&_nc_cat=109&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=YZCtmnq30wEAX9yikRz&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfACi6Ez1a3BA4_25UsKfJ-uccVNZDMbef_nO_9Hd0LWBQ&oe=63D74D34'
+    img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/292942112_10221745320007819_7089822442541218766_n.jpg?stp=cp6_dst-jpg&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=5PmXg8nAAqAAX-Fgv13&_nc_oc=AQnXm76wMe5TleaIOvurE-PJz3BgacdtdLsddn9t6L1D3KI8iDjJILCZ3J7qObdd-J1zdc3qeIBR0z1Gy9EICW77&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfD45-M0zLrQsXk_Qlu07VuBrqoYh17eL8W-u-Kzs6qxyw&oe=63D8F6F1'
+    img1 = r'https://scontent.ftpe8-3.fna.fbcdn.net/v/t39.30808-6/213558474_10220034621961437_613033686465289000_n.jpg?stp=c0.79.720.720a_dst-jpg_s851x315&_nc_cat=111&ccb=1-7&_nc_sid=da31f3&_nc_ohc=PzE1Mh7heusAX9Iqddw&_nc_ht=scontent.ftpe8-3.fna&oh=00_AfCKygtR30pEUSMhHVI_gIH7fNmHJpvFpVpkyx8z5Eb2UA&oe=63D89838'
+    img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?stp=c0.85.702.702a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=80sDHAkO4YgAX99LFOn&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfCbYWGaZkIibmYf3iaypNLw8fgJi8nw2VyUXOWeqJPhKw&oe=63D91ABB'
+    img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/272767780_10220980105757941_4447844687755244925_n.jpg?stp=c0.88.692.692a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Qj6mMXyy3r0AX9N2mFB&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfBu4fier5xgYx5hjMdN-iQc8_trlhkIIw4nazRTOtjXOA&oe=63D76D60'
+    img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?stp=c0.85.702.702a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=80sDHAkO4YgAX99LFOn&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfCbYWGaZkIibmYf3iaypNLw8fgJi8nw2VyUXOWeqJPhKw&oe=63D91ABB'
+    img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yFFOiVTkM04AX8tc2TG&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfB484X6Uf13k0doW6thK9RGETeeFGORYjS04_V7ohCKSA&oe=63D843DA'
+
+    cols = st.columns([1.5, 1.5, 2])
+    # cols[0].image(img1, width=550)
+    cols[0].image(img1, use_column_width=True)
+    cols[1].image(img2, use_column_width=True)
+    cols[2].image(img3, use_column_width=True)
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
