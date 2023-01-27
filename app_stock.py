@@ -955,7 +955,7 @@ def fn_idea():
 
     cols = st.columns([1.5, 1.5, 2])
     # cols[0].image(img1, width=550)
-    cols[0].image(img1, caption='用愛耕耘', use_column_width=True)
+    cols[0].image(img1, caption='為愛耕耘', use_column_width=True)
     cols[1].image(img2, caption='豆豆龍 🎵 ~', use_column_width=True)
     cols[2].image(img3, caption='一起來玩', use_column_width=True)
 
