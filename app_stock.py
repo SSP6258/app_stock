@@ -1035,18 +1035,15 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                     source = '證券櫃檯買賣中心'
                     link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
 
-            else:
-                per, yr, date_info = 'NA', 'NA', 'NA'
+                fn_st_add_space(1)
+                br = dic_mkd["2sp"]
+                # blue, green, orange, red, violet
 
-            fn_st_add_space(1)
-            br = dic_mkd["2sp"]
-            # blue, green, orange, red, violet
+                st.markdown(f'##### :red[{sid_name}] {br} :orange[股價: {sid_price} 元] {br} :violet[EPS: {eps}] {br} :green[本益比: {per} 倍] {br}  '
+                            f':orange[殖利率: {yr} %] {br} :blue[日期: {date_info}]')
 
-            st.markdown(f'##### :red[{sid_name}] {br} :orange[股價: {sid_price} 元] {br} :violet[EPS: {eps}] {br} :green[本益比: {per} 倍] {br}  '
-                        f':orange[殖利率: {yr} %] {br} :blue[日期: {date_info}]')
-
-            st.markdown(
-                f'###### $資料來源$: [${source}$]({link})  ')
+                st.markdown(
+                    f'###### $資料來源$: [${source}$]({link})  ')
 
             fn_st_add_space(1)
             st.markdown(f'##### 基本面指標 (季度):')
