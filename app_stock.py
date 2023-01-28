@@ -963,6 +963,7 @@ def fn_idea():
     cols[1].image(img2, caption='豆豆龍 🎵 ~', use_column_width=True)
     cols[2].image(img3, caption='一起來玩', use_column_width=True)
 
+
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1011,6 +1012,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'{mkd_space}[PChome]({url_PC})、')
 
     df_sid = fn_get_stock_price(sid, days=300)
+    sid_price = round(df_sid['Close'].values[-1], 1)
+
     if df_sid.shape[0] > 0:
 
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
@@ -1019,17 +1022,26 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             # st.image('save.png', width=None)
             df_per = dic_mops['per']
             if str(sid) in df_per['股票代號'].values:
-                df_per_sid = df_per[df_per['股票代號']==str(sid)]
+                df_per_sid = df_per[df_per['股票代號'] == str(sid)]
                 per = df_per_sid['本益比'].values[0]
                 yr = df_per_sid['殖利率(%)'].values[0]
+                eps = round(sid_price/float(per), 1)
                 date_info = df_per_sid['日期'].values[0]
+                market = df_per_sid["市場別"].values[0]
+                if market == '市':
+                    link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                else:
+                    link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
+
             else:
                 per, yr, date_info = 'NA', 'NA', 'NA'
 
             fn_st_add_space(1)
             br = dic_mkd["2sp"]
-            st.markdown(f'##### :red[{sid_name}] {br}  :blue[本益比: {per} 倍] {br}  '
-                        f':orange[殖利率: {yr} %] {br} :green[日期: {date_info}]  ')
+            # blue, green, orange, red, violet
+
+            st.markdown(f'##### :red[{sid_name}] {br} :orange[股價: {sid_price} 元] {br} :violet[EPS: {eps}] {br} :green[本益比: {per} 倍] {br}  '
+                        f':orange[殖利率: {yr} %] {br} :blue[資料日期: [{date_info}]({link})]  ')
 
             fn_st_add_space(1)
             st.markdown(f'##### 基本面指標 (季度):')
