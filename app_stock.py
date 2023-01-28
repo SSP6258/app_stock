@@ -1029,8 +1029,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 date_info = df_per_sid['日期'].values[0]
                 market = df_per_sid["市場別"].values[0]
                 if market == '市':
+                    source = '臺灣證券交易所'
                     link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
                 else:
+                    source = '證券櫃檯買賣中心'
                     link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
 
             else:
@@ -1041,7 +1043,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             # blue, green, orange, red, violet
 
             st.markdown(f'##### :red[{sid_name}] {br} :orange[股價: {sid_price} 元] {br} :violet[EPS: {eps}] {br} :green[本益比: {per} 倍] {br}  '
-                        f':orange[殖利率: {yr} %] {br} :blue[資料日期: [{date_info}]({link})]  ')
+                        f':orange[殖利率: {yr} %] {br} :blue[日期: {date_info}]')
+
+            st.markdown(
+                f'###### $資料來源$: [${source}$]({link})  ')
 
             fn_st_add_space(1)
             st.markdown(f'##### 基本面指標 (季度):')
