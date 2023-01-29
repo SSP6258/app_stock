@@ -913,6 +913,25 @@ def fn_idea():
         cols[3].markdown(tit3)
         cols[3].image(img3, caption='小農婦自己種的薑')
 
+    with tab_1:
+        cols = st.columns(4)
+        video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
+        img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0'
+        img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=PucGpTuS3VIAX-ToMs-&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDZxy5SjJqFSbmMPh0FwcMURPlLdCCuPNq67wrVFYFqMQ&oe=63DA93D0'
+        img2 = r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0'
+        img3 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC'
+
+        with cols[0]:
+            st.markdown(tit0)
+            st_player(video, key='video_tab2', playing=False, loop=False, volume=1, height=440, light=True)
+
+        cols[1].markdown(tit1)
+        cols[1].image(img1, caption='')
+        cols[2].markdown(tit2)
+        cols[2].image(img2, caption='')
+        cols[3].markdown(tit3)
+        cols[3].image(img3, caption='長年菜')
+
     with tab_2:
         cols = st.columns(4)
         video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
@@ -930,24 +949,6 @@ def fn_idea():
         cols[2].image(img2, caption='')
         cols[3].markdown(tit3)
         cols[3].image(img3, caption='')
-
-    with tab_1:
-        cols = st.columns(4)
-        video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
-        img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0'
-        img2 =  r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0'
-        img3 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC'
-
-        with cols[0]:
-            st.markdown(tit0)
-            st_player(video, key='video_tab2', playing=False, loop=False, volume=1, height=440, light=True)
-
-        cols[1].markdown(tit1)
-        cols[1].image(img1, caption='')
-        cols[2].markdown(tit2)
-        cols[2].image(img2, caption='')
-        cols[3].markdown(tit3)
-        cols[3].image(img3, caption='長年菜')
 
     with tab_3:
         st.markdown(f'#### {dic_mkd["1sp"]} $碼園也是一片綠油油$ ~')
