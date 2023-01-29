@@ -886,7 +886,7 @@ def fn_idea():
     cols[3].image('NoPenCmt.png')
     cols[3].image('word2.png')
 
-    st.markdown(f'## 👨‍🌾 :green[$小佃農$] $ 與 $ :blue[$老碼農$] $ 的耕讀生活$')
+    st.markdown(f'### 👨‍🌾 :green[$小佃農$] $ 與 $ :blue[$老碼農$] $ 的耕讀生活$')
     tab_0, tab_1, tab_2, tab_3 = st.tabs(['薑', '芥菜', '白蘿蔔', '程式碼'])
     head_sp = 5*dic_mkd["4sp"]
 
