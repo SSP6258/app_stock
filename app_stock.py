@@ -898,9 +898,9 @@ def fn_idea():
     with tab_0:
         cols = st.columns(4)
         video = r'https://www.youtube.com/watch?v=jQtHilLwA44'
-        img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=ohpRhHXheQEAX8jSvVa&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfC8wHT36erJfTxiuU7owQ6jVf6kN9Cv7hzp3H6YhH58EQ&oe=63D7B6B7'
-        img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=famxrze1V_AAX9ttIl3&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfB72Pp__53Wi5GXG6PfJ2jKFyXwnwIfwOro0t2pUn24Jw&oe=63D7610A'
-        img3 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Ue4gNZR9BcwAX9mmkDW&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfC1Q64xhdXJVLxVUXUsdp7Sv0ui8pUSgDh9sMV9gy7YhA&oe=63D77E0C'
+        img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=51ohNMr5BlsAX_MQAdk&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfBVKtoYQkUMgfSF95Fd_sABHjg8QgjElGYiYGDcxy6mOA&oe=63DBAB37'
+        img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=EOmsGrdZbSIAX8KeoOQ&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDSTeRwLxIunhy2mor8T7lWowtLtamgHCximWtGo7xk9Q&oe=63DB558A'
+        img3 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Ue4gNZR9BcwAX8O5duO&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDY1hourtNnXSBvXP7xgxgpkb8SQS1xbBIURMLLH_HSrg&oe=63DB728C'
 
         with cols[0]:
             st.markdown(tit0)
@@ -916,10 +916,9 @@ def fn_idea():
     with tab_1:
         cols = st.columns(4)
         video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
-        img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=qx7LEiKekXoAX-JbN-b&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfA0FYT-WXXtlRdtc0my-odw8uaJ-zUvWjln749DGLryZw&oe=63D2AAD0'
         img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=PucGpTuS3VIAX-ToMs-&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDZxy5SjJqFSbmMPh0FwcMURPlLdCCuPNq67wrVFYFqMQ&oe=63DA93D0'
-        img2 = r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=SfR6zN3JvRkAX-amurX&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfBONIpFH9SmpaUU5hNoSAYeYpcwx4sNo2Et_AN3hvF5DA&oe=63D2B1D0'
-        img3 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Z-kak-cX13AAX9E2Mc7&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfAF8ta0f6eJtlb2HIr57zSfd-tvb3vzFo3lzWXzioo34A&oe=63D2EEAC'
+        img2 = r'https://scontent.ftpe8-3.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=9Tco-lY_tWcAX_bACUB&_nc_ht=scontent.ftpe8-3.fna&oh=00_AfBLl7cdnP0zjzLdbrkDURuZjIrRGt0DO8kCVSphOcGbQg&oe=63DA9AD0'
+        img3 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=u8xNKaRXB_QAX8PaG4M&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfDnfrqPFIS41R93XXVpVowtFOYyiKEoyMoJ1XH7imZw9Q&oe=63DAD7AC'
 
         with cols[0]:
             st.markdown(tit0)
@@ -935,9 +934,9 @@ def fn_idea():
     with tab_2:
         cols = st.columns(4)
         video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
-        img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=IX8qhZTjuBwAX8mhH2W&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfB3gEPGMdg-Z4YVxm648520kpxfpqec7ybU-BYX0fOuzg&oe=63D25264'
-        img2 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XThoNff5llgAX-FTN4p&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDOK_dHCgUBiCvLoMWSQm3gVT1wkvNEMqR46tBWYmbgSg&oe=63D315C9'
-        img3 = r'https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=3OX4-5R4IYsAX8FXVB6&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe7-4.fna&oh=00_AfAKHC3ipF0WV9-nXw3_rIr6CzLi8hbZLV9onwZX11WRoA&oe=63D38BFB'
+        img1 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=M1qUSec2jl0AX9SVEOs&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfCV59IjWkagZUPqnIud3Tu1GuTHWjUtRPuohxeIhjYUnQ&oe=63DA3B64'
+        img2 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=ML4ZjQFxLmUAX-IGcd6&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfC6OF_gAYD9uVWFE_OL6h9l-zA23aIUd6Kqj9MYSPwqIg&oe=63DAFEC9'
+        img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=21mNspDlvKYAX-Wqp5C&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfBfKVBF53lQl-KjPz85DxFcHC6rUBWvUe1kyOVMXIZnzg&oe=63DB74FB'
 
         with cols[0]:
             st.markdown(tit0)
