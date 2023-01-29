@@ -937,7 +937,6 @@ def fn_idea():
         img1 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=M1qUSec2jl0AX9SVEOs&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfCV59IjWkagZUPqnIud3Tu1GuTHWjUtRPuohxeIhjYUnQ&oe=63DA3B64'
         img2 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=ML4ZjQFxLmUAX-IGcd6&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfC6OF_gAYD9uVWFE_OL6h9l-zA23aIUd6Kqj9MYSPwqIg&oe=63DAFEC9'
         img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=21mNspDlvKYAX-Wqp5C&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfBfKVBF53lQl-KjPz85DxFcHC6rUBWvUe1kyOVMXIZnzg&oe=63DB74FB'
-
         with cols[0]:
             st.markdown(tit0)
             st_player(video, key='video_tab1', playing=False, loop=False, volume=1, height=440, light=True)
@@ -1102,6 +1101,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
             st.write('')
             url = r'https://mopsfin.twse.com.tw/'
+            st.markdown(f'###### $資料來源$:')
             st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
             st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
             st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
