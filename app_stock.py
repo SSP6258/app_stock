@@ -1329,7 +1329,7 @@ def fn_book():
 
 
 def fn_read_per():
-    latest = '0201'
+    latest = '0203'
 
     dic_rename = {
         '證券代號': '股票代號',
