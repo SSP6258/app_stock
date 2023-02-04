@@ -829,6 +829,7 @@ def fn_get_mops_fin(fin, sid, years=None):
     df_fin = dic_mops[fin]
 
     df_mops_fin = df_fin[df_fin['sid'] == sid]
+    assert df_mops_fin.shape[0] > 0, f'{sid} not in df_fin'
 
     df_mops_fin = df_mops_fin[[c for c in df_mops_fin.columns if 'Q' in c]]
     df_mops_fin = df_mops_fin.transpose()
@@ -848,44 +849,8 @@ def fn_get_mops_fin(fin, sid, years=None):
     return df_mops_fin
 
 
-def fn_idea():
-    fig = go.Figure(go.Funnelarea(
-        # text=["搜尋網站選股", "基本面分析", "擬訂策略", "觀察驗證"],
-        text=["搜尋網站選股", "基本面分析", "擬訂策略", "驗證"],
-        values=[5, 4, 3, 2],
-        textinfo='text',
-        textfont={'size': [20, 20, 20, 20]},
-        showlegend=False,
-    ))
-
-    fig.update_layout(
-        autosize=False,
-        width=600,
-        height=500,
-        margin=dict(
-            l=50,
-            r=50,
-            b=140,
-            t=40,
-            pad=4
-        ),
-    )
-    cols = st.columns([1.7, 3, 1.7])
-    cols[1].image('save.png')
-
-    cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
-    cols[2].plotly_chart(fig, use_container_width=True)
-
-    for _ in range(4):
-        cols[1].write('')
-        cols[3].write('')
-
-    cols[1].image('sign.png')
-    cols[1].image('word1.png')
-
-    cols[3].image('NoPenCmt.png')
-    cols[3].image('word2.png')
-
+def fn_life():
+    fn_st_add_space(1)
     st.markdown(f'### 👨‍🌾 :green[$小佃農$] $ 與 $ :blue[$老碼農$] $ 的耕讀生活$')
     tab_0, tab_1, tab_2, tab_3 = st.tabs(['薑', '芥菜', '白蘿蔔', '程式碼'])
     head_sp = 5*dic_mkd["4sp"]
@@ -950,7 +915,7 @@ def fn_idea():
 
     with tab_3:
         st.markdown(f'#### {dic_mkd["1sp"]} $碼園也是一片綠油油$ ~')
-        st.image('coder.png', use_column_width=False)
+        st.image('coder.png', use_column_width=False, caption='2022年的碼園耕耘 ~')
 
     img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/272767780_10220980105757941_4447844687755244925_n.jpg?stp=c0.88.692.692a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Qj6mMXyy3r0AX9N2mFB&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfBu4fier5xgYx5hjMdN-iQc8_trlhkIIw4nazRTOtjXOA&oe=63D76D60'
     img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?stp=c0.85.702.702a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=80sDHAkO4YgAX99LFOn&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfCbYWGaZkIibmYf3iaypNLw8fgJi8nw2VyUXOWeqJPhKw&oe=63D91ABB'
@@ -961,6 +926,121 @@ def fn_idea():
     cols[0].image(img1, caption='為愛耕耘', use_column_width=True)
     cols[1].image(img2, caption='豆豆龍 🎵 ~', use_column_width=True)
     cols[2].image(img3, caption='一起來玩', use_column_width=True)
+
+
+def fn_idea():
+    fig = go.Figure(go.Funnelarea(
+        # text=["搜尋網站選股", "基本面分析", "擬訂策略", "觀察驗證"],
+        text=["搜尋網站選股", "基本面分析", "擬訂策略", "驗證"],
+        values=[5, 4, 3, 2],
+        textinfo='text',
+        textfont={'size': [20, 20, 20, 20]},
+        showlegend=False,
+    ))
+
+    fig.update_layout(
+        autosize=False,
+        width=600,
+        height=500,
+        margin=dict(
+            l=50,
+            r=50,
+            b=140,
+            t=40,
+            pad=4
+        ),
+    )
+    cols = st.columns([1.7, 3, 1.7])
+    cols[1].image('save.png')
+
+    cols = st.columns([0.01, 1.19, 2.6, 0.9, 0.3])
+    cols[2].plotly_chart(fig, use_container_width=True)
+
+    for _ in range(4):
+        cols[1].write('')
+        cols[3].write('')
+
+    cols[1].image('sign.png')
+    cols[1].image('word1.png')
+
+    cols[3].image('NoPenCmt.png')
+    cols[3].image('word2.png')
+    #
+    # st.markdown(f'### 👨‍🌾 :green[$小佃農$] $ 與 $ :blue[$老碼農$] $ 的耕讀生活$')
+    # tab_0, tab_1, tab_2, tab_3 = st.tabs(['薑', '芥菜', '白蘿蔔', '程式碼'])
+    # head_sp = 5*dic_mkd["4sp"]
+    #
+    # tit0 = f'#### {head_sp}$教學參考$'
+    # tit1 = f'#### {head_sp}:red[$慎選$]$標的$'
+    # tit2 = f'#### {head_sp}$耐心等待$'
+    # tit3 = f'#### {head_sp}$期盼收穫$'
+    #
+    # with tab_0:
+    #     cols = st.columns(4)
+    #     video = r'https://www.youtube.com/watch?v=jQtHilLwA44'
+    #     img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=51ohNMr5BlsAX_MQAdk&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfBVKtoYQkUMgfSF95Fd_sABHjg8QgjElGYiYGDcxy6mOA&oe=63DBAB37'
+    #     img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=EOmsGrdZbSIAX8KeoOQ&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDSTeRwLxIunhy2mor8T7lWowtLtamgHCximWtGo7xk9Q&oe=63DB558A'
+    #     img3 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Ue4gNZR9BcwAX8O5duO&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDY1hourtNnXSBvXP7xgxgpkb8SQS1xbBIURMLLH_HSrg&oe=63DB728C'
+    #
+    #     with cols[0]:
+    #         st.markdown(tit0)
+    #         st_player(video, key='video_tab0', playing=False, loop=False, volume=1, height=440, light=True)
+    #
+    #     cols[1].markdown(tit1)
+    #     cols[1].image(img1, caption='很快就發芽了')
+    #     cols[2].markdown(tit2)
+    #     cols[2].image(img2, caption='薑黃開的白色花朵，美麗優雅 ~')
+    #     cols[3].markdown(tit3)
+    #     cols[3].image(img3, caption='小農婦自己種的薑')
+    #
+    # with tab_1:
+    #     cols = st.columns(4)
+    #     video = r'https://www.youtube.com/watch?v=yKAUqklC5Hs'
+    #     img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326890989_728929498577116_8254747758524523208_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=PucGpTuS3VIAX-ToMs-&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDZxy5SjJqFSbmMPh0FwcMURPlLdCCuPNq67wrVFYFqMQ&oe=63DA93D0'
+    #     img2 = r'https://scontent.ftpe8-3.fna.fbcdn.net/v/t39.30808-6/326730771_737113820959445_2047346049108884382_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=9Tco-lY_tWcAX_bACUB&_nc_ht=scontent.ftpe8-3.fna&oh=00_AfBLl7cdnP0zjzLdbrkDURuZjIrRGt0DO8kCVSphOcGbQg&oe=63DA9AD0'
+    #     img3 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325782354_779450000284400_3666154961436129569_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=u8xNKaRXB_QAX8PaG4M&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfDnfrqPFIS41R93XXVpVowtFOYyiKEoyMoJ1XH7imZw9Q&oe=63DAD7AC'
+    #
+    #     with cols[0]:
+    #         st.markdown(tit0)
+    #         st_player(video, key='video_tab2', playing=False, loop=False, volume=1, height=440, light=True)
+    #
+    #     cols[1].markdown(tit1)
+    #     cols[1].image(img1, caption='')
+    #     cols[2].markdown(tit2)
+    #     cols[2].image(img2, caption='')
+    #     cols[3].markdown(tit3)
+    #     cols[3].image(img3, caption='長年菜')
+    #
+    # with tab_2:
+    #     cols = st.columns(4)
+    #     video = r'https://www.youtube.com/watch?v=hlQTmmhMuQ4&t=14s'
+    #     img1 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/309235737_10222161831940357_319357518375648256_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=M1qUSec2jl0AX9SVEOs&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfCV59IjWkagZUPqnIud3Tu1GuTHWjUtRPuohxeIhjYUnQ&oe=63DA3B64'
+    #     img2 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/314891381_10222426458635859_5303105120234812499_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=ML4ZjQFxLmUAX-IGcd6&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfC6OF_gAYD9uVWFE_OL6h9l-zA23aIUd6Kqj9MYSPwqIg&oe=63DAFEC9'
+    #     img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/320433018_557649275872527_1374980607348320756_n.jpg?stp=cp6_dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=21mNspDlvKYAX-Wqp5C&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfBfKVBF53lQl-KjPz85DxFcHC6rUBWvUe1kyOVMXIZnzg&oe=63DB74FB'
+    #     with cols[0]:
+    #         st.markdown(tit0)
+    #         st_player(video, key='video_tab1', playing=False, loop=False, volume=1, height=440, light=True)
+    #
+    #     cols[1].markdown(tit1)
+    #     cols[1].image(img1, caption='')
+    #     cols[2].markdown(tit2)
+    #     cols[2].image(img2, caption='')
+    #     cols[3].markdown(tit3)
+    #     cols[3].image(img3, caption='')
+    #
+    # with tab_3:
+    #     st.markdown(f'#### {dic_mkd["1sp"]} $碼園也是一片綠油油$ ~')
+    #     st.image('coder.png', use_column_width=False)
+    #
+    # img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/272767780_10220980105757941_4447844687755244925_n.jpg?stp=c0.88.692.692a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Qj6mMXyy3r0AX9N2mFB&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfBu4fier5xgYx5hjMdN-iQc8_trlhkIIw4nazRTOtjXOA&oe=63D76D60'
+    # img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?stp=c0.85.702.702a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=80sDHAkO4YgAX99LFOn&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfCbYWGaZkIibmYf3iaypNLw8fgJi8nw2VyUXOWeqJPhKw&oe=63D91ABB'
+    # img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yFFOiVTkM04AX8tc2TG&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfB484X6Uf13k0doW6thK9RGETeeFGORYjS04_V7ohCKSA&oe=63D843DA'
+    #
+    # cols = st.columns([1.5, 1.5, 2])
+    # # cols[0].image(img1, width=550)
+    # cols[0].image(img1, caption='為愛耕耘', use_column_width=True)
+    # cols[1].image(img2, caption='豆豆龍 🎵 ~', use_column_width=True)
+    # cols[2].image(img3, caption='一起來玩', use_column_width=True)
 
 
 def fn_show_hist_price(df, df_mops, key='hist_price'):
@@ -1424,7 +1504,10 @@ def fn_st_stock_main():
 
     fn_read_per()
 
-    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
+    tab_life, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['耕讀生活', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
+
+    with tab_life:
+        fn_life()
 
     with tab_idea:
         fn_idea()
