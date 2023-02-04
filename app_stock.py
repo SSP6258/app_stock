@@ -631,7 +631,9 @@ def fn_stock_filter(df, stra, col, fr=''):
     for _ in range(1):
         col.write('')
     with col.form(key=f'Form2_{stra}_{fr}'):
-        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=4.5, step=0.5)
+
+        dft_win = round(float(df[f'{stra}_勝率_new'].max()-0.5), 1)
+        win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=dft_win, step=0.5)
         v = 2.0 if '營收' in stra else -1.0
         margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=v, step=0.5)
         corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
