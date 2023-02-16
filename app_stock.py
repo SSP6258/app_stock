@@ -364,7 +364,7 @@ def fn_st_stock_sel(df_all):
         submit = st.form_submit_button('選擇')
 
     txt = f'''
-           #### 🎯 篩選條件:
+           ##### 🎯 篩選條件:
            * 篩選 台股: __{df_all["sid"].nunique()}檔__ 
            * 篩選 股價: __低於 {dic_cfg["sel_price"]}元__
            * 篩選 期間: __{fr} ~ {to}, {dl.days}天__
@@ -388,9 +388,10 @@ def fn_st_stock_sel(df_all):
         sel_sid = list(df_sel["sid_name"].unique())
 
         sel_num = df_sel["sid"].nunique()
-        c1, c2 = st.columns([2.5, 1])
-        st.info(txt)
-        st.error(f'#### 👉 篩選結果({sel_num}檔): {", ".join(sel_sid)}')
+        # c1, c2 = st.columns([2.5, 1])
+        cols = st.columns([1, 1])
+        cols[0].info(txt)
+        cols[1].error(f'##### 👉 篩選結果(:red[{sel_num}檔]): :blue[{", ".join(sel_sid)}]')
         fn_st_add_space(1)
 
         df_sel['sid_and_name'] = df_sel['sid'] + ' ' + df_sel['sid_name']
