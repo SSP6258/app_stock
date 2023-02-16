@@ -1477,9 +1477,7 @@ def fn_st_stock_main():
     ver = r'https://docs.streamlit.io/library/changelog'
     cols[-1].markdown(f'##### $Powered\ by:$ [:blue[$\ Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
 
-
     cols = st.columns([1.7, 0.7, 0.5, 1.5])
-
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
     url = r'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD77cetO5GgS7c2YGH7ai5ocF_ZGMC64Wdqg&usqp=CAU'
     img_plan = r'Plan.png'
