@@ -1472,7 +1472,12 @@ def fn_st_stock_main():
             df_all.at[idx, '產業別'] = field
             df_all.at[idx, '市場別'] = market
 
-    # cols = st.columns([1.8, 2.4, 0.8])
+    cols = st.columns([7, 3])
+    home = r'https://streamlit.io/'
+    ver = r'https://docs.streamlit.io/library/changelog'
+    cols[-1].markdown(f'##### $Powered\ by:$ [:blue[$\ Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
+
+
     cols = st.columns([1.7, 0.7, 0.5, 1.5])
 
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
@@ -1484,6 +1489,8 @@ def fn_st_stock_main():
 
     img_Plan = fn_show_img(img_plan)
     img_B = fn_show_img(img_b)
+
+
 
     # 👨‍💻  🐰
     # cols[0].title(r'')
