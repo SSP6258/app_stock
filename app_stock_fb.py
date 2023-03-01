@@ -210,7 +210,7 @@ def fn_get_stock_info(sid, url, webs):
         link = rf'{url}{sid}{page}'
         # link = rf'{url}{sid}{dic["page"]}'
         # link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
-        driver, action = fn_web_init(link, is_headless=False)
+        driver, action = fn_web_init(link, is_headless=True)
         time.sleep(1)
         for k in dic.keys():
             if k != 'page':
