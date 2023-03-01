@@ -23,13 +23,13 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0106',
+    'mops_fin_path': 'mops_fin_0302',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
 
 dic_fb_main = {
-    'page': '',
+    'page': '/index2',
     'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                  '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
     '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
@@ -41,7 +41,7 @@ dic_fb_main = {
 }
 
 dic_fb_revenue = {
-    'page': '/revenue',
+    'page': '/revenue2',
     '勝率(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                  '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
@@ -52,7 +52,7 @@ dic_fb_revenue = {
 }
 
 dic_fb_eps = {
-    'page': '/eps',
+    'page': '/eps2',
     '勝率(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                   '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
@@ -63,7 +63,7 @@ dic_fb_eps = {
 }
 
 dic_fb_cash_dividend = {
-    'page': '/cash_dividend',
+    'page': '/cash_dividend2',
     '勝率(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                   '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
@@ -210,7 +210,7 @@ def fn_get_stock_info(sid, url, webs):
         link = rf'{url}{sid}{page}'
         # link = rf'{url}{sid}{dic["page"]}'
         # link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
-        driver, action = fn_web_init(link, is_headless=True)
+        driver, action = fn_web_init(link, is_headless=False)
         time.sleep(1)
         for k in dic.keys():
             if k != 'page':
@@ -485,7 +485,13 @@ def fn_mops_twse_parser():
 def fn_mops_fin_download(dic, sids):
     assert len(sids) <= 10, f'MOPS FIN allow 10 sid max and input len(sids) = {len(sids)}'
     link = r'https://mopsfin.twse.com.tw/'
-    drv, act = fn_web_init(link, is_headless=False)
+
+    try:
+        drv, act = fn_web_init(link, is_headless=False)
+    except:
+        time.sleep(10)
+        drv, act = fn_web_init(link, is_headless=False)
+
     time.sleep(1)
 
     for k in dic.keys():
@@ -550,7 +556,10 @@ def fn_mops_fin(is_new_season=False):
     df_sid = pd.read_csv('stock.csv')
     df_fin = pd.read_csv('mops_fin_ROE.csv')
     sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4] + ['1905']
-    sids = [s for s in sids if int(s) not in df_fin['sid'].values]
+    if is_new_season:
+        pass
+    else:
+        sids = [s for s in sids if int(s) not in df_fin['sid'].values]
 
     print(f'New Stock ID num: {len(sids)}')
 
@@ -621,7 +630,7 @@ def fn_main():
 
     # is_new_season = False
     # fn_mops_fin(is_new_season=is_new_season)
-    # ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
+    ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
     # for fin in dic_fin.keys():
     #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
