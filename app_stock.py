@@ -923,10 +923,9 @@ def fn_life():
         st.markdown(f'#### {dic_mkd["1sp"]} $碼園也是一片綠油油$ ~')
         st.image('coder.png', use_column_width=False, caption='2022年的碼園耕耘 ~')
 
-    img3 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/330332601_517627463840092_2583905647692242971_n.jpg?stp=c0.122.1108.1108a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Vc5E-5H1SjcAX8kzBOX&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfAJKOZO9iVz2Kt6o2_putq24PZu9ZuO3PMflmcbWhnD-Q&oe=6406A792'
+    img1 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/272767780_10220980105757941_4447844687755244925_n.jpg?stp=c0.88.692.692a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=dPYpb8mBIJsAX-jPQNM&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfB9G24Jon3jyLYcNop9oReEXwk7K3xqewtbbfmm9ygYIw&oe=6406E360'
     img2 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=iPc5i4Pa3PEAX-RyANj&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfAKBeCpDS7mcH9B83bmHm0BduodyYjHh2DhAve7uXTLZA&oe=6406967B'
-    # img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yFFOiVTkM04AX8tc2TG&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfB484X6Uf13k0doW6thK9RGETeeFGORYjS04_V7ohCKSA&oe=63D843DA'
-    img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Qdssl4eIjh8AX-IdQoi&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfATdonQQYSgsMqxFSxm3C641XtlUWRvVrBHBJCw4yQNmg&oe=6407B9DA'
+    img3 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Qdssl4eIjh8AX-IdQoi&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfATdonQQYSgsMqxFSxm3C641XtlUWRvVrBHBJCw4yQNmg&oe=6407B9DA'
 
     cols = st.columns([1.5, 1.5, 2])
     # cols[0].image(img1, width=550)
