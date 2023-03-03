@@ -867,11 +867,8 @@ def fn_life():
     with tab_0:
         cols = st.columns(4)
         video = r'https://www.youtube.com/watch?v=jQtHilLwA44'
-        # img1 = r'https://scontent.ftpe8-1.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=51ohNMr5BlsAX_MQAdk&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-1.fna&oh=00_AfBVKtoYQkUMgfSF95Fd_sABHjg8QgjElGYiYGDcxy6mOA&oe=63DBAB37'
         img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/325940478_458998859777175_4053406779201999787_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=NB91HH9uGvoAX83YAhY&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDN0P69QOnB0jemRIOF9xeXLz4RqYhZwqrgCu31e_Nvdg&oe=64072CB7'
-        # img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=EOmsGrdZbSIAX8KeoOQ&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDSTeRwLxIunhy2mor8T7lWowtLtamgHCximWtGo7xk9Q&oe=63DB558A'
         img2 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/326954716_849046239540921_5946960737469138547_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=CxnHm3_PRpcAX9FNNIv&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfDXWYIfBn-YPudUreAxTDU8UZuVt_bp0HdhT40LkHN_pQ&oe=6406D70A'
-        # img3 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Ue4gNZR9BcwAX8O5duO&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfDY1hourtNnXSBvXP7xgxgpkb8SQS1xbBIURMLLH_HSrg&oe=63DB728C'
         img3 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/326904370_3285754411675268_7387608385564380001_n.jpg?stp=cp6_dst-jpg_p720x720&_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=6waBTE6LhpoAX-iE8I5&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfCEbcWPfx4Jvv0-MGO-Tp5LdC6zI4VMTomjO3sG18DY5A&oe=6406F40C'
 
         with cols[0]:
