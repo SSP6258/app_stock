@@ -923,12 +923,10 @@ def fn_life():
         st.markdown(f'#### {dic_mkd["1sp"]} $碼園也是一片綠油油$ ~')
         st.image('coder.png', use_column_width=False, caption='2022年的碼園耕耘 ~')
 
-    # img1 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/272767780_10220980105757941_4447844687755244925_n.jpg?stp=c0.88.692.692a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Qj6mMXyy3r0AX9N2mFB&tn=IlHWvw90GUJy8pGM&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfBu4fier5xgYx5hjMdN-iQc8_trlhkIIw4nazRTOtjXOA&oe=63D76D60'
-    img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/292942112_10221745320007819_7089822442541218766_n.jpg?stp=cp6_dst-jpg&_nc_cat=108&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Mi3YV26LuJwAX-Txvs2&_nc_oc=AQkCeDW08l8fdl9tfwJMyVp5KuSy6kAsivD4A8wPs08FWuj8-SrbHMe5QvAKp_TmM2P4_t_1e84EDrUhb4Va9Bku&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfD816KZ3C-5JmmD2Wck7u9IAeWe2WB9AzUf5u3OzKJevg&oe=640672B1'
-    # img2 = r'https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?stp=c0.85.702.702a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=80sDHAkO4YgAX99LFOn&_nc_ht=scontent.ftpe8-4.fna&oh=00_AfCbYWGaZkIibmYf3iaypNLw8fgJi8nw2VyUXOWeqJPhKw&oe=63D91ABB'
+    img3 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/330332601_517627463840092_2583905647692242971_n.jpg?stp=c0.122.1108.1108a_dst-jpg_s851x315&_nc_cat=110&ccb=1-7&_nc_sid=da31f3&_nc_ohc=Vc5E-5H1SjcAX8kzBOX&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfAJKOZO9iVz2Kt6o2_putq24PZu9ZuO3PMflmcbWhnD-Q&oe=6406A792'
     img2 = r'https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/278861386_10221365854641422_403041763089540585_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=iPc5i4Pa3PEAX-RyANj&_nc_ht=scontent.ftpe7-1.fna&oh=00_AfAKBeCpDS7mcH9B83bmHm0BduodyYjHh2DhAve7uXTLZA&oe=6406967B'
     # img3 = r'https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yFFOiVTkM04AX8tc2TG&_nc_ht=scontent.ftpe8-2.fna&oh=00_AfB484X6Uf13k0doW6thK9RGETeeFGORYjS04_V7ohCKSA&oe=63D843DA'
-    img3 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Qdssl4eIjh8AX-IdQoi&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfATdonQQYSgsMqxFSxm3C641XtlUWRvVrBHBJCw4yQNmg&oe=6407B9DA'
+    img1 = r'https://scontent.ftpe7-3.fna.fbcdn.net/v/t39.30808-6/291827655_10221745319487806_9084714485075851384_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Qdssl4eIjh8AX-IdQoi&_nc_ht=scontent.ftpe7-3.fna&oh=00_AfATdonQQYSgsMqxFSxm3C641XtlUWRvVrBHBJCw4yQNmg&oe=6407B9DA'
 
     cols = st.columns([1.5, 1.5, 2])
     # cols[0].image(img1, width=550)
