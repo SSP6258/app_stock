@@ -833,22 +833,20 @@ def fn_get_mops_fin(fin, sid, years=None):
 
     df_mops_fin = df_fin[df_fin['sid'] == sid]
 
-    # assert df_mops_fin.shape[0] > 0, f'{sid} not in df_fin'
+    assert df_mops_fin.shape[0] > 0, f'{sid} not in df_fin'
 
-    if df_mops_fin.shape[0] > 0:
+    df_mops_fin = df_mops_fin[[c for c in df_mops_fin.columns if 'Q' in c]]
+    df_mops_fin = df_mops_fin.transpose()
+    df_mops_fin.rename(columns={df_mops_fin.columns[0]: f'{dic_fin_name[fin]}({fin})'}, inplace=True)
+    df_mops_fin['year'] = df_mops_fin.index
+    df_mops_fin['year'] = df_mops_fin['year'].apply(lambda x: x.split('Q')[0])
+    df_mops_fin = df_mops_fin.sort_values(by='year', ascending=False)
 
-        df_mops_fin = df_mops_fin[[c for c in df_mops_fin.columns if 'Q' in c]]
-        df_mops_fin = df_mops_fin.transpose()
-        df_mops_fin.rename(columns={df_mops_fin.columns[0]: f'{dic_fin_name[fin]}({fin})'}, inplace=True)
-        df_mops_fin['year'] = df_mops_fin.index
-        df_mops_fin['year'] = df_mops_fin['year'].apply(lambda x: x.split('Q')[0])
-        df_mops_fin = df_mops_fin.sort_values(by='year', ascending=False)
-
-        for c in df_mops_fin.columns:
-            if fin in str(c):
-                pass
-            else:
-                del df_mops_fin[c]
+    for c in df_mops_fin.columns:
+        if fin in str(c):
+            pass
+        else:
+            del df_mops_fin[c]
 
     # st.write(df_mops_fin)
 
