@@ -23,7 +23,7 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0302',
+    'mops_fin_path': 'mops_fin_0305',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
@@ -487,10 +487,10 @@ def fn_mops_fin_download(dic, sids):
     link = r'https://mopsfin.twse.com.tw/'
 
     try:
-        drv, act = fn_web_init(link, is_headless=False)
+        drv, act = fn_web_init(link, is_headless=True)
     except:
         time.sleep(10)
-        drv, act = fn_web_init(link, is_headless=False)
+        drv, act = fn_web_init(link, is_headless=True)
 
     time.sleep(1)
 
@@ -588,7 +588,7 @@ def fn_get_web_info(sid, web):
         sid_info = sid_info + '/stock-health-check'
     link = dic_url[web] + sid_info
 
-    drv, action = fn_web_init(link, is_headless=False)
+    drv, action = fn_web_init(link, is_headless=True)
     time.sleep(1)
     print(link)
 
@@ -620,20 +620,20 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"])
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"])
 
     # webs = ['CMoney']
     # for w in webs:
     #     fn_get_web_info('3661', w)
 
-    # is_new_season = False
+    is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
     ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
-    # for fin in dic_fin.keys():
-    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    for fin in dic_fin.keys():
+        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
 
 
