@@ -354,11 +354,11 @@ def fn_st_stock_sel(df_all):
         fn_st_add_space(1)
         sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45])
 
-        dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
+        dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=47)
         dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
         dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=300)
         dic_cfg["sel_lead"] = sels[4].radio('產業領先指標', ('極佳', '極佳/佳'), index=0, horizontal=False)
-        dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=0, horizontal=False)
+        dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=1, horizontal=False)
 
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
