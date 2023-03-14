@@ -1292,7 +1292,6 @@ def fn_st_chart_bar(df):
             fn_st_add_space(1)
             # st.dataframe(df_show, height=500)
 
-
             def fn_color_df(x):
                 css = ''
                 css_p = 'background-color: pink; color: black'
