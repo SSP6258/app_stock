@@ -240,7 +240,7 @@ def fn_stock_sel(df_all):
     #                  '合理價差' not in c]]
 
     df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
-                     '耗時' not in c ]]
+                     '耗時' not in c]]
 
     df_sel.reset_index(drop=True, inplace=True)
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
@@ -506,13 +506,17 @@ def fn_st_stock_sel(df_all):
         df_show['field_id'] = df_show['產業別'].apply(fn_get_field_id)
         df_show['產業別'] = df_show.apply(lambda x: fn_click_name(x['field_id'], x['產業別'], dic_url['Yahoo_field']), axis=1)
 
-        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
-                           '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
-                           '勝率(%)_殖利率', '相關性_殖利率', '產業別', '市場別']
+        # show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
+        #                    '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
+        #                    '勝率(%)_殖利率', '相關性_殖利率', '產業別', '市場別']
 
-        df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%'
-        df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%'
-        df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%'
+        df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%' + ' , ' + df_show['相關性_營收']
+        df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
+        df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
+
+        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
+                           '勝率(%)_營收', '勝率(%)_EPS',
+                           '勝率(%)_殖利率', '產業別', '市場別']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
@@ -521,11 +525,11 @@ def fn_st_stock_sel(df_all):
                             '股票代碼': '代碼',
                             '大盤領先指標': '大盤<br>領先指標',
                             '產業領先指標': '產業<br>領先指標',
-                            '勝率(%)_營收': '營收<br>勝率, 價差',
+                            '勝率(%)_營收': '營收<br>勝率, 價差, 相關',
                             '相關性_營收': '營收<br>相關性',
-                            '勝率(%)_EPS': 'EPS<br>勝率, 價差',
+                            '勝率(%)_EPS': 'EPS<br>勝率, 價差, 相關',
                             '相關性_EPS': 'EPS<br>相關性',
-                            '勝率(%)_殖利率': '殖利率<br>勝率, 價差',
+                            '勝率(%)_殖利率': '殖利率<br>勝率, 價差, 相關',
                             '相關性_殖利率': '殖利率<br>相關性'}
 
         df_show.rename(columns=show_cols_rename, inplace=True)
