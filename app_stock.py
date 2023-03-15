@@ -90,6 +90,9 @@ dic_book_cmt = {
 }
 
 
+dic_df = {}
+
+
 def fn_make_clickable(x):
     name = x
     sid = x if str(x).isnumeric() else x.split(" ")[0]
@@ -232,9 +235,12 @@ def fn_stock_sel(df_all):
 
     df_sel = df_all[df_all["篩選"] == 1]
     df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
+    # df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
+    #                  '耗時' not in c and
+    #                  '合理價差' not in c]]
+
     df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
-                     '耗時' not in c and
-                     '合理價差' not in c]]
+                     '耗時' not in c ]]
 
     df_sel.reset_index(drop=True, inplace=True)
     df_sel_pick = fn_pick_date(df_sel, 'sid', 'date')
@@ -355,7 +361,7 @@ def fn_st_stock_sel(df_all):
         sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45])
 
         dic_cfg["sel_rat"] = sels[0].slider('勝率門檻(%)', min_value=40, max_value=100, value=47)
-        dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.8)
+        dic_cfg["sel_corr"] = sels[1].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.9)
         dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=300)
         dic_cfg["sel_lead"] = sels[4].radio('產業領先指標', ('極佳', '極佳/佳'), index=0, horizontal=False)
         dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=1, horizontal=False)
@@ -463,6 +469,7 @@ def fn_st_stock_sel(df_all):
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
+
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
 
@@ -480,7 +487,7 @@ def fn_st_stock_sel(df_all):
             elif int(x) < dic_cfg['sel_rat']:
                 return str(x) + '%'
             else:
-                return str(x) + '% 👍'
+                return str(x) + '%'
 
         for c in df_show.columns:
             if '勝率' in c:
@@ -503,6 +510,10 @@ def fn_st_stock_sel(df_all):
                            '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
                            '勝率(%)_殖利率', '相關性_殖利率', '產業別', '市場別']
 
+        df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%'
+        df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%'
+        df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%'
+
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
         # ➡
         show_cols_rename = {'date': '日期',
@@ -510,11 +521,11 @@ def fn_st_stock_sel(df_all):
                             '股票代碼': '代碼',
                             '大盤領先指標': '大盤<br>領先指標',
                             '產業領先指標': '產業<br>領先指標',
-                            '勝率(%)_營收': '營收<br>勝率',
+                            '勝率(%)_營收': '營收<br>勝率, 價差',
                             '相關性_營收': '營收<br>相關性',
-                            '勝率(%)_EPS': 'EPS<br>勝率',
+                            '勝率(%)_EPS': 'EPS<br>勝率, 價差',
                             '相關性_EPS': 'EPS<br>相關性',
-                            '勝率(%)_殖利率': '殖利率<br>勝率',
+                            '勝率(%)_殖利率': '殖利率<br>勝率, 價差',
                             '相關性_殖利率': '殖利率<br>相關性'}
 
         df_show.rename(columns=show_cols_rename, inplace=True)
@@ -1054,13 +1065,23 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     with cols[0].form(key=f'form_{key}'):
 
-        sid_name = st.selectbox('觀察個股:', options=df['sid_name'], index=0, key=key)
-        df_sid = df[df["sid_name"] == sid_name]
+        # sid_name = st.selectbox('觀察個股:', options=df['sid_name'], index=0, key=key)
+        # df_sid = df[df["sid_name"] == sid_name]
+
+        sid = st.text_input('個股代碼:', value=df['代碼'].values[0])
 
         fn_st_add_space(2)
         st.form_submit_button('選擇')
 
-    sid = sid_name.split(sep)[0]
+    # sid = sid_name.split(sep)[0]
+
+    # st.write(sid)
+    # st.write(dic_df['stock_all'])
+
+    df_all = dic_df['stock_all']
+    df_sid = df_all[df_all['sid']==sid]
+    sid_name = df_sid['sid_name'].values[0]
+
     url_WantRich = rf'{dic_url["WantRich"]}{sid}'
     url_FB = rf'{dic_url["FindBillion"]}{sid}'
     url_PC = rf'{dic_url["PChome"]}{sid}.html'
@@ -1102,7 +1123,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
 
         with tab_basic:
-            # st.image('save.png', width=None)
+
             df_per = dic_mops['per']
             if str(sid) in df_per['股票代號'].values:
                 df_per_sid = df_per[df_per['股票代號'] == str(sid)]
@@ -1479,6 +1500,7 @@ def fn_st_stock_main():
             df_all.at[idx, '產業別'] = field
             df_all.at[idx, '市場別'] = market
 
+    dic_df['stock_all'] = df_all
     cols = st.columns([7, 3])
     home = r'https://streamlit.io/'
     ver = r'https://docs.streamlit.io/library/changelog'
