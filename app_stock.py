@@ -499,7 +499,7 @@ def fn_st_stock_sel(df_all):
                 df_show[c] = df_show[c].apply(lambda x: x.split(' ')[-1])
 
         df_show['股票代碼'] = df_show['sid'].apply(fn_make_clickable)
-        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"], dic_url['Yahoo']), axis=1)
+        df_show['股票名稱'] = df_show.apply(lambda x: fn_click_name(x["sid"], x["sid_name"], dic_url['dog']), axis=1)
         df_show['股價'] = df_show.apply(
             lambda x: fn_click_name(x["sid"] + '/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
 
@@ -513,8 +513,9 @@ def fn_st_stock_sel(df_all):
         df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%' + ' , ' + df_show['相關性_營收']
         df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
         df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
+        df_show['領先指標'] = df_show['大盤領先指標'] + ' , ' + df_show['產業領先指標']
 
-        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
+        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '領先指標',
                            '勝率(%)_營收', '勝率(%)_EPS',
                            '勝率(%)_殖利率', '產業別', '市場別']
 
@@ -523,8 +524,7 @@ def fn_st_stock_sel(df_all):
         show_cols_rename = {'date': '日期',
                             '股票名稱': '名稱',
                             '股票代碼': '代碼',
-                            '大盤領先指標': '領先指標<br>大盤',
-                            '產業領先指標': '領先指標<br>產業',
+                            '領先指標': '領先指標<br>大盤, 產業',
                             '勝率(%)_營收': '營收<br>勝率, 價差, 相關',
                             '相關性_營收': '營收<br>相關性',
                             '勝率(%)_EPS': 'EPS<br>勝率, 價差, 相關',
