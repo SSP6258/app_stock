@@ -8,75 +8,76 @@ from web_utils import *
 from twstock import Stock
 
 dic_cfg = {
-    'slp': 1,
-    'get_txt_slp': 1,
+    'slp': 2,
+    'get_txt_slp': 2,
     'is_force': True,
     'batch_size': 5,
     'sel_rat': 50,
     'sel_price': 500,
     'sel_corr': 0.8,
     'sel_rat_h': 90,
-    'stocks': ['2345'],
+    'stocks': ['0050'],
     'stock_file': 'stock.csv',
     'header': {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0305',
+    'mops_fin_path': 'mops_fin_0312',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
 
 dic_fb_main = {
-    'page': '/index2',
+    'page': '',
     'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                  '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
     '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
            '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
     '大盤領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
+               '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
     '產業領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div/div[3]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
+               '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
 }
 
 dic_fb_revenue = {
-    'page': '/revenue2',
+    'page': '/revenue',
     '勝率(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                 '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                 '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                   '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                   '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
+               '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_eps = {
-    'page': '/eps2',
+    'page': '/eps',
     '勝率(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                  '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                  '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                    '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                    '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
+                '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_cash_dividend = {
-    'page': '/cash_dividend2',
+    'page': '/cash_dividend ',
     '勝率(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                  '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                  '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                    '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                    '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'],
+                '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
+
 
 }
 
 dic_fb_pick = {
-    '月營收': r'https://www.findbillion.com/twstock/picking/result?type=0&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
-    'EPS': 'https://www.findbillion.com/twstock/picking/result?type=1&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
-    '現金股利': 'https://www.findbillion.com/twstock/picking/result?type=2&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
+    '月營收': r'https://www.findbillion.com/strategy/twstock/result?type=0&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
+    'EPS': r'https://www.findbillion.com/strategy/twstock/result?type=1&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
+    '現金股利': r'https://www.findbillion.com/strategy/twstock/result?type=2&subtypeStep2=4&subtypeStep3=4&subtypeStep4=0',
 }
 
 dic_s_rename = {
@@ -200,7 +201,7 @@ dic_url = {
 }
 
 
-def fn_get_stock_info(sid, url, webs):
+def fn_get_stock_info(sid, url, webs, is_headless=True):
     df = pd.DataFrame()
     df['sid'] = [sid]
 
@@ -210,7 +211,7 @@ def fn_get_stock_info(sid, url, webs):
         link = rf'{url}{sid}{page}'
         # link = rf'{url}{sid}{dic["page"]}'
         # link = rf'https://www.findbillion.com/twstock/{sid}{dic["page"]}'
-        driver, action = fn_web_init(link, is_headless=True)
+        driver, action = fn_web_init(link, is_headless=is_headless)
         time.sleep(1)
         for k in dic.keys():
             if k != 'page':
@@ -218,8 +219,18 @@ def fn_get_stock_info(sid, url, webs):
 
                 if typ == 'getText':
                     try:
-                        if sid == '0050' and k == '股價':
-                            val = '/html/body/div/div/main/div/div[3]/div/div[2]/div[1]/div[1]/div/span/strong'
+                        if sid == '0050':
+                            if k == '股價':
+                                val = '/html/body/div/div/main/div/div[3]/div/div[2]/div[1]/div[1]/div/span/strong'
+                            elif k == '勝率(%)_營收':
+                                val = '/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'
+                            elif k == '相關性_營收':
+                                val = r'/html/body/div/div/main/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/div/p[2]'
+                            elif k == '合理價差(%)_營收':
+                                val = r'/html/body/div/div/main/div/div[3]/div/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'
+                            else:
+                                pass
+
                         read = fn_web_get_text(driver, val, slp, by)
                         read = '不適用' if '不適用' in read else read
                         df[k] = read.split(' ')[-1] if k == 'sid_name' else read
@@ -295,7 +306,7 @@ def fn_fb_recommend_stock():
     return df_smry
 
 
-def fn_find_billion(df, stocks=None):
+def fn_find_billion(df, stocks=None, is_force=False):
     df['sid'] = df['公司名稱'].apply(lambda x: str(x.split(" ")[0]))
     # stock_ids = list(df['公司名稱'].apply(lambda x: str(x.split(" ")[0])))
 
@@ -329,7 +340,7 @@ def fn_find_billion(df, stocks=None):
                 if sid in df_all['sid'].values.astype(str):
                     is_bypass = str(today) in df_all[df_all['sid'] == sid]['date'].values
 
-            if is_bypass:
+            if is_bypass and is_force is False:
                 pass
             else:
                 t = time.time()
@@ -487,10 +498,10 @@ def fn_mops_fin_download(dic, sids):
     link = r'https://mopsfin.twse.com.tw/'
 
     try:
-        drv, act = fn_web_init(link, is_headless=True)
+        drv, act = fn_web_init(link, is_headless=False)
     except:
         time.sleep(10)
-        drv, act = fn_web_init(link, is_headless=True)
+        drv, act = fn_web_init(link, is_headless=False)
 
     time.sleep(1)
 
@@ -620,23 +631,20 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"])
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # webs = ['CMoney']
     # for w in webs:
     #     fn_get_web_info('3661', w)
 
-    is_new_season = True
+    # is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
-    ## 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
+    # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
-    for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
-
-
-
+    # for fin in dic_fin.keys():
+    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
