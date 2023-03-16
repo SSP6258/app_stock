@@ -567,7 +567,7 @@ def fn_st_stock_sel(df_all):
 
                 c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
                 n = n_s.split(' ')[0].replace("⭐", "")
-                s = n_s.split(' ')[-1]
+                s = n_s.split(' ')[-1].replace('0050', '')
                 c1.markdown(f'#### [${n}\ {s}$]({dic_url["dog"]+s})')
                 c2.plotly_chart(fig, use_container_width=True)
 
