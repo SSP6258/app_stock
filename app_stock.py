@@ -349,7 +349,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120)
             p_fr = df[df.index == fr]["Close"].values[0]
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
-            op = 0.4 # min(0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5, 0.9)
+            op = 0.4  # min(0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5, 0.9)
             fig.add_vrect(x0=fr, x1=to,
                           fillcolor=color, opacity=op, line_width=0)
 
@@ -1105,6 +1105,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     df_all = dic_df['stock_all']
     df_sid = df_all[df_all['sid']==sid]
+    df_sid_p = df_sid.copy()
 
     if df_sid.shape[0] == 0:
         st.error(f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~')
@@ -1145,7 +1146,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})、[鉅亨網]({url_Cnyes})、')
     cols[0].markdown(f'{mkd_space}[PChome]({url_PC})、')
 
-    df_sid = fn_get_stock_price(sid, days=300)
+    df_sid = fn_get_stock_price(sid, days=200)
     sid_price = round(df_sid['Close'].values[-1], 1)
 
     if df_sid.shape[0] > 0:
@@ -1249,7 +1250,14 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         with tab_tech:
             fn_st_add_space(1)
             st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 技術面指標:')
-            fig = fn_get_stock_price_plt(df_sid, height=200)
+
+            # days_ago = -1 * days[sid_order.index(n_s)]
+            fr = df_sid_p['date'].min()
+            to = df_sid_p['date'].max()
+            # df_p = df_sid[df_sid['sid'] == sid]
+            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350)
+
+            # fig = fn_get_stock_price_plt(df_sid, height=200)
             st.plotly_chart(fig, use_container_width=True)
 
 
