@@ -1520,6 +1520,16 @@ def fn_proj():
     cols[1].markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
 
 
+def fn_wef_global_risk():
+    fn_st_add_space(1)
+    cols = st.columns([0.7, 2, 0.5])
+    cols[1].markdown('#### [$世界經濟論壇$](https://www.weforum.org/) $在2023年1月11日發布了$[:red[$《2023年全球風險報告》$]](https://www.weforum.org/reports/global-risks-report-2023/in-full/1-global-risks-2023-today-s-crisis#1-global-risks-2023-today-s-crisis)')
+    fn_st_add_space(1)
+    st.image(r'https://tccip.ncdr.nat.gov.tw/upload/ckfinder/images/pic_2_chart1a.png',
+             caption='摘自: 臺灣氣候變遷推估資訊與調適知識平台(TCCIP) ， https://tccip.ncdr.nat.gov.tw',
+             use_column_width=True)
+
+
 def fn_st_stock_main():
     stock_file = dic_cfg['stock_file']
     if not os.path.exists(stock_file):
@@ -1578,10 +1588,13 @@ def fn_st_stock_main():
 
     fn_read_per()
 
-    tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj, tab_life = st.tabs(['設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案', '耕讀生活'])
+    tab_trend, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj, tab_life = st.tabs(['世界趨勢', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案', '耕讀生活'])
 
     with tab_life:
         fn_life()
+
+    with tab_trend:
+        fn_wef_global_risk()
 
     with tab_idea:
         fn_idea()
