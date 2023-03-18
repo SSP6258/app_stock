@@ -132,6 +132,7 @@ def fn_pick_date(df, col_pick, col_date):
 
 
 def fn_kpi_plt(kpis, df_sids):
+
     dis = [k for k in kpis if 'new' in k]
     dis = dis + ['績效(%)', '天數']
 
@@ -282,7 +283,7 @@ def fn_get_stock_price(sid, days=30):
     return df_sid
 
 
-def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
+def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     # st.write(df)
     fig.add_trace(go.Candlestick(x=df.index,
@@ -299,6 +300,18 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
                          opacity=0.5,
                          ),
                   secondary_y=False)
+
+    if df_p is None:
+        pass
+    else:
+        df1 = df_p[[c for c in df_p.columns if 'date' in c or '合理價_' in c or 'sid' in c or '股價' in c]]
+
+        for c in df1.columns:
+            if '合理價_' in c:
+                df_plt = df1[df1[c].apply(lambda x: len(str(x)) > 0)]
+                fig.add_trace(go.Scatter(x=df_plt['date'], y=df_plt[c],
+                                         mode='lines', name=c),
+                              secondary_y=True)
 
     margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
 
@@ -348,6 +361,7 @@ def fn_get_stock_price_plt(df, days_ago=None, watch=None, height=120):
 
 
 def fn_st_stock_sel(df_all):
+
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
     fr = min(df_all['date'])
     to = max(df_all['date'])
@@ -566,7 +580,8 @@ def fn_st_stock_sel(df_all):
                 days_ago = -1 * days[sid_order.index(n_s)]
                 fr = df_sel[df_sel['sid'] == sid]['date'].min()
                 to = df_sel[df_sel['sid'] == sid]['date'].max()
-                fig = fn_get_stock_price_plt(df, days_ago=days_ago, watch=[fr, to])
+                df_p = df_all[df_all['sid'] == sid]
+                fig = fn_get_stock_price_plt(df, df_p=df_p, days_ago=days_ago, watch=[fr, to])
                 # st.write(f'{sid} {fr} {to}')
 
                 c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
@@ -1282,7 +1297,9 @@ def fn_st_chart_bar(df):
         df_n5 = df_sids[df_sids['績效(%)'].apply(lambda x: x <= -5)]
         df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
-        # fig, watch = fn_kpi_plt(kpis, df_sids)
+        df_sids = df_sids[[c for c in df_sids.columns if '合理價_' not in c]]
+        kpis = [k for k in kpis if '合理價_' not in k]
+
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
         tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(

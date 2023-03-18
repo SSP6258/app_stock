@@ -623,6 +623,28 @@ def fn_get_web_info(sid, web):
     drv.close()
 
 
+def fn_post_proc():
+
+    stock_file = dic_cfg['stock_file']
+    if os.path.exists(stock_file):
+        df_all = pd.read_csv(stock_file, na_filter=False, dtype=str, index_col=0)
+
+        for c in ['合理價_營收', '合理價_EPS', '合理價_殖利率']:
+            r = c.replace('合理價', '合理價差(%)')
+
+            for i in df_all.index:
+                ip = df_all.loc[i, '股價']
+                ir = df_all.loc[i, r]
+                ia = ''
+                if len(str(ip)) > 0 and len(str(ir)) > 0 and str(ir) != '0':
+                    ia = round(float(ip) - float(ip) * float(ir) / 100, 1)
+                    # print(f'{ip} {ir} --> {ia}')
+
+                df_all.at[i, c] = ia
+
+        df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
+
+
 def fn_main():
     t = time.time()
 
@@ -631,20 +653,23 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
+
     # if fn_is_parsing():
     #     df = fn_fb_recommend_stock()
     #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+
+    fn_post_proc()
 
     # webs = ['CMoney']
     # for w in webs:
     #     fn_get_web_info('3661', w)
 
-    is_new_season = True
+    # is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
     # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
-    fn_mops_file_move()
-    for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    # fn_mops_file_move()
+    # for fin in dic_fin.keys():
+    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
