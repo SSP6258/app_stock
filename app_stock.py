@@ -581,7 +581,7 @@ def fn_st_stock_sel(df_all):
                 fr = df_sel[df_sel['sid'] == sid]['date'].min()
                 to = df_sel[df_sel['sid'] == sid]['date'].max()
                 df_p = df_all[df_all['sid'] == sid]
-                fig = fn_get_stock_price_plt(df, df_p=df_p, days_ago=days_ago, watch=[fr, to])
+                fig = fn_get_stock_price_plt(df, df_p=df_p, days_ago=days_ago, watch=[fr, to], height=150)
                 # st.write(f'{sid} {fr} {to}')
 
                 c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
