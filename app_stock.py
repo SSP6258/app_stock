@@ -599,7 +599,7 @@ def fn_st_stock_sel(df_all):
                 c1.markdown(f'#### [${n}\ {s.replace("0050", "")}$]({dic_url["dog"]+s})')
                 link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
                 c1.markdown(f'[$本益比:\ {per}$]({link})')
-                c1.markdown(f'[$殖利率:\ {p2} \%$]({link})')
+                c1.markdown(f'[$殖利率:\ {p2}\ \%$]({link})')
                 c2.plotly_chart(fig, use_container_width=True)
 
                 for m in metrics:
