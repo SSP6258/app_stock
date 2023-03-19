@@ -224,7 +224,8 @@ def fn_stock_sel(df_all):
                             df_all.at[idx, "篩選"] = 1
                             break
                     elif int(v) >= dic_cfg["sel_rat_h"]:
-                        df_all.at[idx, "篩選"] = 1
+                        # df_all.at[idx, "篩選"] = 1
+                        pass
                         break
 
     for s in df_all[df_all['篩選'] == 1]['sid'].unique():
