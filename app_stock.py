@@ -573,8 +573,13 @@ def fn_st_stock_sel(df_all):
                 days.append(d[p.index(ps)])
 
         is_price_got = False
+        df_per = dic_mops['per']
         for n_s in sid_order:
             sid = n_s.split(' ')[-1]
+            df_per_sid = df_per[df_per['股票代號']==sid]
+            per = df_per_sid['本益比'].values[-1]
+            p2 = df_per_sid['殖利率(%)'].values[-1]
+
             df = fn_get_stock_price(sid, days=300)
             if df.shape[0] > 0:
                 is_price_got = True
@@ -589,6 +594,8 @@ def fn_st_stock_sel(df_all):
                 n = n_s.split(' ')[0].replace("⭐", "")
                 s = n_s.split(' ')[-1]
                 c1.markdown(f'#### [${n}\ {s.replace("0050", "")}$]({dic_url["dog"]+s})')
+                c1.markdown(f'本益比: {per}')
+                c1.markdown(f'殖利率: {p2} %')
                 c2.plotly_chart(fig, use_container_width=True)
 
                 for m in metrics:
@@ -1475,8 +1482,10 @@ def fn_book():
         fn_st_add_space(1)
         cols = st.columns([0.7, 1, 2.5])
         cols[1].image(dic_book_img[b], use_column_width=True)
+        cols[1].markdown('---')
         cols[2].markdown(f'《 [${b}$]({dic_book_lnk[b]}) 》')
         cols[2].markdown(dic_book_cmt[b])
+
 
 
 def fn_read_per():
