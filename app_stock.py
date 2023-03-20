@@ -574,14 +574,16 @@ def fn_st_stock_sel(df_all):
 
         is_price_got = False
         df_per = dic_mops['per']
+        # st.write(df_per)
         for n_s in sid_order:
             sid = n_s.split(' ')[-1]
             df_per_sid = df_per[df_per['股票代號']==sid]
             if df_per_sid.shape[0] > 0:
                 per = df_per_sid['本益比'].values[-1]
                 p2 = df_per_sid['殖利率(%)'].values[-1]
+                mk = df_per_sid['市場別'].values[-1]
             else:
-                per, p2 = 'NA', 'NA'
+                per, p2, mk = 'NA', 'NA', 'NA'
 
             df = fn_get_stock_price(sid, days=300)
             if df.shape[0] > 0:
@@ -597,7 +599,9 @@ def fn_st_stock_sel(df_all):
                 n = n_s.split(' ')[0].replace("⭐", "")
                 s = n_s.split(' ')[-1]
                 c1.markdown(f'#### [${n}\ {s.replace("0050", "")}$]({dic_url["dog"]+s})')
-                link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
+                link = lnk1 if mk == '市' else lnk2
                 c1.markdown(f'[$本益比:\ {per}$]({link})')
                 c1.markdown(f'[$殖利率:\ {p2}\ \%$]({link})')
                 c2.plotly_chart(fig, use_container_width=True)
