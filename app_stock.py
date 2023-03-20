@@ -595,10 +595,10 @@ def fn_st_stock_sel(df_all):
                 fig = fn_get_stock_price_plt(df, df_p=df_p, days_ago=days_ago, watch=[fr, to], height=150)
                 # st.write(f'{sid} {fr} {to}')
 
-                c1, c2, c3, c4 = st.columns([1, 5, 1, 1])
+                c1, c2, c3, c4 = st.columns([1.2, 5, 1, 1])
                 n = n_s.split(' ')[0].replace("⭐", "")
-                s = n_s.split(' ')[-1]
-                c1.markdown(f'#### [${n}\ {s.replace("0050", "")}$]({dic_url["dog"]+s})')
+                s = n_s.split(' ')[-1].replace("0050", "")
+                c1.markdown(f'##### [${n}\ {s}$]({dic_url["dog"]+s})$\ ({mk})$')
                 lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
                 lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
                 link = lnk1 if mk == '市' else lnk2
