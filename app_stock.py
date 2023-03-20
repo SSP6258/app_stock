@@ -1491,9 +1491,8 @@ def fn_book():
         cols[2].markdown(dic_book_cmt[b])
 
 
-
 def fn_read_per():
-    latest = '0316'
+    latest = '0320'
 
     dic_rename = {
         '證券代號': '股票代號',
