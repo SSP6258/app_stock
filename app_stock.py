@@ -342,7 +342,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120)
         if is_working_day:
             pass
         else:
-            fr = str(day_fr + datetime.timedelta(days=-1))
+            fr = str(day_fr + datetime.timedelta(days=-2))
             # st.write(f'{fr} --> {fr in df.index}')
 
         if fr in df.index:
