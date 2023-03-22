@@ -1495,7 +1495,7 @@ def fn_book():
         cols[2].markdown(dic_book_cmt[b])
 
 
-@st.cache
+@st.cache_data
 def fn_read_mops(latest='0321'):
 
     dic_rename = {
