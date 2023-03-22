@@ -1496,7 +1496,7 @@ def fn_book():
 
 
 @st.cache
-def fn_read_per(latest='0321'):
+def fn_read_mops(latest='0321'):
 
     dic_rename = {
         '證券代號': '股票代號',
@@ -1525,7 +1525,15 @@ def fn_read_per(latest='0321'):
     df_per = df_per.sort_values(by=['股票代號'], ignore_index=True)
     # st.write(df_per)
     # dic_mops['per'] = df_per
-    return df_per
+
+    df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    df_roe = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
+    df_roa = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
+    df_opm = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
+    df_dr = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
+    df_ocf = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
+
+    return df_per, df_mops, df_roe, df_roa, df_opm, df_dr, df_ocf
 
 
 def fn_proj():
@@ -1596,15 +1604,14 @@ def fn_st_stock_main():
 
     df = fn_st_stock_all(df_all)
     df_rcmd = df[df['Recommend'] == '1']
-    # df_mops = pd.read_csv('mops.csv', na_filter=False, dtype=str)
-    dic_mops['MOPS'] = pd.read_csv('mops.csv', na_filter=False, dtype=str)
-    dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
-    dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
-    dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
-    dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
-    dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
+    # dic_mops['MOPS'] = pd.read_csv('mops.csv', na_filter=False, dtype=str)
+    # dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
+    # dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
+    # dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
+    # dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
+    # dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
 
-    dic_mops['per'] = fn_read_per(latest='0321')
+    dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest='0321')
 
     tab_trend, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj, tab_life = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案', '耕讀生活'])
 
