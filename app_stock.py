@@ -1495,8 +1495,8 @@ def fn_book():
         cols[2].markdown(dic_book_cmt[b])
 
 
-def fn_read_per():
-    latest = '0321'
+@st.cache
+def fn_read_per(latest='0321'):
 
     dic_rename = {
         '證券代號': '股票代號',
@@ -1524,7 +1524,8 @@ def fn_read_per():
     df_per = df_per[df_per['本益比'].apply(lambda x: str(x) != '' and str(x) != 'N/A' and str(x) != '-')]
     df_per = df_per.sort_values(by=['股票代號'], ignore_index=True)
     # st.write(df_per)
-    dic_mops['per'] = df_per
+    # dic_mops['per'] = df_per
+    return df_per
 
 
 def fn_proj():
@@ -1603,7 +1604,7 @@ def fn_st_stock_main():
     dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
     dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
 
-    fn_read_per()
+    dic_mops['per'] = fn_read_per(latest='0321')
 
     tab_trend, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj, tab_life = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案', '耕讀生活'])
 
