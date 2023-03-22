@@ -53,7 +53,7 @@ dic_field_id = {
     '電子零組件': '23075',
 }
 
-dic_mops = {}
+dic_mops = {'per_date': '0322'}
 
 dic_fin_name = {
     'ROE': '權益報酬率',
@@ -1496,7 +1496,7 @@ def fn_book():
 
 
 @st.cache_data
-def fn_read_mops(latest='0321'):
+def fn_read_mops(latest='0322'):
 
     dic_rename = {
         '證券代號': '股票代號',
@@ -1611,7 +1611,7 @@ def fn_st_stock_main():
     # dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
     # dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
 
-    dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest='0321')
+    dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest=dic_mops['per_date'])
 
     tab_trend, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj, tab_life = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案', '耕讀生活'])
 
