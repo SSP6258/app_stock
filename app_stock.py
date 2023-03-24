@@ -1578,12 +1578,13 @@ def fn_st_stock_main():
             df_all.at[idx, '市場別'] = market
 
     dic_df['stock_all'] = df_all
-    cols = st.columns([7, 3])
+    cols = st.columns([7, 3.3])
     home = r'https://streamlit.io/'
     ver = r'https://docs.streamlit.io/library/changelog'
 
     py_ver = python_version()
-    cols[-1].markdown(f'##### $Powered\ by:\ 🐍\ v{py_ver}\ with\$ [:blue[$\ Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
+    lnk_py = r'https://www.python.org/downloads/'
+    cols[-1].markdown(f'##### $by\ 🐍\ $[:green[$v{py_ver}$]]({lnk_py})$\ with\ $ [:blue[$Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
 
     cols = st.columns([1.7, 0.7, 0.5, 1.5])
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
