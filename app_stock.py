@@ -13,6 +13,7 @@ from app_stock_fb import *
 from app_utils import *
 from workalendar.asia import Taiwan
 from streamlit_player import st_player
+from platform import python_version
 
 
 dic_sel = {
@@ -1580,7 +1581,9 @@ def fn_st_stock_main():
     cols = st.columns([7, 3])
     home = r'https://streamlit.io/'
     ver = r'https://docs.streamlit.io/library/changelog'
-    cols[-1].markdown(f'##### $Powered\ by:$ [:blue[$\ Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
+
+    py_ver = python_version()
+    cols[-1].markdown(f'##### $Powered\ by:\ 🐍\ v{py_ver}\ with\$ [:blue[$\ Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
 
     cols = st.columns([1.7, 0.7, 0.5, 1.5])
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
