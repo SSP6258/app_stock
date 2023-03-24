@@ -53,7 +53,7 @@ dic_field_id = {
     '電子零組件': '23075',
 }
 
-dic_mops = {'per_date': '0322'}
+dic_mops = {'per_date': '0324'}
 
 dic_fin_name = {
     'ROE': '權益報酬率',
