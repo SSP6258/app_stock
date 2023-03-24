@@ -1582,6 +1582,7 @@ def fn_st_stock_main():
     home = r'https://streamlit.io/'
     ver = r'https://docs.streamlit.io/library/changelog'
 
+
     py_ver = python_version()
     lnk_py = r'https://www.python.org/downloads/'
     cols[-1].markdown(f'##### $by\ 🐍\ $[:green[$v{py_ver}$]]({lnk_py})$\ with\ $ [:blue[$Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
