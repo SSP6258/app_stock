@@ -329,6 +329,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
 
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
                      spikedash='solid', rangebreaks=[dict(bounds=["sat", "mon"])])
+
     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
 
     # if days_ago is not None:
