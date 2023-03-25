@@ -285,7 +285,7 @@ def fn_get_stock_price(sid, days=30):
     return df_sid
 
 
-def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120):
+def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120, showlegend=False, title=None):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     # st.write(df)
     fig.add_trace(go.Candlestick(x=df.index,
@@ -293,12 +293,14 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120)
                                  high=df['High'],
                                  low=df['Low'],
                                  close=df['Close'],
+                                 name='漲跌價',
                                  increasing_line_color='red',
                                  decreasing_line_color='green'),
                   secondary_y=True)
 
     fig.add_trace(go.Bar(x=df.index,
                          y=df['Volume'].apply(lambda x: int(x / 1000)),
+                         name='交易量',
                          opacity=0.5,
                          ),
                   secondary_y=False)
@@ -315,9 +317,15 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120)
                                          mode='lines', name=c),
                               secondary_y=True)
 
-    margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
+    if title is None:
+        margin = {'t': 0, 'b': 0, 'l': 10, 'r': 10}
+        title_dic = None
+    else:
+        margin = {'t': 50, 'b': 0, 'l': 10, 'r': 10}
+        title_dic = dict(text=title, font_size=26, font_family='Times New Roman')
 
-    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=False)
+    fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=showlegend,
+                      title=title_dic)
 
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
                      spikedash='solid', rangebreaks=[dict(bounds=["sat", "mon"])])
@@ -1266,15 +1274,14 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
         with tab_tech:
             fn_st_add_space(1)
-            st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 技術面指標:')
+            # st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 技術面指標:')
 
             # days_ago = -1 * days[sid_order.index(n_s)]
             fr = df_sid_p['date'].min()
             to = df_sid_p['date'].max()
             # df_p = df_sid[df_sid['sid'] == sid]
-            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350)
+            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=f'{sid} {sid_name}')
 
-            # fig = fn_get_stock_price_plt(df_sid, height=200)
             st.plotly_chart(fig, use_container_width=True)
 
 
@@ -1608,12 +1615,6 @@ def fn_st_stock_main():
 
     df = fn_st_stock_all(df_all)
     df_rcmd = df[df['Recommend'] == '1']
-    # dic_mops['MOPS'] = pd.read_csv('mops.csv', na_filter=False, dtype=str)
-    # dic_mops['ROE'] = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
-    # dic_mops['ROA'] = pd.read_csv('mops_fin_ROA.csv', na_filter=False, dtype=str)
-    # dic_mops['OPM'] = pd.read_csv('mops_fin_Operating_Margin.csv', na_filter=False, dtype=str)
-    # dic_mops['DR'] = pd.read_csv('mops_fin_Debt_Ratio.csv', na_filter=False, dtype=str)
-    # dic_mops['OCF'] = pd.read_csv('mops_fin_Cash_Flow.csv', na_filter=False, dtype=str)
 
     dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest=dic_mops['per_date'])
 
