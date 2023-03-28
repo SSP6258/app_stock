@@ -1284,7 +1284,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             fr = df_sid_p['date'].min()
             to = df_sid_p['date'].max()
             # df_p = df_sid[df_sid['sid'] == sid]
-            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=f'{sid} {sid_name}')
+            mk = df_sid_p['市場別'].values[-1]
+            mk = mk + '-' if len(str(mk)) > 0 else ''
+            indu = df_sid_p['產業別'].values[-1]
+            title = f'{sid} {sid_name} ({mk}{indu})'
+            st.write(df_sid_p)
+            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=title)
 
             st.plotly_chart(fig, use_container_width=True)
 
