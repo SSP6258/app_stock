@@ -322,7 +322,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
         title_dic = dict(text='', font_size=26, font_family='Times New Roman')
     else:
         margin = {'t': 50, 'b': 0, 'l': 10, 'r': 10}
-        title_dic = dict(text=title, font_size=26, font_family='Times New Roman')
+        title_dic = dict(text=title, font_size=24, font_family='Times New Roman')
 
     fig.update_layout(xaxis_rangeslider_visible=False, margin=margin, height=height, showlegend=showlegend,
                       title=title_dic)
