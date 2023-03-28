@@ -1479,7 +1479,7 @@ def fn_st_reference():
         cols[0].markdown('- [$公開資訊觀測站$](https://mops.twse.com.tw)')
         cols[0].markdown('- [$臺灣證券交易所$](https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU_d.html)')
         cols[0].markdown('- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
-        cols[0].markdown('- [$國發會-景氣指標$](https://index.ndc.gov.tw/n/zh_tw/lightscore#/)')
+        cols[0].markdown('- [$景氣指標及燈號$](https://index.ndc.gov.tw/n/zh_tw/lightscore#/)')
 
         cols[1].markdown('#### :orange[$基本概念$]')
         cols[1].markdown('- [$下班經濟學-股魚$](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
