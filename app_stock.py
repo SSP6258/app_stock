@@ -1411,7 +1411,7 @@ def fn_st_chart_bar(df):
                 if 3.9 < f < 4.51:
                     css = css_b
 
-                if 0 < f < 3.91:
+                if 0 <= f < 3.91:
                     css = css_b
 
                 if 4.9 < f < 10.1:
