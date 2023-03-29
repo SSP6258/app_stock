@@ -1399,12 +1399,20 @@ def fn_st_chart_bar(df):
                 css_p = 'background-color: pink; color: black'
                 css_r = 'background-color: orangered; color: white'
                 css_y = 'background-color: lightyellow; color: black'
+                css_b = 'background-color: lightblue; color: black'
+                css_g = 'background-color: lightgreen; color: black'
                 f = float(x)
                 if f < -1.5:
                     css = css_y
 
                 if 4.5 < f < 4.91:
                     css = css_p
+
+                if 3.9 < f < 4.51:
+                    css = css_b
+
+                if 0 < f < 3.91:
+                    css = css_b
 
                 if 4.9 < f < 10.1:
                     css = css_r
