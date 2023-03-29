@@ -1423,7 +1423,9 @@ def fn_st_chart_bar(df):
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '價差' in c])
+            # df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '價差' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
+
             st.dataframe(df_color, height=500)
 
 
