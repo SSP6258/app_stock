@@ -1372,16 +1372,24 @@ def fn_st_chart_bar(df):
             cs = st.columns([1, 7, 1])
             cs[1].plotly_chart(fig, use_container_width=True)
 
+            # cols = ['名稱', '代碼', '股價_new',
+            #         '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
+            #         '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
+            #         '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
+            #         '大盤領先指標_new', '產業領先指標_new', '產業別']
+
             cols = ['名稱', '代碼', '股價_new',
-                    '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
-                    '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
-                    '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
+                    '營收_勝率_new', '營收_合理價差_new', '營收_相關性_new',
+                    'EPS_勝率_new', 'EPS_合理價差_new', 'EPS_相關性_new',
+                    '殖利率_勝率_new', '殖利率_合理價差_new', '殖利率_相關性_new',
                     '大盤領先指標_new', '產業領先指標_new', '產業別']
 
             df_show = df_sids[cols]
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
             df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
             df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
+
+
             fn_st_add_space(1)
             # st.dataframe(df_show, height=500)
 
