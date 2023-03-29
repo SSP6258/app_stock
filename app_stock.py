@@ -1414,11 +1414,11 @@ def fn_st_chart_bar(df):
                 if 3.9 < f < 4.51:
                     css = css_y
 
-                if 3.0 < f < 3.91:
-                    css = css_b
-
-                if 1.0 <= f < 3.01:
+                if 1.0 <= f < 3.91:
                     css = css_g
+
+                # if 1.0 <= f < 3.01:
+                #     css = css_g
 
                 if f < 1.0:
                     css = css_gray
