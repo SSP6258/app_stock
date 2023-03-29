@@ -1401,7 +1401,7 @@ def fn_st_chart_bar(df):
                 css_r = 'background-color: orangered; color: white'
                 css_y = 'background-color: lightyellow; color: black'
                 css_b = 'background-color: lightblue; color: black'
-                css_g = 'background-color: lightgreen; color: black'
+                css_g = 'background-color: lightgray; color: black'
                 f = float(x)
                 if f < -1.5:
                     css = css_y
