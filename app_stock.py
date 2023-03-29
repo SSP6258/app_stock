@@ -288,14 +288,15 @@ def fn_get_stock_price(sid, days=30):
 def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120, showlegend=False, title=None):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     # st.write(df)
+
     fig.add_trace(go.Candlestick(x=df.index,
                                  open=df['Open'],
                                  high=df['High'],
                                  low=df['Low'],
                                  close=df['Close'],
                                  name='漲跌價',
-                                 increasing_line_color='red',
-                                 decreasing_line_color='green'),
+                                 increasing={'line_color': 'red'},
+                                 decreasing={'line_color': 'green'}),
                   secondary_y=True)
 
     fig.add_trace(go.Bar(x=df.index,
