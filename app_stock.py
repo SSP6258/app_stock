@@ -20,6 +20,8 @@ dic_sel = {
     'pick': []
 }
 
+dic_my_stock = {'my_stock': ['2851 中再保', '4562 穎漢', '3426 台興']}
+
 dic_field_id = {
     '其他': '23024',
     '水泥': '',
@@ -433,7 +435,8 @@ def fn_st_stock_sel(df_all):
         df_sel['sid_and_name'] = df_sel['sid'] + ' ' + df_sel['sid_name']
         with st.form(key='watch'):
             st.markdown(f'#### 👀 選擇關注個股:')
-            option_all = df_sel['sid_and_name'].unique().tolist()
+            my = dic_my_stock['my_stock']
+            option_all = set(my + df_sel['sid_and_name'].unique().tolist())
             option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
             cols = st.columns([6, 0.5, 1])
             option_sel = cols[0].multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
