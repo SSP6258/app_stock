@@ -436,7 +436,7 @@ def fn_st_stock_sel(df_all):
         with st.form(key='watch'):
             st.markdown(f'#### 👀 選擇關注個股:')
             my = dic_my_stock['my_stock']
-            option_all = set(my + df_sel['sid_and_name'].unique().tolist())
+            option_all = [set(my + df_sel['sid_and_name'].unique().tolist())]
             option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
             cols = st.columns([6, 0.5, 1])
             option_sel = cols[0].multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
