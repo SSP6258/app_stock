@@ -20,6 +20,7 @@ dic_sel = {
     'pick': []
 }
 
+
 dic_my_stock = {'my_stock': ['2851 中再保', '4562 穎漢', '3426 台興']}
 
 dic_field_id = {
@@ -231,9 +232,15 @@ def fn_stock_sel(df_all):
                         pass
                         break
 
-    for s in df_all[df_all['篩選'] == 1]['sid'].unique():
+    # for s in df_all[df_all['篩選'] == 1]['sid'].unique():
+    sids = df_all[df_all['篩選'] == 1]['sid'].unique().tolist()
+    # st.write(sids)
+    sids = [s1.split(" ")[0] for s1 in dic_my_stock['my_stock']] + sids
+    # st.write(sids)
+    for s in sids:
         df_sid = df_all[df_all['sid'] == s]
         s_date = df_sid[df_sid['篩選'] == 1]['date'].min()
+        s_date = df_sid['date'].min() if str(s_date) == 'nan' else s_date
         for idx in df_all.index:
             if df_all.loc[idx, 'sid'] == s and df_all.loc[idx, 'date'] > s_date:
                 df_all.at[idx, "篩選"] = 1
@@ -435,8 +442,7 @@ def fn_st_stock_sel(df_all):
         df_sel['sid_and_name'] = df_sel['sid'] + ' ' + df_sel['sid_name']
         with st.form(key='watch'):
             st.markdown(f'#### 👀 選擇關注個股:')
-            my = dic_my_stock['my_stock']
-            option_all = [set(my + df_sel['sid_and_name'].unique().tolist())]
+            option_all = df_sel['sid_and_name'].unique().tolist()
             option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
             cols = st.columns([6, 0.5, 1])
             option_sel = cols[0].multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
