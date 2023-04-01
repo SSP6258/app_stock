@@ -57,6 +57,23 @@ def fn_web_handle(drv, act, typ, slp, by, val, key):
     return 'NA'
 
 
+def fn_web_get_hyperlink(drv, val="a", k1="M00", slp=2):
+    fmts = [".pdf", "PDF", ".ppt", ".PPT"]
+    lnks = drv.find_elements(by=By.TAG_NAME, value=val)
+    urls = []
+    for lnk in lnks:
+        url = lnk.get_attribute("href")
+        url_str = str(url)
+        if k1 in url_str:
+            for f in fmts:
+                if f in url_str:
+                    urls.append(url)
+                    break
+
+    time.sleep(slp)
+    return urls
+
+
 def fn_web_init(link, is_headless=True):
     """
     要注意用selenium進行爬蟲的時候，

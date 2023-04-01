@@ -1178,12 +1178,21 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     mkd_space = f'{7*dic_mkd["2sp"]}'
 
     cols[0].write('')
-    cols[0].markdown(f'市場別: {df_sid["市場別"].values[0]}')
-    cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
-    cols[0].markdown(f'基本面: {basic}')
-    cols[0].markdown(f'專業的: [財報狗]({url_dog})、[旺得富]({url_WantRich})、[CMoney]({url_CMoney})、')
-    cols[0].markdown(f'{mkd_space}[FindBillion]({url_FB})、[玩股網]({url_Wg})、[鉅亨網]({url_Cnyes})、')
-    cols[0].markdown(f'{mkd_space}[PChome]({url_PC})、')
+    cols[0].markdown(f'$市場別:$ ${df_sid["市場別"].values[0]}$ - ${df_sid["產業別"].values[0]}$')
+    # cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
+
+    df_report = dic_df['report']
+    report_lnk = df_report[df_report['sid']==sid]['report'].values[0]
+    report_date = 'NA'if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
+    report_date = f'$中文簡報-{report_date}$'
+
+    cmp_report = 'NA' if report_lnk == 'NA' else f'[:blue[{report_date}]]({report_lnk})'
+    cols[0].markdown(f'$法說會:$ {cmp_report}')
+
+    cols[0].markdown(f'$基本面:$ ${basic}$')
+    cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、[$CMoney$]({url_CMoney})、')
+    cols[0].markdown(f'{mkd_space}[$FindBillion$]({url_FB})、[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
+    cols[0].markdown(f'{mkd_space}[$PChome$]({url_PC})、')
 
     df_sid = fn_get_stock_price(sid, days=200)
     sid_price = round(df_sid['Close'].values[-1], 1)
@@ -1610,14 +1619,28 @@ def fn_wef_global_risk():
              use_column_width=True)
 
 
+@st.cache_data
+def fn_st_stock_init(stock_file):
+    df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
+                                   dtype=str)
+
+    return df_all, df_field, df_rp
+
+
 def fn_st_stock_main():
     stock_file = dic_cfg['stock_file']
     if not os.path.exists(stock_file):
         st.error(f"{stock_file} NOT Exist !!!")
         return
 
-    df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    # df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    # df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    # dic_df['report'] = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
+
+    df_all, df_field, dic_df['report'] = fn_st_stock_init(stock_file)
+
     df_all["篩選"] = 0
 
     for idx in df_all.index:
@@ -1631,6 +1654,7 @@ def fn_st_stock_main():
             df_all.at[idx, '市場別'] = market
 
     dic_df['stock_all'] = df_all
+
     cols = st.columns([7, 3.3])
     home = r'https://streamlit.io/'
     ver = r'https://docs.streamlit.io/library/changelog'

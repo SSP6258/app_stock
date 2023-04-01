@@ -23,7 +23,7 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0318',
+    'mops_fin_path': 'mops_fin_0330',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
@@ -161,11 +161,14 @@ dic_cmoney = {
 
 }
 
+dic_cnyes = {'getHyperlinks': [],
+}
 
 dic_web_handle = {
     'dog': dic_dog,
     'WantRich': dic_wantrich_main,
     'CMoney': dic_cmoney,
+    'Cnyes': dic_cnyes,
 }
 
 
@@ -196,7 +199,7 @@ dic_url = {
     'Yahoo_field': r'https://tw.stock.yahoo.com/t/nine.php?cat_id=%',
     'PChome': r'https://pchome.megatime.com.tw/stock/sto2/ock2/sid',
     'Wantgoo': r'https://www.wantgoo.com/stock/',
-    'Cnyes': r'https://invest.cnyes.com/twstock/tws/',
+    'Cnyes': r'https://www.cnyes.com/twstock/',
     'dog': r'https://statementdog.com/analysis/',
 }
 
@@ -593,34 +596,89 @@ def fn_mops_fin(is_new_season=False):
             to = min(to + 10, len(sids))
 
 
+def fn_get_company_report2():
+    df = pd.read_csv('Company_Report_link.csv', na_filter=False, dtype=str, index_col=None)
+
+    for i in df.index:
+        sid = df.loc[i, 'sid']
+        report = df.loc[i, 'report']
+        if report == 'NA':
+            try:
+                dic_info = fn_get_web_info(sid, 'Cnyes')
+                report2 = dic_info['getHyperlinks']
+                df.at[i, 'report'] = report2
+            except:
+                pass
+
+    df.to_csv('Company_Report_link2.csv', encoding='utf_8_sig', index=False)
+
+
+def fn_get_company_report():
+
+    if True:
+        fn_get_company_report2()
+    else:
+        dic_cpy_rp = {'sid': [], 'report': []}
+        df = pd.read_csv(dic_cfg['stock_file'], na_filter=False, dtype=str, index_col=0)
+        sids = df['sid'].unique().tolist()
+        sid_num = len(sids)
+        web = 'Cnyes'
+        for sid in sids:
+
+            dic_cpy_rp['sid'].append(sid)
+
+            try:
+                dic_info = fn_get_web_info(sid, web)
+                report_lnk = dic_info['getHyperlinks']
+                status = 'Pass'
+            except:
+                report_lnk = 'NA'
+                status = 'Fail !'
+
+            dic_cpy_rp['report'].append(report_lnk)
+
+            print(f'({sids.index(sid)}/{sid_num}) --> {sid} {status} {report_lnk}')
+
+        df_report = pd.DataFrame(dic_cpy_rp)
+        df_report.to_csv('Company_Report_link.csv', encoding='utf_8_sig', index=False)
+
+
+
 def fn_get_web_info(sid, web):
     sid_info = sid
     if web == 'dog':
         sid_info = sid_info + '/stock-health-check'
+    elif web == 'Cnyes':
+        sid_info = sid_info + '/company/profile'
+
     link = dic_url[web] + sid_info
 
     drv, action = fn_web_init(link, is_headless=True)
     time.sleep(1)
-    print(link)
+    # print(link)
 
     dic = dic_web_handle[web]
+    dic_info = {}
 
     for k in dic.keys():
         if k == 'page':
             pass
+        elif k == 'getHyperlinks':
+            urls = fn_web_get_hyperlink(drv, val="a", k1="M00")
+            print(f'{sid} --> {urls}')
+            dic_info[k] = urls[0]
+
         else:
             typ, slp, by, val = dic[k]
             if typ == 'getText':
                 txt = fn_web_get_text(drv, val, slp=slp)
                 print(k, txt)
-                # try:
-                #     txt = fn_web_get_text(drv, val, slp=slp)
-                #     print(txt)
-                # except:
-                #     pass
+                dic_info[k]=txt
 
     time.sleep(2)
     drv.close()
+
+    return dic_info
 
 
 def fn_post_proc():
@@ -653,15 +711,17 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
-    fn_post_proc()
+    # fn_post_proc()
 
-    # webs = ['CMoney']
+    fn_get_company_report()
+
+    # webs = ['Cnyes']
     # for w in webs:
-    #     fn_get_web_info('3661', w)
+    #     fn_get_web_info('2929', w)
 
     # is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
