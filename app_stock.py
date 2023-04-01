@@ -1175,7 +1175,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     del df_fin['season']
     basic = fn_basic_rule(sid, df_mops)
 
-    mkd_space = f'{7*dic_mkd["2sp"]}'
+    mkd_space = f'{9*dic_mkd["2sp"]}'
 
     cols[0].write('')
     cols[0].markdown(f'$市場別:$ ${df_sid["市場別"].values[0]}$ - ${df_sid["產業別"].values[0]}$')
@@ -1190,8 +1190,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
 
     cols[0].markdown(f'$基本面:$ ${basic}$')
-    cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、[$CMoney$]({url_CMoney})、')
-    cols[0].markdown(f'{mkd_space}[$FindBillion$]({url_FB})、[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
+    cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
+    cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$FindBillion$]({url_FB})、')
+    cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
     cols[0].markdown(f'{mkd_space}[$PChome$]({url_PC})、')
 
     df_sid = fn_get_stock_price(sid, days=200)
