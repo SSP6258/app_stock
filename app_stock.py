@@ -1126,23 +1126,34 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
     cols = st.columns([1, 0.1, 2.9])
+    df_all = dic_df['stock_all']
 
     with cols[0].form(key=f'form_{key}'):
 
         # sid_name = st.selectbox('觀察個股:', options=df['sid_name'], index=0, key=key)
         # df_sid = df[df["sid_name"] == sid_name]
 
-        sid = st.text_input('股票代碼:', value=df['代碼'].values[0])
+        cols2 = st.columns([2, 0.1, 3, 1.5])
+        sid = cols2[0].text_input('股票代碼:', value=df['代碼'].values[0])
 
-        fn_st_add_space(2)
-        st.form_submit_button('選擇')
+        df_sid = df_all[df_all['sid'] == sid]
+        sid_name = df_sid['sid_name'].values[0]
+        cols2[2].write('')
+        cols2[2].write('')
+        cols2[2].write(f':orange[${sid_name}$]')
+
+        cols2[-1].write('')
+        cols2[-1].write('')
+        cols2[-1].form_submit_button('選擇')
+
+
 
     # sid = sid_name.split(sep)[0]
 
     # st.write(sid)
     # st.write(dic_df['stock_all'])
 
-    df_all = dic_df['stock_all']
+
     df_sid = df_all[df_all['sid']==sid]
     df_sid_p = df_sid.copy()
 
@@ -1150,7 +1161,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         st.error(f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~')
         assert False, f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~'
 
-    sid_name = df_sid['sid_name'].values[0]
+    # sid_name = df_sid['sid_name'].values[0]
 
     url_WantRich = rf'{dic_url["WantRich"]}{sid}'
     url_FB = rf'{dic_url["FindBillion"]}{sid}'
