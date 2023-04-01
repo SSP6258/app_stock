@@ -1198,8 +1198,13 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     df_tdcc_sid = df_tdcc[df_tdcc['證券代號'] == sid]
     df_rank_15 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']
     df_rank_17 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']
+
     n_share = int(int(df_rank_17['股數'].values[0])/1000)
+    n_share = n_share if int(n_share) < 10000 else '約 ' + str(int(int(n_share) / 10000)) + '萬'
+
     n_owner = df_rank_17['人數'].values[0]
+    n_owner = n_owner if int(n_owner) < 10000 else '約 ' + str(int(int(n_owner) / 10000)) + '萬'
+
     r_big = df_rank_15['占集保庫存數比例%'].values[0]
     r_date = df_rank_15['資料日期'].values[0].replace(f'{datetime.datetime.today().year}', '')
     lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
