@@ -1619,7 +1619,7 @@ def fn_wef_global_risk():
              use_column_width=True)
 
 
-@st.cache_data
+# @st.cache_data
 def fn_st_stock_init(stock_file):
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
