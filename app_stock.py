@@ -908,7 +908,7 @@ def fn_get_mops_fin(fin, sid, years=None):
 
     df_mops_fin = df_fin[df_fin['sid'] == sid]
 
-    assert df_mops_fin.shape[0] > 0, f'{sid} not in df_fin'
+    assert df_mops_fin.shape[0] > 0, f'{sid} not in df_fin {fin}'
 
     df_mops_fin = df_mops_fin[[c for c in df_mops_fin.columns if 'Q' in c]]
     df_mops_fin = df_mops_fin.transpose()
@@ -1204,7 +1204,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     r_date = df_rank_15['資料日期'].values[0].replace(f'{datetime.datetime.today().year}', '')
     lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
-    cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
+    cols[0].markdown(f'$法說會:$ {cmp_report}')
     cols[0].markdown(f'$基本面:$ ${basic}$')
 
     cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
