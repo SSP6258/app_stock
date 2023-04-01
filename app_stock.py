@@ -1213,9 +1213,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $(>千張\ at\ {r_date})$')
 
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
-    cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$FindBillion$]({url_FB})、')
     cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
-    cols[0].markdown(f'{mkd_space}[$PChome$]({url_PC})、')
+    cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$PChome$]({url_PC})、')
+    cols[0].markdown(f'{mkd_space}[$FindBillion$]({url_FB})')
 
     df_sid = fn_get_stock_price(sid, days=200)
     sid_price = round(df_sid['Close'].values[-1], 1)
