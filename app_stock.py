@@ -1361,41 +1361,12 @@ def fn_st_chart_bar(df):
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
-            [f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+        tab_w, tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
+            ['勝率分析', f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
              f'負報酬( -1% ~ -5% ): {df_n.shape[0]}檔', f'負報酬( < -5% ): {df_n5.shape[0]}檔',
              f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
-        with tab_p:
-            fn_st_add_space(1)
-            fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
-
-        with tab_p5:
-            fn_st_add_space(1)
-            fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
-
-        with tab_n:
-            fn_st_add_space(1)
-            fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
-
-        with tab_n5:
-            fn_st_add_space(1)
-            fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
-
-        with tab_e:
-            fn_st_add_space(1)
-            fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
-
-        with tab_d:
-            fn_st_add_space(1)
-            cs = st.columns([1, 7, 1])
-            cs[1].plotly_chart(fig, use_container_width=True)
-
-            # cols = ['名稱', '代碼', '股價_new',
-            #         '營收_勝率_new', 'EPS_勝率_new', '殖利率_勝率_new',
-            #         '營收_合理價差_new', 'EPS_合理價差_new', '殖利率_合理價差_new',
-            #         '營收_相關性_new', 'EPS_相關性_new', '殖利率_相關性_new',
-            #         '大盤領先指標_new', '產業領先指標_new', '產業別']
+        with tab_w:
 
             cols = ['名稱', '代碼', '股價_new',
                     '營收_勝率_new', '營收_合理價差_new', '營收_相關性_new',
@@ -1449,10 +1420,34 @@ def fn_st_chart_bar(df):
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            # df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '價差' in c])
             df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
-
             st.dataframe(df_color, height=500)
+
+        with tab_d:
+            fn_st_add_space(1)
+            cs = st.columns([1, 7, 1])
+            cs[1].plotly_chart(fig, use_container_width=True)
+
+        with tab_p:
+            fn_st_add_space(1)
+            fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
+
+        with tab_p5:
+            fn_st_add_space(1)
+            fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
+
+        with tab_n:
+            fn_st_add_space(1)
+            fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
+
+        with tab_n5:
+            fn_st_add_space(1)
+            fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
+
+        with tab_e:
+            fn_st_add_space(1)
+            fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
+
 
 
 def fn_st_stock_all(df_all):
@@ -1634,10 +1629,6 @@ def fn_st_stock_main():
     if not os.path.exists(stock_file):
         st.error(f"{stock_file} NOT Exist !!!")
         return
-
-    # df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    # df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    # dic_df['report'] = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
 
     df_all, df_field, dic_df['report'] = fn_st_stock_init(stock_file)
 
