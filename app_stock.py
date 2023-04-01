@@ -1187,7 +1187,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     report_date = f'$中文簡報-{report_date}$'
 
     cmp_report = 'NA' if report_lnk == 'NA' else f'[:blue[{report_date}]]({report_lnk})'
-    cols[0].markdown(f'$法說會:$ {cmp_report}')
+    cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
 
     cols[0].markdown(f'$基本面:$ ${basic}$')
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、[$CMoney$]({url_CMoney})、')
