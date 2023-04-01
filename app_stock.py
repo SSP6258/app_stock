@@ -1205,7 +1205,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
     cols[0].markdown(f'$法說會:$ {cmp_report}')
-    cols[0].markdown(f'$基本面:$ ${basic}$')
+    cols[0].markdown(f'$基本面:$ {basic}')
 
     cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
     cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
