@@ -1201,8 +1201,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     n_share = int(int(df_rank_17['股數'].values[0])/1000)
     n_owner = df_rank_17['人數'].values[0]
     r_big = df_rank_15['占集保庫存數比例%'].values[0]
-    st.write(df_rank_15)
-    r_date = df_rank_15['資料日期'].values[0]
+    r_date = df_rank_15['資料日期'].values[0].replace(f'{datetime.datetime.today().year}', '')
     lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
     cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
