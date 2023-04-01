@@ -1146,14 +1146,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         cols2[-1].write('')
         cols2[-1].form_submit_button('選擇')
 
-
-
     # sid = sid_name.split(sep)[0]
-
     # st.write(sid)
     # st.write(dic_df['stock_all'])
-
-
     df_sid = df_all[df_all['sid']==sid]
     df_sid_p = df_sid.copy()
 
@@ -1198,9 +1193,23 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     report_date = f'$中文簡報-{report_date}$'
 
     cmp_report = 'NA' if report_lnk == 'NA' else f'[:blue[{report_date}]]({report_lnk})'
-    cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
 
+    df_tdcc = dic_df['tdcc']
+    df_tdcc_sid = df_tdcc[df_tdcc['證券代號'] == sid]
+    df_rank_15 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']
+    df_rank_17 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']
+    n_share = int(int(df_rank_17['股數'].values[0])/1000)
+    n_owner = df_rank_17['人數'].values[0]
+    r_big = df_rank_15['占集保庫存數比例%'].values[0]
+    lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
+
+    cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
     cols[0].markdown(f'$基本面:$ ${basic}$')
+
+    cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
+    cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
+    cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $, 千張以上$')
+
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
     cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$FindBillion$]({url_FB})、')
     cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
@@ -1627,22 +1636,26 @@ def fn_wef_global_risk():
 
 
 # @st.cache_data
-def fn_st_stock_init(stock_file):
-    df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
-                                   dtype=str)
+def fn_st_stock_init():
 
-    return df_all, df_field, df_rp
-
-
-def fn_st_stock_main():
     stock_file = dic_cfg['stock_file']
+    tdcc_file = os.path.join('TDCC', 'TDCC_OD_1-5.csv')
     if not os.path.exists(stock_file):
         st.error(f"{stock_file} NOT Exist !!!")
         return
 
-    df_all, df_field, dic_df['report'] = fn_st_stock_init(stock_file)
+    df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_tdcc = pd.read_csv(tdcc_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
+                                   dtype=str)
+
+    return df_all, df_field, df_rp, df_tdcc
+
+
+def fn_st_stock_main():
+
+    df_all, df_field, dic_df['report'], dic_df['tdcc'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
 
