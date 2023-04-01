@@ -1201,6 +1201,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     n_share = int(int(df_rank_17['股數'].values[0])/1000)
     n_owner = df_rank_17['人數'].values[0]
     r_big = df_rank_15['占集保庫存數比例%'].values[0]
+    st.write(df_rank_15)
+    r_date = df_rank_15['資料日期'].values[0]
     lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
     cols[0].markdown(f'$法說會:$ {cmp_report} :red[new !]')
@@ -1208,7 +1210,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
     cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
-    cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $, 千張以上$')
+    cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $(>千張\ at\ {r_date})$')
 
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
     cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$FindBillion$]({url_FB})、')
@@ -1645,7 +1647,7 @@ def fn_st_stock_init():
         return
 
     df_all = pd.read_csv(stock_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
-    df_tdcc = pd.read_csv(tdcc_file, na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_tdcc = pd.read_csv(tdcc_file, na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
     df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
                                    dtype=str)
