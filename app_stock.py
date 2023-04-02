@@ -403,9 +403,10 @@ def fn_st_stock_sel(df_all):
         dic_cfg["sel_lead"] = sels[4].radio('產業領先指標', ('極佳', '極佳/佳'), index=0, horizontal=False)
         dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=1, horizontal=False)
 
-        sid_2_watch = st.text_input('手動輸入:', value='2454, 2330', key='sid_2_watch')
+        sels2 = st.columns([1, 1, 1, 0.1, 0.45, 0.45])
+        sid_2_watch = sels2[0].text_input('手動關注:', value='2454, 2330', key='sid_2_watch')
 
-        dic_my_stock['my_stock'] = list(sid_2_watch.split(', '))
+        dic_my_stock['my_stock'] = list(sid_2_watch.replace(' ', '').split(','))
 
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
