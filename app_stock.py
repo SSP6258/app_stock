@@ -409,7 +409,7 @@ def fn_st_stock_sel(df_all):
         dic_my_stock['my_stock'] = list(sid_2_watch.replace(' ', '').split(','))
 
         fn_st_add_space(1)
-        submit = st.form_submit_button('選擇')
+        submit = sels2[1].form_submit_button('選擇')
 
     txt = f'''
            ##### 🎯 篩選條件:
