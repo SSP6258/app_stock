@@ -512,9 +512,9 @@ def fn_st_stock_sel(df_all):
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
 
-        df_show['大戶比'] = ''
-        df_show['股東數'] = ''
-        df_show['法說會'] = ''
+        # df_show['大戶比'] = ''
+        # df_show['股東數'] = ''
+        # df_show['法說會'] = ''
 
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
@@ -566,6 +566,11 @@ def fn_st_stock_sel(df_all):
                            '勝率(%)_殖利率', '產業別', '市場別']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
+
+        df_show['大戶比'] = ''
+        df_show['股東數'] = ''
+        df_show['法說會'] = ''
+
         # ➡
         show_cols_rename = {'date': '日期',
                             '股票名稱': '名稱',
