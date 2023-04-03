@@ -567,11 +567,6 @@ def fn_st_stock_sel(df_all):
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
 
-
-        for i in df_show.index:
-
-
-        # ➡
         show_cols_rename = {'date': '日期',
                             '股票名稱': '名稱',
                             '股票代碼': '代碼',
