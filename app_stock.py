@@ -512,14 +512,16 @@ def fn_st_stock_sel(df_all):
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
 
-        # df_show['大戶比'] = ''
-        # df_show['股東數'] = ''
-        # df_show['法說會'] = ''
+        df_show['大戶比'] = ''
+        df_show['股東數'] = ''
+        df_show['法說會'] = ''
 
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
 
         # df_show['股價'] = df_show['股價'].apply(lambda x: str(x) if x == '' else '🔺' + str(x))
+
+
 
         dic_page = {
             '營收': '/revenue',
@@ -563,13 +565,13 @@ def fn_st_stock_sel(df_all):
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '領先指標',
                            '勝率(%)_營收', '勝率(%)_EPS',
-                           '勝率(%)_殖利率', '產業別', '市場別']
+                           '勝率(%)_殖利率', '產業別', '市場別', '大戶比', '股東數', '法說會']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
 
-        df_show['大戶比'] = ''
-        df_show['股東數'] = ''
-        df_show['法說會'] = ''
+
+        for i in df_show.index:
+
 
         # ➡
         show_cols_rename = {'date': '日期',
