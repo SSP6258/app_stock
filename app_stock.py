@@ -512,9 +512,6 @@ def fn_st_stock_sel(df_all):
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
 
-        df_show['大戶比'] = ''
-        df_show['股東數'] = ''
-        df_show['法說會'] = ''
 
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
@@ -560,6 +557,24 @@ def fn_st_stock_sel(df_all):
         df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
         df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
         df_show['領先指標'] = df_show['大盤領先指標'] + ' , ' + df_show['產業領先指標']
+
+        df_show['大戶比'] = ''
+        df_show['股東數'] = ''
+        df_show['法說會'] = ''
+
+        for idx in df_show.index:
+            df_tdcc = dic_df['tdcc']
+            date_tdcc = df_tdcc['資料日期'].values[0]
+            date_show = df_show['date']
+
+            if int(date_show) >= int(date_tdcc):
+                date_tdcc_sid = date_tdcc[date_tdcc['證券代號']==sid]
+                df_show.loc[idx, '大戶比'] = date_tdcc_sid[date_tdcc_sid['持股分級']=='15']['占集保庫存數比例%'].values[0]
+                # df_show.loc[idx, '股東數'] = date_tdcc_sid[date_tdcc_sid['持股分級']=='15']['占集保庫存數比例%'].values[0]
+                # df_show.loc[idx, '法說會'] =
+
+
+
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '領先指標',
                            '勝率(%)_營收', '勝率(%)_EPS',
