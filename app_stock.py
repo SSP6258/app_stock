@@ -521,8 +521,6 @@ def fn_st_stock_sel(df_all):
 
         # df_show['股價'] = df_show['股價'].apply(lambda x: str(x) if x == '' else '🔺' + str(x))
 
-
-
         dic_page = {
             '營收': '/revenue',
             'EPS': '/eps',
