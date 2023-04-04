@@ -120,10 +120,13 @@ def fn_make_clickable_report(sid):
 
 
 def fn_make_clickable_tdcc(x):
-    name=x
+    name = x
     url = rf'{dic_url["tdcc"]}'
 
-    return '<a href="{}">{}</a>'.format(url, name)
+    if x == '':
+        return x
+    else:
+        return '<a href="{}">{}</a>'.format(url, name)
 
 
 def fn_click_name(sid, name, url):
@@ -416,7 +419,7 @@ def fn_st_stock_sel(df_all):
     with st.form(key='sel'):
         st.markdown(f'#### 🎚️ 篩選條件設定:')
         fn_st_add_space(1)
-        sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45])
+        sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45, 0.45])
 
         sid_2_watch = sels[0].text_input('手動篩選:', value='2851, 4562, 3426', key='sid_2_watch')
         dic_cfg["sel_rat"] = sels[1].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
@@ -424,6 +427,8 @@ def fn_st_stock_sel(df_all):
         # dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=500)
         dic_cfg["sel_lead"] = sels[4].radio('產業領先指標', ('極佳', '極佳/佳'), index=0, horizontal=False)
         dic_cfg["sel_market"] = sels[5].radio('市場別', ('上市', '上市/櫃'), index=1, horizontal=False)
+        is_latest_only = sels[6].radio('表格顯示', ('最新', '歷史'), index=0, horizontal=False)
+        show_latest_only = True if is_latest_only == '最新' else False
 
         dic_my_stock['my_stock'] = list(sid_2_watch.replace(' ', '').split(','))
 
@@ -533,7 +538,6 @@ def fn_st_stock_sel(df_all):
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
         df_show = df_sel.copy()
 
-
         df_show.sort_values(by=['sid_name', 'date'], ascending=[True, False], inplace=True, ignore_index=True)
         df_show = df_show[['date'] + [c for c in df_show.columns if c != 'date']]
 
@@ -600,11 +604,6 @@ def fn_st_stock_sel(df_all):
 
         df_show['field_id'] = df_show['產業別'].apply(fn_get_field_id)
         df_show['產業別'] = df_show.apply(lambda x: fn_click_name(x['field_id'], x['產業別'], dic_url['Yahoo_field']), axis=1)
-
-        # show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '大盤領先指標', '產業領先指標',
-        #                    '勝率(%)_營收', '相關性_營收', '勝率(%)_EPS', '相關性_EPS',
-        #                    '勝率(%)_殖利率', '相關性_殖利率', '產業別', '市場別']
-
         df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%' + ' , ' + df_show['相關性_營收']
         df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
         df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
@@ -629,8 +628,9 @@ def fn_st_stock_sel(df_all):
                             '相關性_殖利率': '殖利率<br>相關性'}
 
         df_show.rename(columns=show_cols_rename, inplace=True)
-        latest_only = True
-        if latest_only:
+
+        # show_latest_only = True
+        if show_latest_only:
             df_show = df_show[df_show['大戶比'] != '']
             df_show.reset_index(drop=True, inplace=True)
 
