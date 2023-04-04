@@ -1241,7 +1241,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     r_big = df_rank_15['占集保庫存數比例%'].values[0]
     r_date = df_rank_15['資料日期'].values[0].replace(f'{datetime.datetime.today().year}', '')
-    lnk_tdcc = r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
+    lnk_tdcc = dic_url['tdcc']  # r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
     cols[0].markdown(f'$法說會:$ {cmp_report}')
     cols[0].markdown(f'$基本面:$ {basic}')
