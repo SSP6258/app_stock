@@ -631,7 +631,8 @@ def fn_st_stock_sel(df_all):
         df_show.rename(columns=show_cols_rename, inplace=True)
         latest_only = True
         if latest_only:
-            df_show = df_show[df_show['大戶比']!= '']
+            df_show = df_show[df_show['大戶比'] != '']
+            df_show.reset_index(drop=True, inplace=True)
 
         fn_st_add_space(1)
         st.write(df_show.to_html(escape=False, index=True), unsafe_allow_html=True)
