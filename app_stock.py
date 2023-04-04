@@ -551,16 +551,22 @@ def fn_st_stock_sel(df_all):
             # if int(date_show) >= int(date_tdcc) and idx_sid not in watch_list:
             if idx_sid in watch_list:
                 big = ''
+                num = ''
 
             else:
                 big = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']['占集保庫存數比例%'].values[0]+'%'
+                num = df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']['人數'].values[0]
+                num = str(num)+'人' if num < 10000 else '約'+str(num/10000)+'萬人'
+
                 watch_list.append(idx_sid)
 
             df_show.loc[idx, '大戶比'] = big
-            df_show.loc[idx, '股東數'] = ''
+            df_show.loc[idx, '股東數'] = num
             df_show.loc[idx, '法說會'] = ''
 
         df_show['大戶比'] = df_show['大戶比'].apply(fn_make_clickable_tdcc)
+        df_show['股東數'] = df_show['股東數'].apply(fn_make_clickable_tdcc)
+        # df_show['股東數'] = df_show['股東數'].apply(fn_make_clickable_tdcc)
 
         for c in df_show.columns:
             if '勝率' in c:
