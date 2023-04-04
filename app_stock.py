@@ -610,9 +610,9 @@ def fn_st_stock_sel(df_all):
         df_show['領先指標'] = df_show['大盤領先指標'] + ' , ' + df_show['產業領先指標']
         df_show['領先指標'] = df_show['領先指標'].apply(lambda x: x.replace('佳 ,', '佳等 ,') if str(x).startswith('佳 ,') else x)
 
-        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '領先指標',
-                           '勝率(%)_營收', '勝率(%)_EPS',
-                           '勝率(%)_殖利率', '產業別', '市場別', '大戶比', '股東數', '法說會']
+        show_cols_order = ['股票名稱', '股票代碼', 'date', '股價',
+                           '勝率(%)_營收', '勝率(%)_EPS', '勝率(%)_殖利率',
+                           '領先指標', '產業別', '市場別', '大戶比', '股東數', '法說會']
 
         df_show = df_show[[c for c in show_cols_order if c in df_show.columns]]
 
