@@ -555,7 +555,7 @@ def fn_st_stock_sel(df_all):
 
             else:
                 big = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']['占集保庫存數比例%'].values[0]+'%'
-                num = df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']['人數'].values[0]
+                num = int(df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']['人數'].values[0])
                 num = str(num)+'人' if num < 10000 else '約'+str(num/10000)+'萬人'
 
                 watch_list.append(idx_sid)
