@@ -106,13 +106,15 @@ def fn_make_clickable(x):
 
 
 def fn_make_clickable_report(sid):
-    if sid == '' or sid == 'NA':
+    if sid == '':
         return sid
     else:
         df_report = dic_df['report']
         df_rp_sid = df_report[df_report['sid']==sid]
         url = df_rp_sid['report'].values[0]
         name = url.split('M')[0].split(sid)[-1]
+        if name == 'NA':
+            url = dic_url['Cnyes']+sid
 
         return '<a href="{}">{}</a>'.format(url, name)
 
