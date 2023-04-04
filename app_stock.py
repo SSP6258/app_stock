@@ -609,7 +609,7 @@ def fn_st_stock_sel(df_all):
         df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
         df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
         df_show['領先指標'] = df_show['大盤領先指標'] + ' , ' + df_show['產業領先指標']
-        df_show['領先指標'] = df_show['領先指標'].apply(lambda x: x.replace(' 佳 ,', ' 佳等 ,'))
+        df_show['領先指標'] = df_show['領先指標'].apply(lambda x: x.replace('佳 ,', '佳等 ,').replace('不佳等 ,', '不佳 ,'))
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價', '領先指標',
                            '勝率(%)_營收', '勝率(%)_EPS',
