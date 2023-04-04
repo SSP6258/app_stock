@@ -113,7 +113,6 @@ def fn_make_clickable_report(sid):
         df_rp_sid = df_report[df_report['sid']==sid]
         url = df_rp_sid['report'].values[0]
         name = url.split('M')[0].split(sid)[-1]
-        name = f'${name}$'
 
         return '<a href="{}">{}</a>'.format(url, name)
 
