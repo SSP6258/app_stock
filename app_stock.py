@@ -114,7 +114,7 @@ def fn_make_clickable_report(sid):
         url = df_rp_sid['report'].values[0]
         name = url.split('M')[0].split(sid)[-1]
         if name == 'NA':
-            url = dic_url['Cnyes']+sid
+            url = dic_url['Cnyes']+f'{sid}/company/profile'
 
         return '<a href="{}">{}</a>'.format(url, name)
 
