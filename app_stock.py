@@ -105,6 +105,18 @@ def fn_make_clickable(x):
     return '<a href="{}">{}</a>'.format(url, name)
 
 
+def fn_make_clickable_report(sid):
+    if sid == '':
+        return sid
+    else:
+        df_report = dic_df['report']
+        df_rp_sid = df_report[df_report['sid']==sid]
+        url = df_rp_sid['report'].values[0]
+        name = url.split('M')[0].split(sid)[-1]
+
+        return '<a href="{}">{}</a>'.format(url, name)
+
+
 def fn_make_clickable_tdcc(x):
     name=x
     url = rf'{dic_url["tdcc"]}'
@@ -552,21 +564,23 @@ def fn_st_stock_sel(df_all):
             if idx_sid in watch_list:
                 big = ''
                 num = ''
+                rp = ''
 
             else:
                 big = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']['占集保庫存數比例%'].values[0]+'%'
                 num = int(df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']['人數'].values[0])
                 num = str(num)+'人' if num < 10000 else str(round(num/10000, 1))+'萬人'
+                rp = idx_sid
 
                 watch_list.append(idx_sid)
 
             df_show.loc[idx, '大戶比'] = big
             df_show.loc[idx, '股東數'] = num
-            df_show.loc[idx, '法說會'] = ''
+            df_show.loc[idx, '法說會'] = rp
 
         df_show['大戶比'] = df_show['大戶比'].apply(fn_make_clickable_tdcc)
         df_show['股東數'] = df_show['股東數'].apply(fn_make_clickable_tdcc)
-        # df_show['股東數'] = df_show['股東數'].apply(fn_make_clickable_tdcc)
+        df_show['法說會'] = df_show['法說會'].apply(fn_make_clickable_report)
 
         for c in df_show.columns:
             if '勝率' in c:
