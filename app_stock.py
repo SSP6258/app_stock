@@ -104,11 +104,13 @@ def fn_make_clickable(x):
 
     return '<a href="{}">{}</a>'.format(url, name)
 
+
 def fn_make_clickable_tdcc(x):
-    name=''
+    name=x
     url = rf'{dic_url["tdcc"]}'
 
     return '<a href="{}">{}</a>'.format(url, name)
+
 
 def fn_click_name(sid, name, url):
     url = rf'{url}{sid}'
@@ -558,7 +560,7 @@ def fn_st_stock_sel(df_all):
             df_show.loc[idx, '股東數'] = ''
             df_show.loc[idx, '法說會'] = ''
 
-        df_show['大戶比'] = df_show['大戶比'].apply(fn_make_clickable)
+        df_show['大戶比'] = df_show['大戶比'].apply(fn_make_clickable_tdcc)
 
         for c in df_show.columns:
             if '勝率' in c:

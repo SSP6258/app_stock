@@ -201,6 +201,7 @@ dic_url = {
     'Wantgoo': r'https://www.wantgoo.com/stock/',
     'Cnyes': r'https://www.cnyes.com/twstock/',
     'dog': r'https://statementdog.com/analysis/',
+    'tdcc': r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock',
 }
 
 
@@ -711,13 +712,13 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # fn_post_proc()
 
-    fn_get_company_report()
+    # fn_get_company_report()
 
     # webs = ['Cnyes']
     # for w in webs:
