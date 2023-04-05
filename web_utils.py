@@ -91,9 +91,14 @@ def fn_web_init(link, is_headless=True):
 
     driver = webdriver.Chrome(options=options)
 
-    driver.implicitly_wait(2)
-    driver.get(link)
-    action = ActionChains(driver)
+    try:
+        driver.implicitly_wait(5)
+        driver.get(link)
+        action = ActionChains(driver)
+    except:
+        driver.implicitly_wait(15)
+        driver.get(link)
+        action = ActionChains(driver)
 
     return driver, action
 
