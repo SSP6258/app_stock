@@ -487,7 +487,10 @@ def fn_mops_twse_parser():
                 pass
             else:
                 csv = os.path.join(root, name)
-                df = pd.read_csv(csv, encoding='ANSI')
+                try:
+                    df = pd.read_csv(csv, encoding='ANSI')
+                except:
+                    df = pd.read_csv(csv)
                 df['year'] = name.split('年')[0].split('司')[-1]
                 df['market'] = name.split('公司')[0]
                 print(f'{name} --> {df.shape}')
@@ -709,7 +712,7 @@ def fn_main():
     # fn_test()
     # fn_twstock('1514')
     # fn_gen_stock_field_info()
-    # fn_mops_twse_parser()
+    fn_mops_twse_parser()
 
     # if fn_is_parsing():
     #     df = fn_fb_recommend_stock()
@@ -723,12 +726,12 @@ def fn_main():
     # for w in webs:
     #     fn_get_web_info('2929', w)
 
-    is_new_season = True
+    # is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
     # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
-    for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    # for fin in dic_fin.keys():
+    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
