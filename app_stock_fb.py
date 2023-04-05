@@ -23,7 +23,7 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0330',
+    'mops_fin_path': 'mops_fin_0405',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
@@ -616,7 +616,7 @@ def fn_get_company_report2():
 
 def fn_get_company_report():
 
-    if True:
+    if False:
         fn_get_company_report2()
     else:
         dic_cpy_rp = {'sid': [], 'report': []}
@@ -642,7 +642,6 @@ def fn_get_company_report():
 
         df_report = pd.DataFrame(dic_cpy_rp)
         df_report.to_csv('Company_Report_link.csv', encoding='utf_8_sig', index=False)
-
 
 
 def fn_get_web_info(sid, web):
@@ -712,9 +711,9 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # fn_post_proc()
 
@@ -724,12 +723,12 @@ def fn_main():
     # for w in webs:
     #     fn_get_web_info('2929', w)
 
-    # is_new_season = True
+    is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
     # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
-    # for fin in dic_fin.keys():
-    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    for fin in dic_fin.keys():
+        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
