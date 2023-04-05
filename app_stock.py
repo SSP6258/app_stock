@@ -792,8 +792,8 @@ def fn_stock_filter(df, stra, col, fr=''):
 
 
 def fn_basic_rule(sid, df_mops, years=5):
-    chk_fr = df_mops['year'].values[-1]-years
-    df_mops = df_mops[df_mops['year'] > chk_fr]
+    chk_fr = int(df_mops['year'].values[-1])-years
+    df_mops = df_mops[df_mops['year'].apply(lambda x: int(x) >= chk_fr)]
 
     df_sm = df_mops[df_mops['公司代號'] == sid]
     ROE = [float(r) for r in df_sm['獲利能力-權益報酬率(%)'].values]
