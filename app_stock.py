@@ -1201,7 +1201,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         sid = cols2[0].text_input('股票代碼:', value=df['代碼'].values[0])
 
         df_sid = df_all[df_all['sid'] == sid]
-        sid_name = df_sid['sid_name'].values[0]
+
+        sid_name = df_sid['sid_name'].values[0] if df_sid.shape[0] > 0 else '不在資料庫'
         cols2[2].write('')
         cols2[2].write('')
         cols2[2].write(f':orange[${sid_name}$]')
@@ -1213,7 +1214,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     # sid = sid_name.split(sep)[0]
     # st.write(sid)
     # st.write(dic_df['stock_all'])
-    df_sid = df_all[df_all['sid']==sid]
+
+    # df_sid = df_all[df_all['sid']==sid]
     df_sid_p = df_sid.copy()
 
     if df_sid.shape[0] == 0:
