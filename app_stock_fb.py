@@ -87,8 +87,6 @@ dic_s_rename = {
 }
 
 
-
-
 dic_mops_fin_roe = {
     'page': 'MOPS_FIN_ROE',
     'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
