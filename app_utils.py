@@ -45,6 +45,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       #     xanchor="right",
                       #     x=lg_x),
                       )
+
     if lg_top:
         fig.update_layout(legend=dict(
                               title=lg_title,
