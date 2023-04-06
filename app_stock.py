@@ -364,7 +364,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
                      spikedash='solid', rangebreaks=[dict(bounds=["sat", "mon"])])
 
-    fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash = 'solid')
+    fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash='solid')
 
     # if days_ago is not None:
     #     days_ago = days_ago - int(days_ago / 7) * 2 - 1
@@ -1378,15 +1378,20 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 df_fin_b['年/季'] = df_fin_b['年/季'].apply(lambda x: str(x).replace('Q', '<br>Q'))
                 df_fin_b.reset_index(inplace=True, drop=True)
 
-                for f in df_fin_b.columns:
-                    if f == 'color' or f == '年/季':
-                        pass
-                    else:
-                        fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name} {f}',
-                                                v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
-                                                textposition='outside', text_auto=True, color_mid=0.5)
-                        cols = st.columns([2.5, 1])
-                        cols[0].plotly_chart(fig, use_container_width=True)
+                tab_season, tab_year = st.tabs(['季度', '年度'])
+
+                with tab_season:
+                    for f in df_fin_b.columns:
+                        if f == 'color' or f == '年/季':
+                            pass
+                        else:
+                            fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name} {f}',
+                                                    v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
+                                                    textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
+                            cols = st.columns([2.5, 1])
+                            cols[0].plotly_chart(fig, use_container_width=True)
+                with tab_year:
+                    pass
 
             with tab_raw:
                 fn_st_add_space(1)
