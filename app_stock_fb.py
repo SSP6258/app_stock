@@ -710,11 +710,11 @@ def fn_main():
     # fn_test()
     # fn_twstock('1514')
     # fn_gen_stock_field_info()
-    fn_mops_twse_parser()
+    # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # fn_post_proc()
 
