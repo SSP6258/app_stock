@@ -14,13 +14,14 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       txt_col=None, color_col=None, v_h='h', margin=None,
                       title=None, height=None, width=None, op=None, barmode=None,
                       legend=True, lg_title=None, lg_pos=None, lg_x=None, lg_top=True, x_range=None,
-                      showtick_y=True):
+                      showtick_y=True, showscale=True, text_auto=False, textposition='inside', color_mid=None):
 
     fig = px.bar(df, x=x_col, y=y_col, orientation=v_h, title=title, text=txt_col, color=color_col,
-                 width=width, height=height, opacity=op)
+                 width=width, height=height, opacity=op, text_auto=text_auto, color_continuous_midpoint=color_mid)
 
-    fig.update_traces(textfont_size=14, textposition='inside')
     fig.for_each_trace(lambda t: t.update(text=[]) if '勝率_new' not in t.name else ())
+
+    fig.update_traces(textfont_size=14, textposition=textposition, cliponaxis=False)
 
     fig.update_layout(margin=margin,
                       xaxis_title='',
@@ -30,6 +31,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       width=width,
                       height=height,
                       showlegend=legend,
+                      coloraxis_showscale=showscale,
                       barmode=barmode,
                       font=dict(
                           # family="Courier New, monospace",
@@ -51,7 +53,5 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                               y=1.02,
                               xanchor="right",
                               x=lg_x),)
-
-
 
     return fig

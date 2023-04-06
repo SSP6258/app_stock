@@ -1186,6 +1186,42 @@ def fn_idea():
     # cols[2].image(img3, caption='一起來玩', use_column_width=True)
 
 
+def fn_color_roe_season(x):
+    css = ''
+    css_h = 'background-color: pink; color: black'
+    css_m = 'background-color: lightyellow; color: black'
+    css_l = 'background-color: lightgreen; color: black'
+
+    if len(str(x)) > 0:
+        v = float(x)
+        if v >= 4.0:
+            css = css_h
+        elif v >= 2.0:
+            css = css_m
+        else:
+            css = css_l
+
+    return css
+
+
+def fn_color_roe_year(x):
+    css = ''
+    css_h = 'background-color: pink; color: black'
+    css_m = 'background-color: lightyellow; color: black'
+    css_l = 'background-color: lightgreen; color: black'
+
+    if len(str(x)) > 0:
+        v = float(x)
+        if v >= 16.0:
+            css = css_h
+        elif v >= 8.0:
+            css = css_m
+        else:
+            css = css_l
+
+    return css
+
+
 def fn_show_hist_price(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1321,72 +1357,61 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 st.markdown(
                     f'###### $資料來源$: [${source}$]({link})  ')
 
-            fn_st_add_space(1)
-            st.markdown(f'##### 基本面指標 (季度):')
-
-            def fn_color_roe_season(x):
-                css = ''
-                css_h = 'background-color: pink; color: black'
-                css_m = 'background-color: lightyellow; color: black'
-                css_l = 'background-color: lightgreen; color: black'
-
-                if len(str(x)) > 0:
-                    v = float(x)
-                    if v >= 4.0:
-                        css = css_h
-                    elif v >= 2.0:
-                        css = css_m
-                    else:
-                        css = css_l
-
-                return css
-
-            df_fin_show = df_fin.style.applymap(fn_color_roe_season,
-                                                subset=[c for c in df_fin.columns if '權益' in c])
-            st.dataframe(df_fin_show)
-
-            st.write('')
-            st.markdown(f'##### 基本面指標 (年度):')
-
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
-            df_mop = df_mop[['年度']+[c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
+            df_mop = df_mop[['年度'] + [c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
             df_mop.sort_values(by=['年度'], ascending=[False], ignore_index=True, inplace=True)
-            df_mop['年度'] = df_mop['年度'].apply(lambda x: str(x)+' 年')
-
-            def fn_color_roe_year(x):
-                css = ''
-                css_h = 'background-color: pink; color: black'
-                css_m = 'background-color: lightyellow; color: black'
-                css_l = 'background-color: lightgreen; color: black'
-
-                if len(str(x)) > 0:
-                    v = float(x)
-                    if v >= 16.0:
-                        css = css_h
-                    elif v >= 8.0:
-                        css = css_m
-                    else:
-                        css = css_l
-
-                return css
+            df_mop['年度'] = df_mop['年度'].apply(lambda x: str(x) + ' 年')
 
             df_mop_show = df_mop.style.applymap(fn_color_roe_year,
                                                 subset=[c for c in df_mop.columns if '權益' in c])
 
-            st.dataframe(df_mop_show)
+            fn_st_add_space(1)
+            tab_basic, tab_raw, tab_src = st.tabs(['指標分析', '詳細數據', '資料來源'])
+            y_fr = datetime.datetime.today().year - 5
 
-            st.write('')
-            url = r'https://mopsfin.twse.com.tw/'
-            st.markdown(f'###### $資料來源$:')
-            st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
-            st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
-            st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
-            st.markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
-            st.markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
-            st.markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
-            st.markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
-            st.markdown(f'營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) (每月11日更新)')
+            with tab_basic:
+
+                df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
+                df_fin_b = df_fin_b[df_fin_b['年/季'].apply(lambda x: int(x.split('Q')[0]) >= y_fr)]
+                df_fin_b['color'] = df_fin_b['年/季'].apply(lambda x: 2 if int(x.split('Q')[0])%2==1 else 1)
+                df_fin_b.reset_index(inplace=True, drop=True)
+                # st.write(df_fin_b)
+
+                for f in df_fin_b.columns:
+                    if f == 'color' or f == '年/季':
+                        pass
+                    else:
+                        fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name} {f}',
+                                                v_h='v', op=0.6, color_col='color', showscale=False, textposition='outside',
+                                                text_auto=True, color_mid=0.5)
+                        cols = st.columns([2.5, 1])
+                        cols[0].plotly_chart(fig, use_container_width=True)
+
+            with tab_raw:
+                fn_st_add_space(1)
+                df_fin_show = df_fin.style.applymap(fn_color_roe_season,
+                                                    subset=[c for c in df_fin.columns if '權益' in c])
+
+                st.markdown(f'##### 基本面指標 (季度):')
+                st.dataframe(df_fin_show)
+
+                fn_st_add_space(1)
+                st.markdown(f'##### 基本面指標 (年度):')
+                st.dataframe(df_mop_show)
+
+            with tab_src:
+                fn_st_add_space(1)
+                url = r'https://mopsfin.twse.com.tw/'
+                st.markdown(f'###### $資料來源$:')
+                st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
+                st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
+                st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
+                st.markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
+                st.markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
+                st.markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
+                st.markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
+                st.markdown(f'營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) (每月11日更新)')
 
         with tab_tech:
             fn_st_add_space(1)
