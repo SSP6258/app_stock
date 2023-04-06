@@ -1375,6 +1375,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
                 df_fin_b = df_fin_b[df_fin_b['年/季'].apply(lambda x: int(x.split('Q')[0]) >= y_fr)]
                 df_fin_b['color'] = df_fin_b['年/季'].apply(lambda x: 2 if int(x.split('Q')[0]) % 2 == 1 else 1)
+                df_fin_b['年/季'] = df_fin_b['年/季'].apply(lambda x: str(x).replace('Q', '<br>Q'))
                 df_fin_b.reset_index(inplace=True, drop=True)
 
                 for f in df_fin_b.columns:
@@ -1382,7 +1383,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                         pass
                     else:
                         fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name} {f}',
-                                                v_h='v', op=0.6, color_col='color', showscale=False,
+                                                v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
                                                 textposition='outside', text_auto=True, color_mid=0.5)
                         cols = st.columns([2.5, 1])
                         cols[0].plotly_chart(fig, use_container_width=True)
