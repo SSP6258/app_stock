@@ -1441,8 +1441,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 lnk21= r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw'
 
                 st.markdown(f'###### $資料來源$:')
-                st.markdown(f'$EPS:$ [${src1}$]({lnk1})(每日更新)')
-                st.markdown(f'$EPS:$ [${src2}$]({lnk2})(每日更新)')
+                st.markdown(f'$EPS:$ [${src1}$]({lnk1}) $(每日更新)$')
+                st.markdown(f'$EPS:$ [${src2}$]({lnk2}) $(每日更新)$')
                 st.markdown(f'$ROE:$ [$公開資訊觀測站 > 獲利能力 > 權益報酬率$]({url}) $(每季更新)$')
                 st.markdown(f'$ROA:$ [$公開資訊觀測站 > 獲利能力 > 資產報酬率$]({url}) $(每季更新)$')
                 st.markdown(f'$OPM:$ [$公開資訊觀測站 > 獲利能力 > 營業利益率$]({url}) $(每季更新)$')
