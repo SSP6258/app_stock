@@ -1374,7 +1374,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
             fn_st_add_space(1)
             tab_basic, tab_raw, tab_src = st.tabs(['指標分析', '詳細數據', '資料來源'])
-            y_fr = datetime.datetime.today().year - 5
+            y_fr = datetime.datetime.today().year - 6
 
             with tab_basic:
 
@@ -1398,7 +1398,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                             fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
                                                     v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
                                                     textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
-                            cols = st.columns([2.5, 1])
+                            cols = st.columns([3.5, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
                 with tab_year:
                     for f in df_mop_b.columns:
