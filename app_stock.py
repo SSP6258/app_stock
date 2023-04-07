@@ -1421,12 +1421,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
                 with tab_season:
                     fn_st_add_space(1)
-                    st.markdown(f'##### 基本面指標 (季度):')
+                    st.markdown(f'##### $基本面指標 (季度):$')
                     st.dataframe(df_fin_show)
 
                 with tab_year:
                     fn_st_add_space(1)
-                    st.markdown(f'##### 基本面指標 (年度):')
+                    st.markdown(f'##### $基本面指標 (年度):$')
                     st.dataframe(df_mop_show)
 
             with tab_src:
