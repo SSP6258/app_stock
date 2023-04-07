@@ -1353,7 +1353,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 # blue, green, orange, red, violet
 
                 st.markdown(f'##### '
-                            f'[:red[${sid_name}$]]({link}) {br} '
+                            f'[:red[${sid}\ {sid_name.replace("-", "")}$]]({link}) {br} '
                             f'[:orange[$股價: {sid_price} 元$]]({link}) {br} '
                             f'[:violet[$EPS: {eps}$]]({link}) {br} '
                             f'[:green[$本益比: {per} 倍$]]({link}) {br}  '
