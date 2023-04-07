@@ -1410,7 +1410,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                                                     color_col=None, showscale=False,
                                                     textposition='outside', text_auto=True, color_mid=None,
                                                     showspike=True)
-                            cols = st.columns([2.5, 1])
+                            cols = st.columns([1, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
 
             with tab_raw:
@@ -1439,16 +1439,16 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
 
                 st.markdown(f'###### $資料來源$:')
-                st.markdown(f'EPS: [${src1}$]({lnk1})(每日更新)')
-                st.markdown(f'EPS: [${src2}$]({lnk2})(每日更新)')
-                st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
-                st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
-                st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
-                st.markdown(f'DR:{dic_mkd["2sp"]} [公開資訊觀測站 > 財務結構 > 負債佔資產比率]({url}) (每季更新)')
-                st.markdown(f'OCF: [公開資訊觀測站 > 現金流量 > 營業現金對負債比]({url}) (每季更新)')
-                st.markdown(f'ROE: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表](https://mops.twse.com.tw/mops/web/t51sb02_q1) (每年 4 月 1 日更新) ... 怪怪的🤨')
-                st.markdown(f'OPM: [公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表](https://mops.twse.com.tw/mops/web/t163sb06) (每季更新)')
-                st.markdown(f'營收: [公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) (每月11日更新)')
+                st.markdown(f'$EPS:$ [${src1}$]({lnk1})(每日更新)')
+                st.markdown(f'$EPS:$ [${src2}$]({lnk2})(每日更新)')
+                st.markdown(f'$ROE:$ [$公開資訊觀測站 > 獲利能力 > 權益報酬率$]({url}) $(每季更新)$')
+                st.markdown(f'$ROA:$ [$公開資訊觀測站 > 獲利能力 > 資產報酬率$]({url}) $(每季更新)$')
+                st.markdown(f'$OPM:$ [$公開資訊觀測站 > 獲利能力 > 營業利益率$]({url}) $(每季更新)$')
+                st.markdown(f'$DR:\ $ [$公開資訊觀測站 > 財務結構 > 負債佔資產比率$]({url}) $(每季更新)$')
+                st.markdown(f'$OCF:$ [$公開資訊觀測站 > 現金流量 > 營業現金對負債比$]({url}) $(每季更新)$')
+                st.markdown(f'$ROE:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表$](https://mops.twse.com.tw/mops/web/t51sb02_q1) $(每年 4 月 1 日更新)$')
+                st.markdown(f'$OPM:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表$](https://mops.twse.com.tw/mops/web/t163sb06) $(每季更新)$')
+                st.markdown(f'$營收:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表$](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) $(每月11日更新)$')
 
         with tab_tech:
             fn_st_add_space(1)
