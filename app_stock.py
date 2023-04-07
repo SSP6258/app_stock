@@ -1286,6 +1286,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     mkd_space = f'{9*dic_mkd["2sp"]}'
 
     cols[0].write('')
+    cols[0].write('')
     cols[0].markdown(f'$市場別:$ ${df_sid["市場別"].values[0]}$ - ${df_sid["產業別"].values[0]}$')
     # cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
 
@@ -1351,11 +1352,16 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 br = dic_mkd["2sp"]
                 # blue, green, orange, red, violet
 
-                st.markdown(f'##### :red[{sid_name}] {br} :orange[股價: {sid_price} 元] {br} :violet[EPS: {eps}] {br} :green[本益比: {per} 倍] {br}  '
-                            f':orange[殖利率: {yr} %] {br} :blue[日期: {date_info}]')
+                st.markdown(f'##### '
+                            f'[:red[${sid_name}$]]({link}) {br} '
+                            f'[:orange[$股價: {sid_price} 元$]]({link}) {br} '
+                            f'[:violet[$EPS: {eps}$]]({link}) {br} '
+                            f'[:green[$本益比: {per} 倍$]]({link}) {br}  '
+                            f'[:orange[$殖利率: {yr}\%$]]({link}) {br} '
+                            f'[:blue[$日期: {date_info}$]]({link})')
 
-                st.markdown(
-                    f'###### $資料來源$: [${source}$]({link})  ')
+                # st.markdown(
+                #     f'###### $資料來源$: [${source}$]({link})  ')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
@@ -1378,6 +1384,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 df_fin_b['年/季'] = df_fin_b['年/季'].apply(lambda x: str(x).replace('Q', '<br>Q'))
                 df_fin_b.reset_index(inplace=True, drop=True)
 
+                df_mop_b = df_mop.sort_index(ascending=False, ignore_index=True)
+                # df_mop_b['年度'] = df_mop_b['年度'].apply(lambda x: x.replace(' 年', ''))
+                df_mop_b.reset_index(inplace=True, drop=True)
+
                 tab_season, tab_year = st.tabs(['季度', '年度'])
 
                 with tab_season:
@@ -1385,13 +1395,23 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                         if f == 'color' or f == '年/季':
                             pass
                         else:
-                            fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name} {f}',
+                            fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
                                                     v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
                                                     textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
                             cols = st.columns([2.5, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
                 with tab_year:
-                    pass
+                    for f in df_mop_b.columns:
+                        if f == '年度':
+                            pass
+                        else:
+                            fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=f'{sid} {sid_name}   {f.split("-")[-1]}',
+                                                    v_h='v', op=[0.5 for i in range(df_mop_b.shape[0] - 1)] + [1.0],
+                                                    color_col=None, showscale=False,
+                                                    textposition='outside', text_auto=True, color_mid=None,
+                                                    showspike=True)
+                            cols = st.columns([2.5, 1])
+                            cols[0].plotly_chart(fig, use_container_width=True)
 
             with tab_raw:
                 df_fin_show = df_fin.style.applymap(fn_color_roe_season,
@@ -1412,7 +1432,15 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
             with tab_src:
                 fn_st_add_space(1)
                 url = r'https://mopsfin.twse.com.tw/'
+
+                src1 = '臺灣證券交易所'
+                lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                src2 = '證券櫃檯買賣中心'
+                lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
+
                 st.markdown(f'###### $資料來源$:')
+                st.markdown(f'EPS: [${src1}$]({lnk1})(每日更新)')
+                st.markdown(f'EPS: [${src2}$]({lnk2})(每日更新)')
                 st.markdown(f'ROE: [公開資訊觀測站 > 獲利能力 > 權益報酬率]({url}) (每季更新)')
                 st.markdown(f'ROA: [公開資訊觀測站 > 獲利能力 > 資產報酬率]({url}) (每季更新)')
                 st.markdown(f'OPM: [公開資訊觀測站 > 獲利能力 > 營業利益率]({url}) (每季更新)')
