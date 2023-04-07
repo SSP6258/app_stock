@@ -1435,8 +1435,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
                 src1 = '臺灣證券交易所'
                 lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                lnk11= r'https://www.twse.com.tw/zh/trading/historical/fmsrfk.html'
                 src2 = '證券櫃檯買賣中心'
                 lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
+                lnk21= r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw'
 
                 st.markdown(f'###### $資料來源$:')
                 st.markdown(f'$EPS:$ [${src1}$]({lnk1})(每日更新)')
@@ -1449,6 +1451,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                 st.markdown(f'$ROE:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表$](https://mops.twse.com.tw/mops/web/t51sb02_q1) $(每年 4 月 1 日更新)$')
                 st.markdown(f'$OPM:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表$](https://mops.twse.com.tw/mops/web/t163sb06) $(每季更新)$')
                 st.markdown(f'$營收:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表$](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) $(每月11日更新)$')
+                st.markdown(f'$月成交資訊:$ [${src1}$]({lnk11})')
+                st.markdown(f'$月成交資訊:$ [${src2}$]({lnk21})')
+
 
         with tab_tech:
             fn_st_add_space(1)
