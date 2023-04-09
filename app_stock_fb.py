@@ -135,6 +135,36 @@ dic_mops_fin_cash_flow = {
     'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
 
+
+dic_month_deal_lst = {
+    'link': r'https://www.twse.com.tw/zh/trading/historical/fmsrfk.html',
+    'clear_sid': ['clear_txt', dic_cfg['slp'], By.XPATH,
+                  '/html/body/div[1]/div/div[2]/main/form/div/div[1]/div[2]/input'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH,
+                  '/html/body/div[1]/div/div[2]/main/form/div/div[1]/div[2]/input'],
+    'click_yr': ['click', dic_cfg['slp'], By.XPATH,
+                 '/html/body/div[1]/div/div[2]/main/form/div/div[1]/div[1]/span/select[1]'],
+    'sel_yr': ['sel_val', dic_cfg['slp'], By.ID, 'label0'],
+    'click_sel': ['click', dic_cfg['slp'], By.XPATH,
+                  '/html/body/div[1]/div/div[2]/main/form/div/div[1]/div[3]/button'],
+    'click_sav': ['click', dic_cfg['slp'], By.XPATH,
+                  '/html/body/div[1]/div/div[2]/main/div[2]/div[1]/button[2]'],
+
+}
+
+
+dic_month_deal_otc = {
+    'link': r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw',
+    'clear_sid': ['clear_txt', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
+    'click_yr': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/select'],
+    'sel_yr': ['sel_val', dic_cfg['slp'], By.ID, 'y_date1'],
+    'click_sel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[2]'],
+    'click_sav': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[2]/table[1]/tbody/tr/td[3]/table/tbody/tr/td/button[2]'],
+
+}
+
+
 dic_dog = {
     'page': 'Dog',
     'risk_chk ':          ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]'],
@@ -498,6 +528,37 @@ def fn_mops_twse_parser():
     df_mops.to_csv('mops.csv', encoding='utf_8_sig', index=False)
 
 
+def fn_month_deal_download(dic, sid, years):
+
+    link = dic['link']
+
+    try:
+        drv, act = fn_web_init(link, is_headless=False)
+    except:
+        time.sleep(10)
+        drv, act = fn_web_init(link, is_headless=False)
+
+    time.sleep(1)
+
+    for year in years:
+        for k in dic.keys():
+            if k != 'page' and k != 'link':
+                typ, slp, by, val = dic[k]
+                key = ''
+                if k == 'sel_yr':
+                    key = year
+                elif k == 'keyin_sid':
+                    key = sid
+
+                try:
+                    fn_web_handle(drv, act, typ, slp, by, val, key)
+                except:
+                    pass
+
+    time.sleep(2)
+    drv.close()
+
+
 def fn_mops_fin_download(dic, sids):
     assert len(sids) <= 10, f'MOPS FIN allow 10 sid max and input len(sids) = {len(sids)}'
     link = r'https://mopsfin.twse.com.tw/'
@@ -704,6 +765,30 @@ def fn_post_proc():
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
 
+def fn_get_month_deal_data():
+
+    df = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
+    df_lst = df[df['market'] == '上市']
+    df_otc = df[df['market'] == '上櫃']
+
+    sids_lst = df_lst['sid'].unique().tolist()
+    sids_otc = df_otc['sid'].unique().tolist()
+    to_yr = datetime.datetime.today().year - 1911
+    fr_yr = to_yr - 6
+    years_otc = [str(y) for y in range(fr_yr, to_yr+1, 1)]
+    years_lst = [f'民國 {y} 年' for y in range(fr_yr, to_yr + 1, 1)]
+
+    sids_lst_len = len(sids_lst)
+    sids_otc_len = len(sids_otc)
+    for sid in sids_otc:
+        print(f'otc ({sids_otc.index(sid)}/{sids_otc_len}), downloading {sid}')
+        fn_month_deal_download(dic_month_deal_otc, sid, years_otc)
+
+    for sid in sids_lst:
+        print(f'lst ({sids_lst.index(sid)}/{sids_lst_len}), downloading {sid}')
+        fn_month_deal_download(dic_month_deal_lst, sid, years_lst)
+
+
 def fn_main():
     t = time.time()
 
@@ -712,9 +797,11 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    fn_get_month_deal_data()
+
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # fn_post_proc()
 

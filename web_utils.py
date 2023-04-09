@@ -2,6 +2,7 @@ import os
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
@@ -17,6 +18,13 @@ def fn_web_click(drv, val, slp=2, by=By.XPATH):
 def fn_web_move_to(drv, act, val, slp=2, by=By.XPATH):
     elm = drv.find_element(by=by, value=val)
     act.move_to_element(elm).perform()
+    time.sleep(slp)
+
+
+def fn_web_clear_txt(drv, val, slp=2, by=By.XPATH):
+    elm = drv.find_element(by=by, value=val)
+    elm.send_keys(Keys.CONTROL, 'a')
+    elm.send_keys(Keys.DELETE)
     time.sleep(slp)
 
 
@@ -39,7 +47,13 @@ def fn_web_switch(drv, val, slp=2, by=By.XPATH):
     time.sleep(slp)
 
 
-def fn_web_handle(drv, act, typ, slp, by, val, key):
+def fn_web_sel_val(drv, val, slp=2, by=By.ID, sel_txt=''):
+    s = drv.find_element(by=by, value=val)
+    Select(s).select_by_visible_text(sel_txt)
+    time.sleep(slp)
+
+
+def fn_web_handle(drv, act, typ, slp, by, val, key=''):
     if typ == 'click':
         fn_web_click(drv, val, slp=slp, by=by)
     elif typ == 'move2':
@@ -49,6 +63,13 @@ def fn_web_handle(drv, act, typ, slp, by, val, key):
     elif typ == 'getText':
         text = fn_web_get_text(drv, val, slp=slp, by=by)
         return text
+
+    elif typ == 'clear_txt':
+        fn_web_clear_txt(drv, val, slp=slp, by=by)
+
+    elif typ == 'sel_val':
+        fn_web_sel_val(drv, val, slp=slp, by=by, sel_txt=key)
+
     elif typ == 'iframe_switch':
         fn_web_switch(drv, val, slp=slp, by=by)
     else:
