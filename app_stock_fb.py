@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 from web_utils import *
 from twstock import Stock
+from collections import defaultdict
 
 dic_cfg = {
     'slp': 2,
@@ -24,6 +25,7 @@ dic_cfg = {
     },
     'mops_path': 'mops',
     'mops_fin_path': 'mops_fin_0405',
+    'month_path': 'Month',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
 }
@@ -33,44 +35,43 @@ dic_fb_main = {
     'sid_name': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
                  '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/h1'],
     '股價': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-           '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
+             '/html/body/div/div/main/div/div[3]/div/div/div[2]/div[1]/div[1]/div/span/strong'],
     '大盤領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
+                     '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p'],
     '產業領先指標': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
+                     '/html/body/div/div/main/div/div[3]/div/div/div[4]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p'],
 }
 
 dic_fb_revenue = {
     'page': '/revenue',
     '勝率(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                 '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                     '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                   '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                         '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_營收': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-               '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
+                    '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_eps = {
     'page': '/eps',
     '勝率(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                  '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                    '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                    '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                        '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_EPS': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
+                   '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
 dic_fb_cash_dividend = {
     'page': '/cash_dividend ',
     '勝率(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                  '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
+                       '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[2]/div/div/div[1]/div[2]/p[1]/span[2]'],
     '合理價差(%)_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                    '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
+                           '/html/body/div/div/main/div/div[3]/div/div[4]/div[2]/div[1]/div/div[1]/div[1]/div[2]/p[1]/span[1]'],
     '相關性_殖利率': ['getText', dic_cfg['get_txt_slp'], By.XPATH,
-                '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
-
+                      '/html/body/div/div/main/div/div[3]/div/div[6]/div[2]/div/div[2]/div[2]/div/p[2]'],
 
 }
 
@@ -86,55 +87,50 @@ dic_s_rename = {
     '現金股利': '策略_殖利率',
 }
 
-
 dic_mops_fin_roe = {
     'page': 'MOPS_FIN_ROE',
     'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
-    'btn_ROE':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[5]/a'],
-    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
-    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
-    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+    'btn_ROE': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[5]/a'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
 
 dic_mops_fin_roa = {
     'page': 'MOPS_FIN_ROA',
     'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
-    'btn_ROA':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[4]/a'],
-    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
-    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
-    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+    'btn_ROA': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[4]/a'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
-
 
 dic_mops_fin_opm = {
     'page': 'MOPS_FIN_OPM',
     'btn_profitability ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/a'],
-    'btn_OPM':            ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[2]/a'],
-    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
-    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
-    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+    'btn_OPM': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[6]/div/ul/li[2]/a'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
-
 
 dic_mops_fin_debt_ratio = {
     'page': 'MOPS_FIN_DR',
     'btn_fin_structure ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[3]/a'],
-    'btn_DR':             ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[3]/div/ul/li[1]/a'],
-    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
-    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
-    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+    'btn_DR': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[3]/div/ul/li[1]/a'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
-
 
 dic_mops_fin_cash_flow = {
     'page': 'MOPS_FIN_CF',
-    'btn_cash_flow ':     ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/a'],
-    'btn_CF':             ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/div/ul/li[2]/a'],
-    'keyin_sid':          ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
-    'btn_start':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
-    'btn_excel':          ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
+    'btn_cash_flow ': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/a'],
+    'btn_CF': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[1]/ul/li[8]/div/ul/li[2]/a'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/input[1]'],
+    'btn_start': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[5]/div/div[3]/a[2]'],
+    'btn_excel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/div[2]/div[2]/div[3]/div/div[1]/a'],
 }
-
 
 dic_month_deal_lst = {
     'link': r'https://www.twse.com.tw/zh/trading/historical/fmsrfk.html',
@@ -152,23 +148,28 @@ dic_month_deal_lst = {
 
 }
 
-
 dic_month_deal_otc = {
     'link': r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw',
-    'clear_sid': ['clear_txt', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
-    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
-    'click_yr': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/select'],
+    'clear_sid': ['clear_txt', dic_cfg['slp'], By.XPATH,
+                  '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
+    'keyin_sid': ['keyin', dic_cfg['slp'], By.XPATH,
+                  '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[1]'],
+    'click_yr': ['click', dic_cfg['slp'], By.XPATH,
+                 '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/select'],
     'sel_yr': ['sel_val', dic_cfg['slp'], By.ID, 'y_date1'],
-    'click_sel': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[2]'],
-    'click_sav': ['click', dic_cfg['slp'], By.XPATH, '/html/body/center/div[3]/div[2]/div[2]/div[2]/table[1]/tbody/tr/td[3]/table/tbody/tr/td/button[2]'],
+    'click_sel': ['click', dic_cfg['slp'], By.XPATH,
+                  '/html/body/center/div[3]/div[2]/div[2]/div[1]/div[1]/div/form/input[2]'],
+    'click_sav': ['click', dic_cfg['slp'], By.XPATH,
+                  '/html/body/center/div[3]/div[2]/div[2]/div[2]/table[1]/tbody/tr/td[3]/table/tbody/tr/td/button[2]'],
 
 }
 
-
 dic_dog = {
     'page': 'Dog',
-    'risk_chk ':          ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]'],
-    'time_deposit_chk':   ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]'],
+    'risk_chk ': ['getText', dic_cfg['slp'], By.XPATH,
+                  '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]'],
+    'time_deposit_chk': ['getText', dic_cfg['slp'], By.XPATH,
+                         '/html/body/div[1]/div[2]/div/div[2]/div/div/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]'],
 
 }
 
@@ -182,15 +183,16 @@ dic_wantrich_main = {
 
 }
 
-
 dic_cmoney = {
-    'ave_score ': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div'],
-    'comment':    ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[2]'],
+    'ave_score ': ['getText', dic_cfg['slp'], By.XPATH,
+                   '/html/body/div[1]/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div'],
+    'comment': ['getText', dic_cfg['slp'], By.XPATH,
+                '/html/body/div/div/div/div/div[3]/div[3]/div/div[2]/aside[2]/div[1]/div/div[1]/div/div/div[1]/div[2]'],
 
 }
 
 dic_cnyes = {'getHyperlinks': [],
-}
+             }
 
 dic_web_handle = {
     'dog': dic_dog,
@@ -198,7 +200,6 @@ dic_web_handle = {
     'CMoney': dic_cmoney,
     'Cnyes': dic_cnyes,
 }
-
 
 dic_mops_fin = {
     'ROE': dic_mops_fin_roe,
@@ -208,7 +209,6 @@ dic_mops_fin = {
     'CF': dic_mops_fin_cash_flow,
 }
 
-
 dic_fin = {
     '權益報酬率': 'ROE',
     '資產報酬率': 'ROA',
@@ -216,7 +216,6 @@ dic_fin = {
     '負債佔資產比率': 'Debt_Ratio',
     '營業現金對負債比': 'Cash_Flow'
 }
-
 
 dic_url = {
     'FindBillion': 'https://www.findbillion.com/twstock/',
@@ -422,7 +421,7 @@ def fn_want_rich(df, stocks=None):
 
     for sid in stock_ids:
         print('')
-        print(f'{sid} --> {stock_ids.index(sid)+1}/{len(stock_ids)}')
+        print(f'{sid} --> {stock_ids.index(sid) + 1}/{len(stock_ids)}')
         df_sid = fn_get_stock_info(sid, url, webs)
 
 
@@ -500,7 +499,7 @@ def fn_twstock(sid):
     ma_p_cont = stock.continuous(ma_p)  # 計算五日均價持續天數
     ma_br = stock.ma_bias_ratio(5, 10)  # 計算五日、十日乖離值
 
-    print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1]/1000)}張')
+    print(f'{sid} --> {stock.data[-1].date} {stock.price[-1]}元 {int(stock.capacity[-1] / 1000)}張')
 
 
 def fn_mops_file_move():
@@ -529,7 +528,6 @@ def fn_mops_twse_parser():
 
 
 def fn_month_deal_download(dic, sid, years):
-
     link = dic['link']
 
     try:
@@ -580,8 +578,8 @@ def fn_mops_fin_download(dic, sids):
             elif typ == 'keyin':
                 for sid in sids:
                     idx = sids.index(sid) + 1
-                    col = int(idx/6) + 1
-                    row = idx - 5*(col-1)
+                    col = int(idx / 6) + 1
+                    row = idx - 5 * (col - 1)
                     val_new = val.replace('/div[1]/input[1]', f'/div[{col}]/input[{row}]')
                     fn_web_send_keys(drv, val_new, sid, slp=slp)
 
@@ -629,7 +627,6 @@ def fn_mops_fin_excl_2_csv(fin, is_new_season=False):
 
 
 def fn_mops_fin(is_new_season=False):
-
     df_sid = pd.read_csv('stock.csv')
     df_fin = pd.read_csv('mops_fin_ROE.csv')
     sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4] + ['1905']
@@ -641,7 +638,7 @@ def fn_mops_fin(is_new_season=False):
     print(f'New Stock ID num: {len(sids)}')
 
     if len(sids) > 0 or is_new_season:
-        fr, to = 0, min(10, len(sids)+1)
+        fr, to = 0, min(10, len(sids) + 1)
 
         while fr < len(sids):
             sids_sub = sids[fr:to]
@@ -677,7 +674,6 @@ def fn_get_company_report2():
 
 
 def fn_get_company_report():
-
     if False:
         fn_get_company_report2()
     else:
@@ -735,7 +731,7 @@ def fn_get_web_info(sid, web):
             if typ == 'getText':
                 txt = fn_web_get_text(drv, val, slp=slp)
                 print(k, txt)
-                dic_info[k]=txt
+                dic_info[k] = txt
 
     time.sleep(2)
     drv.close()
@@ -744,7 +740,6 @@ def fn_get_web_info(sid, web):
 
 
 def fn_post_proc():
-
     stock_file = dic_cfg['stock_file']
     if os.path.exists(stock_file):
         df_all = pd.read_csv(stock_file, na_filter=False, dtype=str, index_col=0)
@@ -766,7 +761,6 @@ def fn_post_proc():
 
 
 def fn_get_month_deal_data():
-
     df = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
     df_lst = df[df['market'] == '上市']
     df_otc = df[df['market'] == '上櫃']
@@ -775,7 +769,7 @@ def fn_get_month_deal_data():
     sids_otc = df_otc['sid'].unique().tolist()
     to_yr = datetime.datetime.today().year - 1911
     fr_yr = to_yr - 6
-    years_otc = [str(y) for y in range(fr_yr, to_yr+1, 1)]
+    years_otc = [str(y) for y in range(fr_yr, to_yr + 1, 1)]
     years_lst = [f'民國 {y} 年' for y in range(fr_yr, to_yr + 1, 1)]
 
     sids_lst_len = len(sids_lst)
@@ -790,8 +784,99 @@ def fn_get_month_deal_data():
 
 
 def fn_parse_month_data():
-    pass
+    def fn_m2s(x):
+        m = int(x)
+        if m <= 3:
+            s = 'Q1'
+        elif m <= 6:
+            s = 'Q2'
+        elif m <= 9:
+            s = 'Q3'
+        elif m <= 12:
+            s = 'Q4'
+        else:
+            assert False
 
+        return s
+
+    df = pd.DataFrame()
+    cols = ['market', 'sid', 'year', 'season', 'month', 'price', 'share']
+    for root, dirs, files in os.walk(dic_cfg['month_path']):
+        for f in files:
+            sid = f.split('_')[1]
+            year = f.split('_')[-1].split('.csv')[0]
+            # print(f'{sid} {year} ')
+            if 'FMSRFK_' in f:
+                # print(f)
+                mk = '上市'
+                csv = os.path.join(dic_cfg['month_path'], f)
+                df_lst = pd.read_csv(csv, encoding='ANSI', skiprows=[0])
+                df_lst = df_lst.dropna(subset=['月份'])
+
+                df_lst['market'] = mk
+
+                df_lst['sid'] = sid
+                df_lst['year'] = year
+                df_lst['month'] = df_lst['月份'].apply(lambda x: int(x))
+                df_lst['season'] = df_lst['month'].apply(fn_m2s)
+                df_lst['price'] = df_lst['成交金額(A)']
+                df_lst['share'] = df_lst['成交股數(B)']
+                df_lst['price'] = df_lst['price'].apply(lambda x: int(str(x).replace(',', '')) * 1)
+                df_lst['share'] = df_lst['share'].apply(lambda x: int(str(x).replace(',', '')) * 1)
+                df_lst = df_lst[cols]
+                df = pd.concat([df, df_lst], axis=0)
+                # print(df_lst)
+            elif 'ST44_' in f:
+                # print(f)
+                mk = '上櫃'
+                csv = os.path.join(dic_cfg['month_path'], f)
+                df_otc = pd.read_csv(csv, encoding='cp950', skiprows=[0, 1, 2, 3], encoding_errors='ignore')
+                df_otc['market'] = mk
+                df_otc['sid'] = sid
+                df_otc['year'] = year
+                df_otc['month'] = df_otc['月']
+                df_otc['season'] = df_otc['month'].apply(fn_m2s)
+                df_otc['price'] = df_otc['成交金額仟元(A)']
+                df_otc['share'] = df_otc['成交股數仟股(B)']
+                df_otc['price'] = df_otc['price'].apply(lambda x: int(str(x).replace(',', '')) * 1000)
+                df_otc['share'] = df_otc['share'].apply(lambda x: int(str(x).replace(',', '')) * 1000)
+                df_otc = df_otc[cols]
+                # print(df_otc)
+                df = pd.concat([df, df_otc], axis=0)
+            else:
+                pass
+
+    df.reset_index(inplace=True, drop=True)
+    # print(df.head(15))
+
+    dic_1 = {}  # defaultdict(list)
+    df_all = pd.DataFrame()
+    for sid in df['sid'].unique():
+        df_s = df[df['sid'] == sid]
+        df_g = df_s.groupby(['year', 'season']).sum()
+
+        # print(df_g.index)
+        # print(df_g.index[0][0])
+
+        dic_1['price'] = list(df_g['price'].values)
+        dic_1['share'] = list(df_g['share'].values)
+
+        df1 = pd.DataFrame(dic_1)
+        df1['sid'] = sid
+        df1['yr_sn'] = [str(y) for y in df_g.index]
+        df1['year'] = df1['yr_sn'].apply(lambda x: int(x.split(',')[0].replace('(', '').replace("'", "")))
+        df1['season'] = df1['yr_sn'].apply(lambda x: x.split(',')[-1].replace(')', '').replace("'", ""))
+        df1 = df1[['sid', 'year', 'season', 'price', 'share']]
+
+        df_all = pd.concat([df_all, df1])
+
+    df_all['ave'] = df_all['price'] / df_all['share']
+    df_all['ave'] = df_all['ave'].apply(lambda x: int(x))
+    df_all.reset_index(drop=True, inplace=True)
+
+    print(df_all[df_all['sid'] == '3426'])
+
+    df_all.to_csv('Month.csv', encoding='utf_8_sig')
 
 
 def fn_main():
@@ -803,11 +888,11 @@ def fn_main():
     # fn_mops_twse_parser()
 
     # fn_get_month_deal_data()
-    # fn_parse_month_data()
+    fn_parse_month_data()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
     # fn_post_proc()
 
