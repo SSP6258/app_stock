@@ -1400,6 +1400,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                                                     textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
                             cols = st.columns([3.5, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
+
                 with tab_year:
                     for f in df_mop_b.columns:
                         if f == '年度':
@@ -1677,9 +1678,9 @@ def fn_st_reference():
         cols[0].markdown('- [$FindBillion$](https://www.findbillion.com/)')
         cols[0].markdown('- [$財務比較e點通$](https://mopsfin.twse.com.tw)')
         cols[0].markdown('- [$公開資訊觀測站$](https://mops.twse.com.tw)')
+        cols[0].markdown('- [$景氣指標及燈號$](https://index.ndc.gov.tw/n/zh_tw/lightscore#/)')
         cols[0].markdown('- [$臺灣證券交易所$](https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU_d.html)')
         cols[0].markdown('- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
-        cols[0].markdown('- [$景氣指標及燈號$](https://index.ndc.gov.tw/n/zh_tw/lightscore#/)')
         cols[0].markdown('- [$臺灣集中保管結算所$](https://www.tdcc.com.tw/portal/zh/smWeb/qryStock)')
 
         cols[1].markdown('#### :orange[$基本概念$]')
