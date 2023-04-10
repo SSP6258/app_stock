@@ -347,6 +347,8 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
         for c in df1.columns:
             if '合理價_' in c:
                 df_plt = df1[df1[c].apply(lambda x: len(str(x)) > 0)]
+                # st.write(df1)
+                # st.write(df_plt)
                 fig.add_trace(go.Scatter(x=df_plt['date'], y=df_plt[c],
                                          mode='lines', name=c),
                               secondary_y=True)

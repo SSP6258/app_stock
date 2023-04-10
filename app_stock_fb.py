@@ -849,7 +849,7 @@ def fn_parse_month_data():
     df.reset_index(inplace=True, drop=True)
     # print(df.head(15))
 
-    dic_1 = {}  # defaultdict(list)
+    dic_1 = {}
     df_all = pd.DataFrame()
     for sid in df['sid'].unique():
         df_s = df[df['sid'] == sid]
@@ -888,13 +888,13 @@ def fn_main():
     # fn_mops_twse_parser()
 
     # fn_get_month_deal_data()
-    fn_parse_month_data()
+    # fn_parse_month_data()
 
     # if fn_is_parsing():
     #     df = fn_fb_recommend_stock()
     #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
 
-    # fn_post_proc()
+    fn_post_proc()
 
     # fn_get_company_report()
 
