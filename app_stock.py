@@ -1320,7 +1320,8 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
     r_date = df_rank_15['資料日期'].values[0].replace(f'{datetime.datetime.today().year}', '')
     lnk_tdcc = dic_url['tdcc']  # r'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
 
-    cols[0].markdown(f'$法說會:$ {cmp_report}')
+    lnk = f'https://www.cnyes.com/twstock/{sid}/company/profile'
+    cols[0].markdown(f'[$法說會:$]({lnk}) {cmp_report}')
     cols[0].markdown(f'$基本面:$ {basic}')
 
     cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
