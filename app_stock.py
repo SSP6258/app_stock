@@ -1427,8 +1427,9 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                                 subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
                                 subfig.update_layout(coloraxis_showscale=False,
                                                      title_text=title,
-                                                     yaxis = {'showticklabels': False,
-                                                              'showgrid': False})
+                                                     title_font_size=18,
+                                                     yaxis={'showticklabels': False,
+                                                            'showgrid': False})
 
                                 st.plotly_chart(subfig, use_container_width=True)
 
