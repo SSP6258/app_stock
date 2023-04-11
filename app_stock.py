@@ -945,7 +945,7 @@ def fn_pick_stock(df, df_mops):
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
-            fn_show_hist_price(df, df_mops, key='income')
+            # fn_show_hist_price(df, df_mops, key='income')
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -957,7 +957,7 @@ def fn_pick_stock(df, df_mops):
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
-            fn_show_hist_price(df, df_mops, key='eps')
+            # fn_show_hist_price(df, df_mops, key='eps')
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -969,7 +969,7 @@ def fn_pick_stock(df, df_mops):
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
             fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
-            fn_show_hist_price(df, df_mops, key='cash')
+            # fn_show_hist_price(df, df_mops, key='cash')
         else:
             cols[1].write('')
             cols[1].markdown('# 🙅‍♂️')
@@ -1242,7 +1242,10 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
         # df_sid = df[df["sid_name"] == sid_name]
 
         cols2 = st.columns([2, 0.1, 3, 1.5])
-        sid = cols2[0].text_input('股票代碼:', value=df['代碼'].values[0])
+
+        dft_sid = '2454' if key =='basic_idx' else  df['代碼'].values[0]
+
+        sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
         df_sid = df_all[df_all['sid'] == sid]
 
@@ -1896,7 +1899,7 @@ def fn_st_stock_main():
 
     dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest=dic_mops['per_date'])
 
-    tab_trend, tab_idea, tab_index, tab_pick, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
+    tab_trend, tab_idea, tab_index, tab_pick, tab_basic_idx, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '基本指標', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
 
     # with tab_life:
     #     fn_life()
@@ -1913,6 +1916,10 @@ def fn_st_stock_main():
 
     with tab_pick:
         fn_pick_stock(df_rcmd, dic_mops['MOPS'])
+
+    with tab_basic_idx:
+        fn_st_add_space(1)
+        fn_show_hist_price(df, dic_mops['MOPS'], key='basic_idx')
 
     with tab_watch:
         fn_st_stock_sel(df_all)
