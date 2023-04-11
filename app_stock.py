@@ -1443,9 +1443,12 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                         if f == '年度':
                             pass
                         else:
+                            colors = [dic_colors["c1"] for _ in df_mop_b['年度']]
+                            colors = colors[:-1] + ["orange"]
+
                             fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=f'{sid} {sid_name}   {f.split("-")[-1]}',
                                                     v_h='v', op=[0.5 for i in range(df_mop_b.shape[0] - 1)] + [1.0],
-                                                    color_col=None, showscale=False,
+                                                    colors=colors, showscale=False,
                                                     textposition='outside', text_auto=True, color_mid=None,
                                                     showspike=True)
                             cols = st.columns([1, 1])
