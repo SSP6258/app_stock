@@ -1230,7 +1230,7 @@ def fn_color_roe_year(x):
     return css
 
 
-def fn_show_hist_price(df, df_mops, key='hist_price'):
+def fn_show_basic_idx(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
     cols = st.columns([1, 0.1, 2.9])
@@ -1243,7 +1243,7 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
         cols2 = st.columns([2, 0.1, 3, 1.5])
 
-        dft_sid = '2454' if key =='basic_idx' else  df['代碼'].values[0]
+        dft_sid = '2454' if key =='basic_idx' else df['代碼'].values[0]
 
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
@@ -1428,11 +1428,29 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
                                 fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.3)
                                 subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
+
+                                # if showspike:
+                                #     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor",
+                                #                      spikemode="across", spikethickness=1,
+                                #                      spikedash='solid')
+                                #
+                                #     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor",
+                                #                      spikemode="across", spikethickness=1,
+                                #                      spikedash='solid')
+
                                 subfig.update_layout(coloraxis_showscale=False,
                                                      title_text=title,
                                                      title_font_size=18,
                                                      yaxis={'showticklabels': False,
-                                                            'showgrid': False})
+                                                            'showgrid': False,
+                                                            'showspikes': True,
+                                                            'spikethickness': 1,
+                                                            'spikecolor': "grey",
+                                                            'spikedash': 'solid',
+                                                            'spikemode': "across",
+                                                            'spikesnap': "cursor",
+                                                            }
+                                                     )
 
                                 st.plotly_chart(subfig, use_container_width=True)
 
@@ -1919,7 +1937,7 @@ def fn_st_stock_main():
 
     with tab_basic_idx:
         fn_st_add_space(1)
-        fn_show_hist_price(df, dic_mops['MOPS'], key='basic_idx')
+        fn_show_basic_idx(df, dic_mops['MOPS'], key='basic_idx')
 
     with tab_watch:
         fn_st_stock_sel(df_all)
