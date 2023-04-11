@@ -94,6 +94,12 @@ dic_book_cmt = {
 }
 
 
+dic_colors = {
+    "c1": "rgba(35, 146, 255, 1)",
+    "c2": "rgba(0, 72, 142, 1)",
+}
+
+
 dic_df = {}
 
 
@@ -1331,6 +1337,11 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
 
     if df_sid.shape[0] > 0:
 
+        df_month = dic_df['month']
+        df_month = df_month[df_month['sid']==sid]
+        df_month['yr_sn'] = df_month['year'] + '<br>' + df_month['season']
+        df_month['yr_sn'] = df_month['yr_sn'].apply(lambda x: x.replace(' ', ''))
+
         tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
 
         with tab_basic:
@@ -1397,11 +1408,35 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                         if f == 'color' or f == '年/季':
                             pass
                         else:
-                            fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
-                                                    v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
-                                                    textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
-                            cols = st.columns([3.5, 1])
-                            cols[0].plotly_chart(fig, use_container_width=True)
+
+                            if df_month.shape[0] > 0:
+                                title=f'{sid} {sid_name}   {f} vs 股價'
+                                subfig = make_subplots(specs=[[{'secondary_y': True}]])
+                                colors = [dic_colors["c1"] if c == 1 else dic_colors["c2"] for c in df_fin_b["color"]]
+                                colors = colors[:-1] + ["orange"]
+
+                                fig1 = fn_gen_plotly_bar(df_fin_b, '年/季', f,
+                                                         v_h='v',
+                                                         op=[0.5 for i in range(df_fin_b.shape[0] - 1)] + [1.0],
+                                                         colors=colors, showscale=False,
+                                                         textposition='outside', text_auto=True,
+                                                         showspike=True)
+
+                                fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.3)
+                                subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
+                                subfig.update_layout(coloraxis_showscale=False,
+                                                     title_text=title,
+                                                     yaxis = {'showticklabels': False,
+                                                              'showgrid': False})
+
+                                st.plotly_chart(subfig, use_container_width=True)
+
+                            else:
+                                fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
+                                                        v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
+                                                        textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
+                                cols = st.columns([3.5, 1])
+                                cols[0].plotly_chart(fig, use_container_width=True)
 
                 with tab_year:
                     for f in df_mop_b.columns:
@@ -1792,12 +1827,14 @@ def fn_st_stock_init():
     df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
                                    dtype=str)
 
-    return df_all, df_field, df_rp, df_tdcc
+    df_month = pd.read_csv('Month.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+
+    return df_all, df_field, df_rp, df_tdcc, df_month
 
 
 def fn_st_stock_main():
 
-    df_all, df_field, dic_df['report'], dic_df['tdcc'] = fn_st_stock_init()
+    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
 

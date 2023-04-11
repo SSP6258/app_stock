@@ -10,8 +10,16 @@ def fn_show_img(IMG_file):
     return img
 
 
+def fn_gen_plotly_line(df, x, y, op=1, color='red', line_width=3):
+
+    fig = px.line(df, x=x, y=y, markers=True)
+    fig.update_traces(line_color=color, line_width=line_width, opacity=op)
+
+    return fig
+
+
 def fn_gen_plotly_bar(df, x_col, y_col,
-                      txt_col=None, color_col=None, v_h='h', margin=None,
+                      txt_col=None, color_col=None, colors=None, v_h='h', margin=None,
                       title=None, height=None, width=None, op=None, barmode=None,
                       legend=True, lg_title=None, lg_pos=None, lg_x=None, lg_top=True, x_range=None,
                       showtick_y=True, showscale=True, text_auto=False, textposition='inside', color_mid=None,
@@ -22,7 +30,7 @@ def fn_gen_plotly_bar(df, x_col, y_col,
 
     fig.for_each_trace(lambda t: t.update(text=[]) if '勝率_new' not in t.name else ())
 
-    fig.update_traces(textfont_size=14, textposition=textposition, cliponaxis=False)
+    fig.update_traces(textfont_size=14, textposition=textposition, cliponaxis=False, marker_color=colors)
 
     fig.update_layout(margin=margin,
                       xaxis_title='',

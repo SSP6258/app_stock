@@ -890,11 +890,12 @@ def fn_main():
     # fn_get_month_deal_data()
     # fn_parse_month_data()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+        fn_post_proc()
 
-    fn_post_proc()
+    # fn_post_proc()
 
     # fn_get_company_report()
 
