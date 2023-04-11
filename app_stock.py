@@ -1447,12 +1447,20 @@ def fn_show_hist_price(df, df_mops, key='hist_price'):
                         else:
                             colors = [dic_colors["c1"] for _ in df_mop_b['年度']]
                             colors = colors[:-1] + ["orange"]
+                            title=f'{sid} {sid_name}   {f.split("-")[-1]}'
 
-                            fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=f'{sid} {sid_name}   {f.split("-")[-1]}',
+                            fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=title,
                                                     v_h='v', op=[0.5 for i in range(df_mop_b.shape[0] - 1)] + [1.0],
                                                     colors=colors, showscale=False,
                                                     textposition='outside', text_auto=True, color_mid=None,
                                                     showspike=True)
+
+                            fig.update_layout(coloraxis_showscale=False,
+                                              title_text=title,
+                                              title_font_size=18,
+                                              yaxis={'showticklabels': False,
+                                                     'showgrid': False})
+
                             cols = st.columns([1, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
 
