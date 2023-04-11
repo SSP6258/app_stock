@@ -17,6 +17,7 @@ def fn_gen_plotly_line(df, x, y, op=1, color='red', line_width=3):
 
     return fig
 
+
 def fn_gen_plotly_bar(df, x_col, y_col,
                       txt_col=None, color_col=None, colors=None, v_h='h', margin=None,
                       title=None, height=None, width=None, op=None, barmode=None,
