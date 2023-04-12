@@ -1264,7 +1264,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     df_sid_p = df_sid.copy()
 
     if df_sid.shape[0] == 0:
-        st.error(f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~')
+        st.error(f'抱歉 您輸入的股票代碼 {sid} 尚未收錄至資料庫 請重新輸入 ~')
         assert False, f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~'
 
     # sid_name = df_sid['sid_name'].values[0]
