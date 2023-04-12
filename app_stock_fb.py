@@ -17,7 +17,7 @@ dic_cfg = {
     'sel_price': 500,
     'sel_corr': 0.8,
     'sel_rat_h': 90,
-    'stocks': ['2634', '3089', '5009', '4526', '3005', '5284', '5289', '4566', '8383', '1583', '1584', '8033'],
+    'stocks': ['2634', '3089', '5009', '4526', '3005', '5284', '5289', '5538', '4566', '8383', '1583', '1584', '8033'],
     'stock_file': 'stock.csv',
     'header': {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
