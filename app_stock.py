@@ -324,7 +324,7 @@ def fn_get_stock_price(sid, days=30):
     return df_sid
 
 
-def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120, showlegend=False, title=None):
+def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120, showlegend=False, title=None, op=0.5):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
     # st.write(df)
 
@@ -341,7 +341,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
     fig.add_trace(go.Bar(x=df.index,
                          y=df['Volume'].apply(lambda x: int(x / 1000)),
                          name='交易量',
-                         opacity=0.5,
+                         opacity=op,
                          ),
                   secondary_y=False)
 
@@ -353,10 +353,9 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
         for c in df1.columns:
             if '合理價_' in c:
                 df_plt = df1[df1[c].apply(lambda x: len(str(x)) > 0)]
-                # st.write(df1)
-                # st.write(df_plt)
                 fig.add_trace(go.Scatter(x=df_plt['date'], y=df_plt[c],
-                                         mode='lines', name=c),
+                                         mode='lines+markers', name=c,
+                                         opacity=0.5),
                               secondary_y=True)
 
     if title is None:
@@ -402,9 +401,8 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
             p_fr = df[df.index == fr]["Close"].values[0]
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
-            op = 0.4  # min(0.4 + 0.1*abs(int(100*(p_to - p_fr)/p_fr))/5, 0.9)
             fig.add_vrect(x0=fr, x1=to,
-                          fillcolor=color, opacity=op, line_width=0)
+                          fillcolor=color, opacity=0.3, line_width=0)
 
         else:
             st.write(f'{fr} --> {fr in df.index}')
@@ -1391,9 +1389,11 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             fn_st_add_space(1)
             tab_basic, tab_raw, tab_src = st.tabs(['指標分析', '詳細數據', '資料來源'])
-            y_fr = datetime.datetime.today().year - 6
+            y_fr = datetime.datetime.today().year - 5
 
             with tab_basic:
+
+                df_month = df_month[df_month['year'].apply(lambda x: int(x) >= y_fr)]
 
                 df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
                 df_fin_b = df_fin_b[df_fin_b['年/季'].apply(lambda x: int(x.split('Q')[0]) >= y_fr)]
@@ -1414,8 +1414,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         else:
 
                             if df_month.shape[0] > 0:
-                                title=f'{sid} {sid_name}   {f} vs 股價'
-                                subfig = make_subplots(specs=[[{'secondary_y': True}]])
+                                title = f'{sid} {sid_name}   {f} vs 股價走勢'
+
                                 colors = [dic_colors["c1"] if c == 1 else dic_colors["c2"] for c in df_fin_b["color"]]
                                 colors = colors[:-1] + ["orange"]
 
@@ -1427,17 +1427,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                          showspike=True)
 
                                 fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.3)
+
+                                subfig = make_subplots(specs=[[{'secondary_y': True}]])
                                 subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
-
-                                # if showspike:
-                                #     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor",
-                                #                      spikemode="across", spikethickness=1,
-                                #                      spikedash='solid')
-                                #
-                                #     fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor",
-                                #                      spikemode="across", spikethickness=1,
-                                #                      spikedash='solid')
-
                                 subfig.update_layout(coloraxis_showscale=False,
                                                      title_text=title,
                                                      title_font_size=18,
@@ -1449,15 +1441,37 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                             'spikedash': 'solid',
                                                             'spikemode': "across",
                                                             'spikesnap': "cursor",
-                                                            }
+                                                            },
+                                                     yaxis2={'showticklabels': False,
+                                                             'showgrid': False,
+                                                             },
                                                      )
 
                                 st.plotly_chart(subfig, use_container_width=True)
 
                             else:
+                                colors = [dic_colors["c1"] if c == 1 else dic_colors["c2"] for c in df_fin_b["color"]]
+                                colors = colors[:-1] + ["orange"]
                                 fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
-                                                        v_h='v', op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0], color_col='color', showscale=False,
-                                                        textposition='outside', text_auto=True, color_mid=0.5, showspike=True)
+                                                        v_h='v',
+                                                        op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0],
+                                                        colors=colors, showscale=False,
+                                                        textposition='outside', text_auto=True)
+
+                                fig.update_layout(coloraxis_showscale=False,
+                                                  # title_text=title,
+                                                  title_font_size=18,
+                                                  yaxis={'showticklabels': False,
+                                                         'showgrid': False,
+                                                         'showspikes': True,
+                                                         'spikethickness': 1,
+                                                         'spikecolor': "grey",
+                                                         'spikedash': 'solid',
+                                                         'spikemode': "across",
+                                                         'spikesnap': "cursor",
+                                                         },
+                                                  )
+
                                 cols = st.columns([3.5, 1])
                                 cols[0].plotly_chart(fig, use_container_width=True)
 
@@ -1539,7 +1553,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             mk = mk + '-' if len(str(mk)) > 0 else ''
             indu = df_sid_p['產業別'].values[-1]
             title = f'{sid} {sid_name} ({mk}{indu})'
-            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=title)
+            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=title, op=0.7)
 
             st.plotly_chart(fig, use_container_width=True)
 
