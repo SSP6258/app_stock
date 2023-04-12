@@ -1413,7 +1413,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                             pass
                         else:
 
-
                             if df_month.shape[0] > 0:
                                 title = f'{sid} {sid_name}   {f} vs 股價走勢'
 
