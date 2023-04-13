@@ -1300,7 +1300,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     # cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
 
     df_report = dic_df['report']
-    report_lnk = df_report[df_report['sid']==sid]['report'].values[0]
+    report_lnk = 'NA' if sid not in df_report['sid'].values else df_report[df_report['sid']==sid]['report'].values[0]
     report_date = 'NA'if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
     report_date = f'$中文簡報-{report_date}$'
 
