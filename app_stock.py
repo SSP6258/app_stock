@@ -326,7 +326,13 @@ def fn_get_stock_price(sid, days=30):
 
 def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120, showlegend=False, title=None, op=0.5):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
-    # st.write(df)
+
+    fig.add_trace(go.Bar(x=df.index,
+                         y=df['Volume'].apply(lambda x: int(x / 1000)),
+                         name='交易量',
+                         opacity=op,
+                         ),
+                  secondary_y=False)
 
     fig.add_trace(go.Candlestick(x=df.index,
                                  open=df['Open'],
@@ -337,13 +343,6 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
                                  increasing={'line_color': 'red'},
                                  decreasing={'line_color': 'green'}),
                   secondary_y=True)
-
-    fig.add_trace(go.Bar(x=df.index,
-                         y=df['Volume'].apply(lambda x: int(x / 1000)),
-                         name='交易量',
-                         opacity=op,
-                         ),
-                  secondary_y=False)
 
     if df_p is None:
         pass
@@ -1264,8 +1263,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     df_sid_p = df_sid.copy()
 
     if df_sid.shape[0] == 0:
-        st.error(f'抱歉 您輸入的股票代碼 {sid} 尚未收錄至資料庫 請重新輸入 ~')
-        assert False, f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~'
+        st.error(f'抱歉 股票代碼 {sid} 尚未收錄至資料庫({df_all["sid"].nunique()}檔) ~')
+        return None
+        # assert False, f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~'
 
     # sid_name = df_sid['sid_name'].values[0]
 
