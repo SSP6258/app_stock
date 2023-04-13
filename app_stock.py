@@ -330,7 +330,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
     fig.add_trace(go.Bar(x=df.index,
                          y=df['Volume'].apply(lambda x: int(x / 1000)),
                          name='交易量',
-                         opacity=op,
+                         opacity=0.4,
                          ),
                   secondary_y=False)
 
@@ -354,7 +354,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
                 df_plt = df1[df1[c].apply(lambda x: len(str(x)) > 0)]
                 fig.add_trace(go.Scatter(x=df_plt['date'], y=df_plt[c],
                                          mode='lines+markers', name=c,
-                                         opacity=0.5),
+                                         opacity=op),
                               secondary_y=True)
 
     if title is None:
@@ -401,7 +401,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
             p_to = df[df.index == to]["Close"].values[0]
             color = "pink" if p_to >= p_fr else "lightgreen"
             fig.add_vrect(x0=fr, x1=to,
-                          fillcolor=color, opacity=0.3, line_width=0)
+                          fillcolor=color, opacity=0.2, line_width=0)
 
         else:
             st.write(f'{fr} --> {fr in df.index}')
