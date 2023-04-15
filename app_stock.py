@@ -1281,7 +1281,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
     url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
-
+    url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW/health-check'
+# 'https://tw.stock.yahoo.com/quote/3653.TW/health-check'
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin("ROE", sid)
     df_roa = fn_get_mops_fin("ROA", sid)
@@ -1338,6 +1339,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
     cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$PChome$]({url_PC})、')
     cols[0].markdown(f'{mkd_space}[$FindBillion$]({url_FB})')
+    cols[0].markdown(f'{mkd_space}[$Yahoo$]({url_Yahoo})')
 
     df_sid = fn_get_stock_price(sid, days=200)
     sid_price = round(df_sid['Close'].values[-1], 1)
