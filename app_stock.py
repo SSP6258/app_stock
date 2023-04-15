@@ -1250,6 +1250,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
         df_sid = df_all[df_all['sid'] == sid]
+        market = df_sid["市場別"].values[0]
 
         sid_name = df_sid['sid_name'].values[0] if df_sid.shape[0] > 0 else '不在資料庫'
         cols2[2].write('')
@@ -1281,7 +1282,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
     url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
-    url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW/health-check'
+    url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW{"O" if market=="上櫃" else "" }/health-check'
 # 'https://tw.stock.yahoo.com/quote/3653.TW/health-check'
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin("ROE", sid)
@@ -1302,7 +1303,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
     cols[0].write('')
     cols[0].write('')
-    cols[0].markdown(f'$市場別:$ ${df_sid["市場別"].values[0]}$ - ${df_sid["產業別"].values[0]}$')
+    cols[0].markdown(f'$市場別:$ ${market}$ - ${df_sid["產業別"].values[0]}$')
     # cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
 
     df_report = dic_df['report']

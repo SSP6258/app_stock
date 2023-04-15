@@ -874,7 +874,7 @@ def fn_parse_month_data():
     df_all['ave'] = df_all['ave'].apply(lambda x: int(x))
     df_all.reset_index(drop=True, inplace=True)
 
-    print(df_all[df_all['sid'] == '3426'])
+    # print(df_all[df_all['sid'] == '3426'])
 
     df_all.to_csv('Month.csv', encoding='utf_8_sig')
 
@@ -887,8 +887,8 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # fn_get_month_deal_data()
-    # fn_parse_month_data()
+    fn_get_month_deal_data()
+    fn_parse_month_data()
 
     # if fn_is_parsing():
     #     df = fn_fb_recommend_stock()
