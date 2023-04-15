@@ -629,6 +629,7 @@ def fn_mops_fin(is_new_season=False):
     df_sid = pd.read_csv('stock.csv')
     df_fin = pd.read_csv('mops_fin_ROE.csv')
     sids = [str(s) for s in df_sid['sid'].unique() if len(str(s)) == 4] + ['1905']
+
     if is_new_season:
         pass
     else:
@@ -889,10 +890,10 @@ def fn_main():
     # fn_get_month_deal_data()
     # fn_parse_month_data()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=True)
-        fn_post_proc()
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
+    #     fn_post_proc()
 
     # fn_post_proc()
 
@@ -902,7 +903,7 @@ def fn_main():
     # for w in webs:
     #     fn_get_web_info('2929', w)
 
-    # is_new_season = True
+    # is_new_season = False
     # fn_mops_fin(is_new_season=is_new_season)
     # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
