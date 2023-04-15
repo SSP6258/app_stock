@@ -1250,7 +1250,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
         df_sid = df_all[df_all['sid'] == sid]
-        market = df_sid["市場別"].values[0]
 
         sid_name = df_sid['sid_name'].values[0] if df_sid.shape[0] > 0 else '不在資料庫'
         cols2[2].write('')
@@ -1272,6 +1271,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         st.error(f'抱歉 股票代碼 {sid} 尚未收錄至本資料庫(目前只收錄了{df_all["sid"].nunique()}檔) ~')
         return None
         # assert False, f'Sorry 您輸入的股票代碼 {sid} 不在資料庫喔 ~'
+    else:
+        market = df_sid["市場別"].values[0]
 
     # sid_name = df_sid['sid_name'].values[0]
 

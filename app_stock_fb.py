@@ -760,7 +760,13 @@ def fn_post_proc():
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
 
-def fn_get_month_deal_data():
+def fn_get_month_deal_data(is_force=False, years=6):
+    try:
+        df_month = pd.read_csv('Month.csv', na_filter=False, dtype=str)
+        sids_existed = df_month['sid'].unique()
+    except:
+        sids_existed = []
+
     df = pd.read_csv('mops_fin_ROE.csv', na_filter=False, dtype=str)
     df_lst = df[df['market'] == '上市']
     df_otc = df[df['market'] == '上櫃']
@@ -768,19 +774,21 @@ def fn_get_month_deal_data():
     sids_lst = df_lst['sid'].unique().tolist()
     sids_otc = df_otc['sid'].unique().tolist()
     to_yr = datetime.datetime.today().year - 1911
-    fr_yr = to_yr - 6
+    fr_yr = to_yr - years
     years_otc = [str(y) for y in range(fr_yr, to_yr + 1, 1)]
     years_lst = [f'民國 {y} 年' for y in range(fr_yr, to_yr + 1, 1)]
 
     sids_lst_len = len(sids_lst)
     sids_otc_len = len(sids_otc)
     for sid in sids_otc:
-        print(f'otc ({sids_otc.index(sid)}/{sids_otc_len}), downloading {sid}')
-        fn_month_deal_download(dic_month_deal_otc, sid, years_otc)
+        if sid not in sids_existed or is_force:
+            print(f'otc ({sids_otc.index(sid)}/{sids_otc_len}), downloading {sid}')
+            fn_month_deal_download(dic_month_deal_otc, sid, years_otc)
 
     for sid in sids_lst:
-        print(f'lst ({sids_lst.index(sid)}/{sids_lst_len}), downloading {sid}')
-        fn_month_deal_download(dic_month_deal_lst, sid, years_lst)
+        if sid not in sids_existed or is_force:
+            print(f'lst ({sids_lst.index(sid)}/{sids_lst_len}), downloading {sid}')
+            fn_month_deal_download(dic_month_deal_lst, sid, years_lst)
 
 
 def fn_parse_month_data():
@@ -887,7 +895,7 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    fn_get_month_deal_data()
+    # fn_get_month_deal_data(is_force=False, years=6)
     fn_parse_month_data()
 
     # if fn_is_parsing():
