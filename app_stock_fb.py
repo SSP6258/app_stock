@@ -17,7 +17,7 @@ dic_cfg = {
     'sel_price': 500,
     'sel_corr': 0.8,
     'sel_rat_h': 90,
-    'stocks': ['2634', '3089', '5009', '4526', '3005', '5284', '5289', '5538', '4566', '8383', '1583', '1584', '8033'],
+    'stocks': ['1232', '8435', '1593', '6803', '6214', '8083', '8349', '1521', '9933', '6277', '2382'],
     'stock_file': 'stock.csv',
     'header': {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
@@ -270,7 +270,6 @@ def fn_get_stock_info(sid, url, webs, is_headless=True):
                             score = int(read.split('%')[0].split(' ')[-1])
                             if score >= 80:
                                 print(f'{sid} --> {k}: {read}')
-
 
                     except:
                         df[k] = ['']

@@ -693,7 +693,12 @@ def fn_st_stock_sel(df_all):
                 lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
                 link = lnk1 if mk == '市' else lnk2
                 c1.markdown(f'[$本益比:\ {per}$]({link})')
-                c1.markdown(f'[$殖利率:\ {p2}\ \%$]({link})')
+                # c1.markdown(f'[$殖利率:\ {p2}\ \%$]({link})')
+                try:
+                    color = 'red' if float(p2) >= 5 else 'green'
+                except:
+                    color = 'blue'
+                c1.markdown(f'[:{color}[$殖利率:\ {p2}\ \%$]]({link})')
                 c2.plotly_chart(fig, use_container_width=True)
 
                 for m in metrics:
