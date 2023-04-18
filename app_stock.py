@@ -1358,6 +1358,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         with tab_basic:
 
             df_per = dic_mops['per']
+            df_yh = dic_df['Yahoo_Health']
+            df_yh_sid = df_yh[df_yh['sid'] == sid]
             if str(sid) in df_per['股票代號'].values:
                 df_per_sid = df_per[df_per['股票代號'] == str(sid)]
                 per = df_per_sid['本益比'].values[0]
@@ -1417,6 +1419,17 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 tab_season, tab_year = st.tabs(['季度', '年度'])
 
                 with tab_season:
+
+                    sid_grow = df_yh_sid['grow'].values[0]
+                    sid_stable = df_yh_sid['stable'].values[0]
+                    sid_yh_link = df_yh_sid['link'].values[0]
+                    color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
+                    color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
+                    fn_st_add_space(1)
+                    st.markdown(f'##### '
+                                f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
+                                f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
+
                     for f in df_fin_b.columns:
                         if f == 'color' or f == '年/季':
                             pass
@@ -1885,13 +1898,14 @@ def fn_st_stock_init():
                                    dtype=str)
 
     df_month = pd.read_csv('Month.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_yh = pd.read_csv('Yahoo_Health.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
 
-    return df_all, df_field, df_rp, df_tdcc, df_month
+    return df_all, df_field, df_rp, df_tdcc, df_month, df_yh
 
 
 def fn_st_stock_main():
 
-    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'] = fn_st_stock_init()
+    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['Yahoo_Health'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
 
