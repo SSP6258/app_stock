@@ -1426,6 +1426,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
                     color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
                     fn_st_add_space(1)
+                    br = dic_mkd["2sp"]
                     st.markdown(f'##### '
                                 f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
                                 f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
