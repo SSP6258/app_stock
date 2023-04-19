@@ -1721,12 +1721,12 @@ def fn_st_chart_bar(df):
 
             # pd.options.display.float_format = "{:.2f}".format
             df_show['成長'] = df_show['代碼'].apply(fn_get_yh_grow)
-            df_show['穩定'] = df_show['代碼'].apply(fn_get_yh_stable)
+            df_show['穩健'] = df_show['代碼'].apply(fn_get_yh_stable)
             df_show = df_show[[c for c in df_show.columns if '領先指標' not in c and '產業別' not in c]+['產業別']]
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '成長' in c or '穩定' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '成長' in c or '穩健' in c])
             st.dataframe(df_color, height=500)
 
         with tab_d:
