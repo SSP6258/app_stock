@@ -194,11 +194,17 @@ dic_cmoney = {
 dic_cnyes = {'getHyperlinks': [],
              }
 
+
+dic_yahoo_health = {'get_idx_Grow': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div[1]/div[1]/div/div[3]/div/div[2]/div/div[1]/div/span[1]'],
+                    'get_idx_Stable': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div[1]/div[1]/div/div[3]/div/div[3]/div/div[1]/div/span[1]']}
+
+
 dic_web_handle = {
     'dog': dic_dog,
     'WantRich': dic_wantrich_main,
     'CMoney': dic_cmoney,
     'Cnyes': dic_cnyes,
+    'Yahoo': dic_yahoo_health,
 }
 
 dic_mops_fin = {
@@ -708,6 +714,8 @@ def fn_get_web_info(sid, web):
         sid_info = sid_info + '/stock-health-check'
     elif web == 'Cnyes':
         sid_info = sid_info + '/company/profile'
+    elif web == 'Yahoo':
+        sid_info = sid_info + '/health-check'
 
     link = dic_url[web] + sid_info
 
@@ -730,10 +738,11 @@ def fn_get_web_info(sid, web):
             typ, slp, by, val = dic[k]
             if typ == 'getText':
                 txt = fn_web_get_text(drv, val, slp=slp)
-                print(k, txt)
+                # print(k, txt)
                 dic_info[k] = txt
 
-    time.sleep(2)
+    dic_info['link'] = link
+    time.sleep(1)
     drv.close()
 
     return dic_info
@@ -887,6 +896,47 @@ def fn_parse_month_data():
     df_all.to_csv('Month.csv', encoding='utf_8_sig')
 
 
+def fn_get_yahoo_health():
+    dic_yh = {'sid': [], 'grow': [], 'stable': [], 'market': [], 'link': []}
+    df = pd.read_csv(dic_cfg['stock_file'], na_filter=False, dtype=str, index_col=0)
+    df_field = pd.read_csv('stock_field.csv', na_filter=False, dtype=str, index_col=0)
+    sids = df['sid'].unique().tolist()
+    sid_num = len(sids)
+    web = 'Yahoo'
+    for sid in sids:
+
+        if sid in df_field['sid'].values:
+            mk = df_field[df_field['sid'] == sid]['市場別'].values[0]
+        else:
+            mk = '上櫃'
+
+        dic_yh['market'].append(mk)
+        dic_yh['sid'].append(sid)
+        mk_code = '.TW' if mk == '上市' else '.TWO'
+
+        try:
+            dic_info = fn_get_web_info(sid+mk_code, web)
+            grow = dic_info['get_idx_Grow']
+            stable = dic_info['get_idx_Stable']
+            link = dic_info['link']
+            status = 'Pass'
+        except:
+            grow = 'NA'
+            stable = 'NA'
+            status = 'Fail !'
+            link = 'NA'
+
+        dic_yh['grow'].append(grow)
+        dic_yh['stable'].append(stable)
+        dic_yh['link'].append(link)
+
+        print(f'({sids.index(sid)}/{sid_num}) --> {sid} {status} 成長:{grow} 穩健:{stable} {link}')
+
+    df_yh = pd.DataFrame(dic_yh)
+    df_yh['date'] = datetime.datetime.today()
+    df_yh.to_csv('Yahoo_Health.csv', encoding='utf_8_sig', index=False)
+
+
 def fn_main():
     t = time.time()
 
@@ -896,14 +946,14 @@ def fn_main():
     # fn_mops_twse_parser()
 
     # fn_get_month_deal_data(is_force=False, years=6)
-    fn_parse_month_data()
+    # fn_parse_month_data()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=True)
-    #     fn_post_proc()
-
-    # fn_post_proc()
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=False)
+        fn_post_proc()
+        fn_get_yahoo_health()
+        fn_get_company_report()
 
     # fn_get_company_report()
 
