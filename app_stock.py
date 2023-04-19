@@ -1581,6 +1581,28 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             st.plotly_chart(fig, use_container_width=True)
 
 
+def fn_get_yh_grow(sid):
+    df_yh = dic_df['Yahoo_Health']
+    df_yf_sid = df_yh[df_yh['sid'] == sid]
+    if df_yf_sid.shape[0] > 0:
+        grow = df_yf_sid['grow'].values[0].replace('%', '')
+    else:
+        grow = 'NA'
+
+    return grow
+
+
+def fn_get_yh_stable(sid):
+    df_yh = dic_df['Yahoo_Health']
+    df_yf_sid = df_yh[df_yh['sid'] == sid]
+    if df_yf_sid.shape[0] > 0:
+        stable = df_yf_sid['stable'].values[0].replace('%', '')
+    else:
+        stable = 'NA'
+
+    return stable
+
+
 def fn_st_chart_bar(df):
 
     df_sids = fn_get_sids(df)
@@ -1662,34 +1684,49 @@ def fn_st_chart_bar(df):
                 css_b = 'background-color: lightblue; color: black'
                 css_g = 'background-color: lightgreen; color: black'
                 css_gray = 'background-color: lightgray; color: black'
-                f = float(x)
+                try:
+                    f = float(x)
+                except:
+                    f = 'NA'
 
-                if 4.9 < f < 10.1:
-                    css = css_r
+                if '.' in str(x):
+                    if 4.9 < f < 10.1:
+                        css = css_r
 
-                if 4.5 < f < 4.91:
-                    css = css_p
+                    if 4.5 < f < 4.91:
+                        css = css_p
 
-                if 3.9 < f < 4.51:
-                    css = css_y
+                    if 3.9 < f < 4.51:
+                        css = css_y
 
-                if 1.0 <= f < 3.91:
-                    css = css_g
+                    if 1.0 <= f < 3.91:
+                        css = css_g
 
-                # if 1.0 <= f < 3.01:
-                #     css = css_g
-
-                if f < 1.0:
-                    css = css_gray
-
+                    if f < 1.0:
+                        css = css_gray
+                else:
+                    if f == 'NA':
+                        css = css_gray
+                    else:
+                        if f == 100:
+                            css = css_r
+                        elif f >= 80:
+                            css = css_p
+                        elif f >= 60:
+                            css = css_y
+                        else:
+                            css = css_g
 
                 return css
 
             # pd.options.display.float_format = "{:.2f}".format
+            df_show['成長'] = df_show['代碼'].apply(fn_get_yh_grow)
+            df_show['穩定'] = df_show['代碼'].apply(fn_get_yh_stable)
+            df_show = df_show[[c for c in df_show.columns if '領先指標' not in c and '產業別' not in c]+['產業別']]
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '成長' in c or '穩定' in c])
             st.dataframe(df_color, height=500)
 
         with tab_d:
