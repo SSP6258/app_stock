@@ -784,7 +784,7 @@ def fn_stock_filter(df, stra, col, fr=''):
         win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=dft_win, step=0.5)
         v = 2.0 if '營收' in stra else -1.0
         margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=v, step=0.5)
-        corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=7.0, step=0.5)
+        corr = st.slider(f'{stra} 相關性 大於', min_value=5.0, max_value=10.0, value=6.0, step=0.5)
         win_diff = st.slider(f'{stra} 勝率變化 大於', min_value=-1.0, max_value=10.0, value=-1.0, step=0.5)
         fn_st_add_space(3)
         st.form_submit_button('選擇')
@@ -1432,7 +1432,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                 f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
 
                     for f in df_fin_b.columns:
-                        if f == 'color' or f == '年/季':
+                        if f == 'color' or f == '年/季' or 'ROA' in f:
                             pass
                         else:
 
