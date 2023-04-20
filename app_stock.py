@@ -1389,6 +1389,17 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 # st.markdown(
                 #     f'###### $資料來源$: [${source}$]({link})  ')
 
+            sid_grow = df_yh_sid['grow'].values[0]
+            sid_stable = df_yh_sid['stable'].values[0]
+            sid_yh_link = df_yh_sid['link'].values[0]
+            color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
+            color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
+            fn_st_add_space(1)
+            br = dic_mkd["2sp"]
+            st.markdown(f'##### '
+                        f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
+                        f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
+
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
             df_mop = df_mop[['年度'] + [c for c in cols if '權益' in c] + [c for c in cols if '權益' not in c]]
@@ -1420,16 +1431,16 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 with tab_season:
 
-                    sid_grow = df_yh_sid['grow'].values[0]
-                    sid_stable = df_yh_sid['stable'].values[0]
-                    sid_yh_link = df_yh_sid['link'].values[0]
-                    color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
-                    color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
-                    fn_st_add_space(1)
-                    br = dic_mkd["2sp"]
-                    st.markdown(f'##### '
-                                f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
-                                f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
+                    # sid_grow = df_yh_sid['grow'].values[0]
+                    # sid_stable = df_yh_sid['stable'].values[0]
+                    # sid_yh_link = df_yh_sid['link'].values[0]
+                    # color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
+                    # color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
+                    # fn_st_add_space(1)
+                    # br = dic_mkd["2sp"]
+                    # st.markdown(f'##### '
+                    #             f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
+                    #             f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
 
                     for f in df_fin_b.columns:
                         if f == 'color' or f == '年/季' or 'ROA' in f:
@@ -1528,7 +1539,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     link = dic_url['Cnyes'] + f'{sid}/financials/sales'
                     st.markdown(f'##### '
                                 f'[:orange[$月營收$]]({link})')
-
 
             with tab_raw:
                 df_fin_show = df_fin.style.applymap(fn_color_roe_season,
