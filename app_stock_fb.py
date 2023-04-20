@@ -195,8 +195,8 @@ dic_cnyes = {'getHyperlinks': [],
              }
 
 
-dic_yahoo_health = {'get_idx_Grow': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div[1]/div[1]/div/div[3]/div/div[2]/div/div[1]/div/span[1]'],
-                    'get_idx_Stable': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div[1]/div[1]/div/div[3]/div/div[3]/div/div[1]/div/span[1]']}
+dic_yahoo_health = {'get_idx_Grow': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div/div[1]/div/div[4]/div/div[2]/div/div[1]/div/span[1]'],
+                    'get_idx_Stable': ['getText', dic_cfg['slp'], By.XPATH, '/html/body/div[1]/div/div/div/div/div[5]/div/div[1]/div/div[4]/div/div[3]/div/div[1]/div/span[1]']}
 
 
 dic_web_handle = {
@@ -914,6 +914,12 @@ def fn_get_yahoo_health():
         dic_yh['sid'].append(sid)
         mk_code = '.TW' if mk == '上市' else '.TWO'
 
+        # dic_info = fn_get_web_info(sid + mk_code, web)
+        # grow = dic_info['get_idx_Grow']
+        # stable = dic_info['get_idx_Stable']
+        # link = dic_info['link']
+        # status = 'Pass'
+
         try:
             dic_info = fn_get_web_info(sid+mk_code, web)
             grow = dic_info['get_idx_Grow']
@@ -948,13 +954,14 @@ def fn_main():
     # fn_get_month_deal_data(is_force=False, years=6)
     # fn_parse_month_data()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=False)
-        fn_post_proc()
-        fn_get_yahoo_health()
-        fn_get_company_report()
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=False)
+    #     fn_post_proc()
+    #     fn_get_yahoo_health()
+    #     fn_get_company_report()
 
+    fn_get_yahoo_health()
 
     # webs = ['Cnyes']
     # for w in webs:

@@ -1392,8 +1392,13 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             sid_grow = df_yh_sid['grow'].values[0]
             sid_stable = df_yh_sid['stable'].values[0]
             sid_yh_link = df_yh_sid['link'].values[0]
-            color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
-            color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
+            try:
+                color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
+                color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
+            except:
+                color_grow = 'blue'
+                color_stable = 'blue'
+
             fn_st_add_space(1)
             br = dic_mkd["2sp"]
             st.markdown(f'##### '
