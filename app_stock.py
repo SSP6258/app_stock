@@ -1416,7 +1416,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 # df_mop_b['年度'] = df_mop_b['年度'].apply(lambda x: x.replace(' 年', ''))
                 df_mop_b.reset_index(inplace=True, drop=True)
 
-                tab_season, tab_year = st.tabs(['季度', '年度'])
+                tab_season, tab_year, tab_income = st.tabs(['季度', '年度', '營收'])
 
                 with tab_season:
 
@@ -1521,6 +1521,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                             cols = st.columns([1, 1])
                             cols[0].plotly_chart(fig, use_container_width=True)
+
+                with tab_income:
+                    fn_st_add_space(1)
+                    # 'https://www.cnyes.com/twstock/2404/financials/sales'
+                    link = dic_url['Cnyes'] + f'{sid}/financials/sales'
+                    st.markdown(f'##### '
+                                f'[:orange[$月營收$]]({link})')
+
 
             with tab_raw:
                 df_fin_show = df_fin.style.applymap(fn_color_roe_season,
