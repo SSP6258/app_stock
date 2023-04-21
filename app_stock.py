@@ -21,7 +21,7 @@ dic_sel = {
 }
 
 
-dic_my_stock = {'my_stock': ['2851 中再保', '4562 穎漢', '3426 台興']}
+dic_my_stock = {'my_stock': ['2851 中再保', '4562 穎漢', '3426 台興', '2404 漢唐']}
 
 dic_field_id = {
     '其他': '23024',
@@ -1378,12 +1378,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 br = dic_mkd["2sp"]
                 # blue, green, orange, red, violet
 
+                color_per = 'red' if float(per) <= 12 else 'green'
+                color_cash = 'red' if float(yr) >= 5 else 'green'
                 st.markdown(f'##### '
-                            f'[:red[${sid}\ {sid_name.replace("-", "")}$]]({link}) {br} '
-                            f'[:orange[$股價: {sid_price} 元$]]({link}) {br} '
-                            f'[:violet[$EPS: {eps}$]]({link}) {br} '
-                            f'[:green[$本益比: {per} 倍$]]({link}) {br}  '
-                            f'[:orange[$殖利率: {yr}\%$]]({link}) {br} '
+                            f'[:orange[${sid}\ {sid_name.replace("-", "")}$]]({link}) {br} '
+                            f'[:blue[$股價: {sid_price} 元$]]({link}) {br} '
+                            f'[:blue[$EPS: {eps}$]]({link}) {br} '
+                            f'[:{color_per}[$本益比: {per} 倍$]]({link}) {br}  '
+                            f'[:{color_cash}[$殖利率: {yr}\%$]]({link}) {br} '
                             f'[:blue[$日期: {date_info}$]]({link})')
 
                 # st.markdown(
