@@ -1428,6 +1428,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 df_fin_b['年/季'] = df_fin_b['年/季'].apply(lambda x: str(x).replace('Q', '<br>Q'))
                 df_fin_b.reset_index(inplace=True, drop=True)
 
+                Q_last = df_fin_b['年/季'].values[-1].split('<br>')[-1]
+
                 df_mop_b = df_mop.sort_index(ascending=False, ignore_index=True)
                 # df_mop_b['年度'] = df_mop_b['年度'].apply(lambda x: x.replace(' 年', ''))
                 df_mop_b.reset_index(inplace=True, drop=True)
@@ -1435,17 +1437,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 tab_season, tab_year, tab_income = st.tabs(['季度', '年度', '營收'])
 
                 with tab_season:
-
-                    # sid_grow = df_yh_sid['grow'].values[0]
-                    # sid_stable = df_yh_sid['stable'].values[0]
-                    # sid_yh_link = df_yh_sid['link'].values[0]
-                    # color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
-                    # color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
-                    # fn_st_add_space(1)
-                    # br = dic_mkd["2sp"]
-                    # st.markdown(f'##### '
-                    #             f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
-                    #             f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
 
                     for f in df_fin_b.columns:
                         if f == 'color' or f == '年/季' or 'ROA' in f:
@@ -1455,8 +1446,15 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                             if df_month.shape[0] > 0:
                                 title = f'{sid} {sid_name}   {f} vs 股價走勢'
 
-                                colors = [dic_colors["c1"] if c == 1 else dic_colors["c2"] for c in df_fin_b["color"]]
-                                colors = colors[:-1] + ["orange"]
+                                # colors = [dic_colors["c1"] if c == 1 else dic_colors["c2"] for c in df_fin_b["color"]]
+
+                                colors = ["orange" if Q_last in q else dic_colors["c1"] for q in df_fin_b['年/季']]
+
+                                df_fin_b_q = df_fin_b[df_fin_b['年/季'].apply(lambda x: Q_last in x)]
+
+                                color_last = 'pink' if float(df_fin_b_q[f].values[-1]) >= float(df_fin_b_q[f].values[-2]) else 'lightgreen'
+
+                                colors = colors[:-1] + [color_last]
 
                                 fig1 = fn_gen_plotly_bar(df_fin_b, '年/季', f,
                                                          v_h='v',
@@ -1943,7 +1941,7 @@ def fn_wef_global_risk():
              use_column_width=True)
 
 
-# @st.cache_data
+@st.cache_data
 def fn_st_stock_init():
 
     stock_file = dic_cfg['stock_file']
