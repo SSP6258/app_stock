@@ -1245,7 +1245,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
         cols2 = st.columns([2, 0.1, 3, 1.5])
 
-        dft_sid = '2330' if key =='basic_idx' else df['代碼'].values[0]
+        dft_sid = '2404' if key =='basic_idx' else df['代碼'].values[0]
 
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
