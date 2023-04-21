@@ -1439,7 +1439,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 with tab_season:
 
                     for f in df_fin_b.columns:
-                        if f == 'color' or f == '年/季' or 'ROA' in f:
+                        if f == 'color' or f == '年/季' or 'ROA' in f or 'DR' in f:
                             pass
                         else:
 
