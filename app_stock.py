@@ -1456,7 +1456,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 c_income = df_sid_l['相關性_營收'].split(' ')[-1]
                 c_eps = df_sid_l['相關性_EPS'].split(' ')[-1]
-                c_cash = df_sid_l['相關性_殖利率'].split(' ')[-1]
+                c_cash = df_sid_l['相關性_殖率'].split(' ')[-1]
 
                 color_income, color_eps, color_cash = fn_get_color(c_income, c_eps, c_cash, 0.65)
 
