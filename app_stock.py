@@ -15,11 +15,9 @@ from workalendar.asia import Taiwan
 from streamlit_player import st_player
 from platform import python_version
 
-
 dic_sel = {
     'pick': []
 }
-
 
 dic_my_stock = {'my_stock': ['2851 中再保', '4562 穎漢', '3426 台興', '2404 漢唐']}
 
@@ -63,7 +61,7 @@ dic_fin_name = {
     'ROE': '權益報酬率',
     'ROA': '資產報酬率',
     'OPM': '營業利益率',
-    'DR' : '負債佔資產比率',
+    'DR': '負債佔資產比率',
     'OCF': '營業現金對負債比',
 }
 
@@ -72,7 +70,6 @@ dic_mkd = {
     '2sp': "&ensp;",
     '4sp': "&emsp;",
 }
-
 
 dic_book_img = {
     '我的職業是股東': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/080/05/0010800551.jpg&v=5baa0e38k&w=348&h=348',
@@ -93,12 +90,10 @@ dic_book_cmt = {
                                        個人覺得若非財會背景還是不容易消化，需反芻多次，方可內化成自身武功。''',
 }
 
-
 dic_colors = {
     "c1": "rgba(35, 146, 255, 1)",
     "c2": "rgba(0, 72, 142, 1)",
 }
-
 
 dic_df = {}
 
@@ -116,11 +111,11 @@ def fn_make_clickable_report(sid):
         return sid
     else:
         df_report = dic_df['report']
-        df_rp_sid = df_report[df_report['sid']==sid]
+        df_rp_sid = df_report[df_report['sid'] == sid]
         url = df_rp_sid['report'].values[0]
         name = url.split('M')[0].split(sid)[-1]
         if name == 'NA':
-            url = dic_url['Cnyes']+f'{sid}/company/profile'
+            url = dic_url['Cnyes'] + f'{sid}/company/profile'
 
         return '<a href="{}">{}</a>'.format(url, name)
 
@@ -166,7 +161,6 @@ def fn_pick_date(df, col_pick, col_date):
 
 
 def fn_kpi_plt(kpis, df_sids):
-
     dis = [k for k in kpis if 'new' in k]
     dis = dis + ['績效(%)', '天數']
 
@@ -370,7 +364,8 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
     fig.update_xaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
                      spikedash='solid', rangebreaks=[dict(bounds=["sat", "mon"])])
 
-    fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1, spikedash='solid')
+    fig.update_yaxes(showspikes=True, spikecolor="grey", spikesnap="cursor", spikemode="across", spikethickness=1,
+                     spikedash='solid')
 
     # if days_ago is not None:
     #     days_ago = days_ago - int(days_ago / 7) * 2 - 1
@@ -411,7 +406,6 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
 
 
 def fn_st_stock_sel(df_all):
-
     df_all['date_dt'] = pd.to_datetime(df_all['date'])
     fr = min(df_all['date'])
     to = max(df_all['date'])
@@ -479,7 +473,7 @@ def fn_st_stock_sel(df_all):
             option_all = df_sel['sid_and_name'].unique().tolist()
             option_dft = option_all[0: 1 + min(len(option_all) - 1, 7)]
             cols = st.columns([6, 0.5, 1])
-            option_sel = cols[0].multiselect('',  option_all,  option_dft, key='watch_sids', label_visibility='collapsed')
+            option_sel = cols[0].multiselect('', option_all, option_dft, key='watch_sids', label_visibility='collapsed')
             cols[2].form_submit_button('選擇')
             fn_st_add_space(1)
 
@@ -537,7 +531,7 @@ def fn_st_stock_sel(df_all):
 
         for p in profs_sort:
             i = profs_sort.index(p)
-            if i < metric_cols-1:
+            if i < metric_cols - 1:
                 cs[i + 1].metric(*metrics[profs.index(p)], delta_color='inverse')
 
         df_sel = df_sel[[c for c in df_sel.columns if 'max' not in c]]
@@ -569,7 +563,7 @@ def fn_st_stock_sel(df_all):
             # date_show = df_show.loc[idx, 'date'].replace('-', '')
             idx_sid = df_show.loc[idx, 'sid']
 
-            df_tdcc_sid = df_tdcc[df_tdcc['證券代號']==idx_sid]
+            df_tdcc_sid = df_tdcc[df_tdcc['證券代號'] == idx_sid]
 
             # if int(date_show) >= int(date_tdcc) and idx_sid not in watch_list:
             if idx_sid in watch_list:
@@ -578,9 +572,9 @@ def fn_st_stock_sel(df_all):
                 rp = ''
 
             else:
-                big = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']['占集保庫存數比例%'].values[0]+'%'
+                big = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']['占集保庫存數比例%'].values[0] + '%'
                 num = int(df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']['人數'].values[0])
-                num = str(num)+'人' if num < 10000 else str(round(num/10000, 1))+'萬人'
+                num = str(num) + '人' if num < 10000 else str(round(num / 10000, 1)) + '萬人'
                 rp = idx_sid
 
                 watch_list.append(idx_sid)
@@ -608,12 +602,17 @@ def fn_st_stock_sel(df_all):
             lambda x: fn_click_name(x["sid"] + '/technical-analysis', x["股價"], dic_url['Yahoo']), axis=1)
 
         df_show['field_id'] = df_show['產業別'].apply(fn_get_field_id)
-        df_show['產業別'] = df_show.apply(lambda x: fn_click_name(x['field_id'], x['產業別'], dic_url['Yahoo_field']), axis=1)
-        df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收']+'%' + ' , ' + df_show['相關性_營收']
-        df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show['相關性_EPS']
-        df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + df_show['相關性_殖利率']
+        df_show['產業別'] = df_show.apply(lambda x: fn_click_name(x['field_id'], x['產業別'], dic_url['Yahoo_field']),
+                                          axis=1)
+        df_show['勝率(%)_營收'] = df_show['勝率(%)_營收'] + ' , ' + df_show['合理價差(%)_營收'] + '%' + ' , ' + df_show[
+            '相關性_營收']
+        df_show['勝率(%)_EPS'] = df_show['勝率(%)_EPS'] + ' , ' + df_show['合理價差(%)_EPS'] + '%' + ' , ' + df_show[
+            '相關性_EPS']
+        df_show['勝率(%)_殖利率'] = df_show['勝率(%)_殖利率'] + ' , ' + df_show['合理價差(%)_殖利率'] + '%' + ' , ' + \
+                                    df_show['相關性_殖利率']
         df_show['領先指標'] = df_show['大盤領先指標'] + ' , ' + df_show['產業領先指標']
-        df_show['領先指標'] = df_show['領先指標'].apply(lambda x: x.replace('佳 ,', '佳等 ,') if str(x).startswith('佳 ,') else x)
+        df_show['領先指標'] = df_show['領先指標'].apply(
+            lambda x: x.replace('佳 ,', '佳等 ,') if str(x).startswith('佳 ,') else x)
 
         show_cols_order = ['股票名稱', '股票代碼', 'date', '股價',
                            '勝率(%)_營收', '勝率(%)_EPS', '勝率(%)_殖利率',
@@ -664,7 +663,7 @@ def fn_st_stock_sel(df_all):
         # st.write(df_per)
         for n_s in sid_order:
             sid = n_s.split(' ')[-1]
-            df_per_sid = df_per[df_per['股票代號']==sid]
+            df_per_sid = df_per[df_per['股票代號'] == sid]
             if df_per_sid.shape[0] > 0:
                 per = df_per_sid['本益比'].values[-1]
                 p2 = df_per_sid['殖利率(%)'].values[-1]
@@ -686,7 +685,7 @@ def fn_st_stock_sel(df_all):
                 n = n_s.split(' ')[0].replace("⭐", "").replace('-', '')
                 s = n_s.split(' ')[-1].replace("0050", "")
                 if mk == 'NA':
-                    c1.markdown(f'##### [${n}\ {s}$]({dic_url["dog"]+s})')
+                    c1.markdown(f'##### [${n}\ {s}$]({dic_url["dog"] + s})')
                 else:
                     c1.markdown(f'##### [${n}\ {s}$]({dic_url["dog"] + s})$\ ({mk})$')
                 lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
@@ -709,7 +708,8 @@ def fn_st_stock_sel(df_all):
             st.error(f'get stock price fail !')
 
 
-def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True, text=None):
+def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True,
+                  text=None):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
     width_full = 1200
@@ -749,7 +749,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
                 if col_end - c - 1 < col_max:
                     cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
                 else:
-                    cs[col_max-1].error(f'{col_end} - {c} - 1 out of max col {col_max}')
+                    cs[col_max - 1].error(f'{col_end} - {c} - 1 out of max col {col_max}')
 
     else:
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
@@ -779,8 +779,7 @@ def fn_stock_filter(df, stra, col, fr=''):
     for _ in range(1):
         col.write('')
     with col.form(key=f'Form2_{stra}_{fr}'):
-
-        dft_win = round(float(df[f'{stra}_勝率_new'].max()-0.5), 1)
+        dft_win = round(float(df[f'{stra}_勝率_new'].max() - 0.5), 1)
         win = st.slider(f'{stra} 勝率 大於', min_value=1.0, max_value=10.0, value=dft_win, step=0.5)
         v = 2.0 if '營收' in stra else -1.0
         margin = st.slider(f'{stra} 預估價差 大於', min_value=-1.0, max_value=10.0, value=v, step=0.5)
@@ -802,7 +801,7 @@ def fn_stock_filter(df, stra, col, fr=''):
 
 
 def fn_basic_rule(sid, df_mops, years=5):
-    chk_fr = int(df_mops['year'].values[-1])-years
+    chk_fr = int(df_mops['year'].values[-1]) - years
     df_mops = df_mops[df_mops['year'].apply(lambda x: int(x) > chk_fr)]
 
     df_sm = df_mops[df_mops['公司代號'] == sid]
@@ -1006,7 +1005,7 @@ def fn_life():
     fn_st_add_space(1)
     st.markdown(f'### 👨‍🌾 :green[$小佃農$] $ 與 $ :blue[$老碼農$] $ 的耕讀生活$')
     tab_0, tab_1, tab_2, tab_3 = st.tabs(['薑', '芥菜', '白蘿蔔', '程式碼'])
-    head_sp = 5*dic_mkd["4sp"]
+    head_sp = 5 * dic_mkd["4sp"]
 
     tit0 = f'#### {head_sp}$教學參考$'
     tit1 = f'#### {head_sp}:red[$慎選$]$標的$'
@@ -1264,7 +1263,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
         cols2 = st.columns([2, 0.1, 3, 1.5])
 
-        dft_sid = '2404' if key =='basic_idx' else df['代碼'].values[0]
+        dft_sid = '2404' if key == 'basic_idx' else df['代碼'].values[0]
 
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
@@ -1302,7 +1301,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     url_Wg = rf'{dic_url["Wantgoo"]}{sid}/profitability/roe-roa'
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
     url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
-    url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW{"O" if market=="上櫃" else "" }/health-check'
+    url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW{"O" if market == "上櫃" else ""}/health-check'
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin("ROE", sid)
     df_roa = fn_get_mops_fin("ROA", sid)
@@ -1318,7 +1317,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     del df_fin['season']
     basic = fn_basic_rule(sid, df_mops)
 
-    mkd_space = f'{9*dic_mkd["2sp"]}'
+    mkd_space = f'{9 * dic_mkd["2sp"]}'
 
     cols[0].write('')
     cols[0].write('')
@@ -1326,8 +1325,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     # cols[0].markdown(f'產業別: {df_sid["產業別"].values[0]}')
 
     df_report = dic_df['report']
-    report_lnk = 'NA' if sid not in df_report['sid'].values else df_report[df_report['sid']==sid]['report'].values[0]
-    report_date = 'NA'if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
+    report_lnk = 'NA' if sid not in df_report['sid'].values else df_report[df_report['sid'] == sid]['report'].values[0]
+    report_date = 'NA' if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
     report_date = f'$中文簡報-{report_date}$'
 
     cmp_report = '$NA$' if report_lnk == 'NA' else f'[:blue[{report_date}]]({report_lnk})'
@@ -1337,7 +1336,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     df_rank_15 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '15']
     df_rank_17 = df_tdcc_sid[df_tdcc_sid['持股分級'] == '17']
 
-    n_share = int(int(df_rank_17['股數'].values[0])/1000)
+    n_share = int(int(df_rank_17['股數'].values[0]) / 1000)
     n_share = n_share if int(n_share) < 10000 else '約 ' + str(int(int(n_share) / 10000)) + '萬'
 
     n_owner = df_rank_17['人數'].values[0]
@@ -1367,7 +1366,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     if df_sid.shape[0] > 0:
 
         df_month = dic_df['month']
-        df_month = df_month[df_month['sid']==sid]
+        df_month = df_month[df_month['sid'] == sid]
         df_month['yr_sn'] = df_month['year'] + '<br>' + df_month['season']
         df_month['yr_sn'] = df_month['yr_sn'].apply(lambda x: x.replace(' ', ''))
 
@@ -1395,7 +1394,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     df_per_sid = df_per[df_per['股票代號'] == str(sid)]
                     per = df_per_sid['本益比'].values[0]
                     yr = df_per_sid['殖利率(%)'].values[0]
-                    eps = round(sid_price/float(per), 1)
+                    eps = round(sid_price / float(per), 1)
                     date_info = df_per_sid['日期'].values[0]
                     market = df_per_sid["市場別"].values[0]
                     if market == '市':
@@ -1435,10 +1434,17 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 color_income, color_eps, color_cash = fn_get_color(win_income, win_eps, win_cash, 45)
 
+                def fn_unit(v):
+                    return v if v == "" else v + '\%'
+
                 st.markdown(f'[:blue[$勝率分析$]]({sid_yh_link})')
-                st.markdown(f'[:{color_income}[$依營收: {win_income}\%$]]({sid_yh_link})')
-                st.markdown(f'[:{color_eps}[$依EPS: {win_eps}\%$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖率: {win_cash}\%$]]({sid_yh_link})')
+                st.markdown(f'[:{color_income}[$依營收: {fn_unit(win_income)}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_eps}[$依EPS: {fn_unit(win_eps)}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖率: {fn_unit(win_cash)}$]]({sid_yh_link})')
+
+                # st.markdown(f'[:{color_income}[$依營收: {win_income}\%$]]({sid_yh_link})')
+                # st.markdown(f'[:{color_eps}[$依EPS: {win_eps}\%$]]({sid_yh_link})')
+                # st.markdown(f'[:{color_cash}[$依殖率: {win_cash}\%$]]({sid_yh_link})')
 
             with cols[3]:
 
@@ -1446,24 +1452,27 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 p_eps = df_sid_l['合理價_EPS']
                 p_cash = df_sid_l['合理價_殖利率']
 
+                def fn_unit(v):
+                    return v if v == "" else v + '元'
+
                 color_income, color_eps, color_cash = fn_get_color(p_income, p_eps, p_cash, sid_price)
                 st.markdown(f'[:blue[$價格推估$]]({sid_yh_link})')
-                st.markdown(f'[:{color_income}[$依營收: {p_income}元$]]({sid_yh_link})')
-                st.markdown(f'[:{color_eps}[$依EPS: {p_eps}元$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖率: {p_cash}元$]]({sid_yh_link})')
+                st.markdown(f'[:{color_income}[$依營收: {fn_unit(p_income)}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_eps}[$依EPS: {fn_unit(p_eps)}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖率: {fn_unit(p_cash)}$]]({sid_yh_link})')
 
             with cols[4]:
 
                 c_income = df_sid_l['相關性_營收'].split(' ')[-1]
                 c_eps = df_sid_l['相關性_EPS'].split(' ')[-1]
-                c_cash = df_sid_l['相關性_殖率'].split(' ')[-1]
+                c_cash = df_sid_l['相關性_殖利率'].split(' ')[-1]
 
                 color_income, color_eps, color_cash = fn_get_color(c_income, c_eps, c_cash, 0.65)
 
                 st.markdown(f'[:blue[$相關性$]]({sid_yh_link})')
                 st.markdown(f'[:{color_income}[$依營收: {c_income}$]]({sid_yh_link})')
                 st.markdown(f'[:{color_eps}[$依EPS: {c_eps}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖利率: {c_cash}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖率: {c_cash}$]]({sid_yh_link})')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
@@ -1512,7 +1521,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                                 df_fin_b_q = df_fin_b[df_fin_b['年/季'].apply(lambda x: Q_last in x)]
 
-                                color_last = 'pink' if float(df_fin_b_q[f].values[-1]) >= float(df_fin_b_q[f].values[-2]) else 'lightgreen'
+                                color_last = 'pink' if float(df_fin_b_q[f].values[-1]) >= float(
+                                    df_fin_b_q[f].values[-2]) else 'lightgreen'
 
                                 colors = colors[:-1] + [color_last]
 
@@ -1551,7 +1561,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                 colors = colors[:-1] + ["orange"]
                                 fig = fn_gen_plotly_bar(df_fin_b, '年/季', f, title=f'{sid} {sid_name}   {f}',
                                                         v_h='v',
-                                                        op=[0.5 for i in range(df_fin_b.shape[0]-1)]+[1.0],
+                                                        op=[0.5 for i in range(df_fin_b.shape[0] - 1)] + [1.0],
                                                         colors=colors, showscale=False,
                                                         textposition='outside', text_auto=True)
 
@@ -1579,7 +1589,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         else:
                             colors = [dic_colors["c1"] for _ in df_mop_b['年度']]
                             colors = colors[:-1] + ["orange"]
-                            title=f'{sid} {sid_name}   {f.split("-")[-1]}'
+                            title = f'{sid} {sid_name}   {f.split("-")[-1]}'
 
                             fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=title,
                                                     v_h='v', op=[0.5 for i in range(df_mop_b.shape[0] - 1)] + [1.0],
@@ -1625,10 +1635,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 src1 = '臺灣證券交易所'
                 lnk1 = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
-                lnk11= r'https://www.twse.com.tw/zh/trading/historical/fmsrfk.html'
+                lnk11 = r'https://www.twse.com.tw/zh/trading/historical/fmsrfk.html'
                 src2 = '證券櫃檯買賣中心'
                 lnk2 = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
-                lnk21= r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw'
+                lnk21 = r'https://www.tpex.org.tw/web/stock/statistics/monthly/st44.php?l=zh-tw'
 
                 st.markdown(f'###### $資料來源$:')
                 st.markdown(f'$EPS:$ [${src1}$]({lnk1}) $(每日更新)$')
@@ -1638,12 +1648,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 st.markdown(f'$OPM:$ [$公開資訊觀測站 > 獲利能力 > 營業利益率$]({url}) $(每季更新)$')
                 st.markdown(f'$DR:\ $ [$公開資訊觀測站 > 財務結構 > 負債佔資產比率$]({url}) $(每季更新)$')
                 st.markdown(f'$OCF:$ [$公開資訊觀測站 > 現金流量 > 營業現金對負債比$]({url}) $(每季更新)$')
-                st.markdown(f'$ROE:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表$](https://mops.twse.com.tw/mops/web/t51sb02_q1) $(每年 4 月 1 日更新)$')
-                st.markdown(f'$OPM:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表$](https://mops.twse.com.tw/mops/web/t163sb06) $(每季更新)$')
-                st.markdown(f'$營收:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表$](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) $(每月11日更新)$')
+                st.markdown(
+                    f'$ROE:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 財務分析資料查詢彙總表$](https://mops.twse.com.tw/mops/web/t51sb02_q1) $(每年 4 月 1 日更新)$')
+                st.markdown(
+                    f'$OPM:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 財務比率分析 > 採IFRSs後 > 營益分析查詢彙總表$](https://mops.twse.com.tw/mops/web/t163sb06) $(每季更新)$')
+                st.markdown(
+                    f'$營收:$ [$公開資訊觀測站 > 彙總報表 > 營運概況 > 每月營收 > 採IFRSs後每月營業收入彙總表$](https://mops.twse.com.tw/mops/web/t21sc04_ifrs) $(每月11日更新)$')
                 st.markdown(f'$月成交資訊:$ [${src1}$]({lnk11})')
                 st.markdown(f'$月成交資訊:$ [${src2}$]({lnk21})')
-
 
         with tab_tech:
             fn_st_add_space(1)
@@ -1657,7 +1669,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             mk = mk + '-' if len(str(mk)) > 0 else ''
             indu = df_sid_p['產業別'].values[-1]
             title = f'{sid} {sid_name} ({mk}{indu})'
-            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True, title=title, op=0.7)
+            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
+                                         title=title, op=0.7)
 
             st.plotly_chart(fig, use_container_width=True)
 
@@ -1685,7 +1698,6 @@ def fn_get_yh_stable(sid):
 
 
 def fn_st_chart_bar(df):
-
     df_sids = fn_get_sids(df)
 
     for s in ['kpi', 'order', 'order_typ', 'bar']:
@@ -1699,7 +1711,8 @@ def fn_st_chart_bar(df):
     cs = st.columns([3, 1, 1, 1])
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
-        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis, default=['績效(%)', '營收_勝率', '營收_合理價差'],
+        st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis,
+                                                 default=['績效(%)', '營收_勝率', '營收_合理價差'],
                                                  key='kpixxx')
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
@@ -1734,7 +1747,8 @@ def fn_st_chart_bar(df):
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
         tab_w, tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
-            ['勝率分析', f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔', f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+            ['勝率分析', f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔',
+             f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
              f'負報酬( -1% ~ -5% ): {df_n.shape[0]}檔', f'負報酬( < -5% ): {df_n5.shape[0]}檔',
              f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
@@ -1750,11 +1764,13 @@ def fn_st_chart_bar(df):
             df_show.rename(columns={c: c.replace('_new', '') for c in df_show.columns}, inplace=True)
             # df_show.rename(columns={c: c.split('_')[-1]+'_'+c.split('_')[0] if '_' in c else c for c in df_show.columns}, inplace=True)
             # df_show.sort_values(by=['勝率_營收', '勝率_EPS', '勝率_殖利率'], ascending=False, inplace=True, ignore_index=True)
-            df_show.sort_values(by=['營收_勝率', 'EPS_勝率', '殖利率_勝率', '營收_合理價差', 'EPS_合理價差', '殖利率_合理價差'],
-                                ascending=[False, False, False, True, True, True],
-                                inplace=True, ignore_index=True)
+            df_show.sort_values(
+                by=['營收_勝率', 'EPS_勝率', '殖利率_勝率', '營收_合理價差', 'EPS_合理價差', '殖利率_合理價差'],
+                ascending=[False, False, False, True, True, True],
+                inplace=True, ignore_index=True)
 
             fn_st_add_space(1)
+
             # st.dataframe(df_show, height=500)
 
             def fn_color_df(x):
@@ -1803,11 +1819,12 @@ def fn_st_chart_bar(df):
             # pd.options.display.float_format = "{:.2f}".format
             df_show['成長'] = df_show['代碼'].apply(fn_get_yh_grow)
             df_show['穩健'] = df_show['代碼'].apply(fn_get_yh_stable)
-            df_show = df_show[[c for c in df_show.columns if '領先指標' not in c and '產業別' not in c]+['產業別']]
+            df_show = df_show[[c for c in df_show.columns if '領先指標' not in c and '產業別' not in c] + ['產業別']]
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
-            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if '勝率' in c or '成長' in c or '穩健' in c])
+            df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if
+                                                                   '勝率' in c or '成長' in c or '穩健' in c])
             st.dataframe(df_color, height=500)
 
         with tab_d:
@@ -1834,7 +1851,6 @@ def fn_st_chart_bar(df):
         with tab_e:
             fn_st_add_space(1)
             fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
-
 
 
 def fn_st_stock_all(df_all):
@@ -1898,7 +1914,6 @@ def fn_st_reference():
     fn_st_add_space(1)
     st.markdown('### 📚 參考資料:')
     with st.form(key='ref'):
-
         cols = st.columns([1, 1, 1, 1, 0.1])
         cols[0].markdown('#### :orange[$數據來源$]')
         cols[0].markdown('- [$FindBillion$](https://www.findbillion.com/)')
@@ -1906,12 +1921,15 @@ def fn_st_reference():
         cols[0].markdown('- [$公開資訊觀測站$](https://mops.twse.com.tw)')
         cols[0].markdown('- [$景氣指標及燈號$](https://index.ndc.gov.tw/n/zh_tw/lightscore#/)')
         cols[0].markdown('- [$臺灣證券交易所$](https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU_d.html)')
-        cols[0].markdown('- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
+        cols[0].markdown(
+            '- [$證券櫃檯買賣中心$](https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera.php?l=zh-tw)')
         cols[0].markdown('- [$臺灣集中保管結算所$](https://www.tdcc.com.tw/portal/zh/smWeb/qryStock)')
 
         cols[1].markdown('#### :orange[$基本概念$]')
-        cols[1].markdown('- [$下班經濟學-股魚$](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
-        cols[1].markdown('- [$Mr. Market市場先生$](https://rich01.com/learn-stock-all/#%E8%B2%A1%E5%A0%B1%E8%88%87%E8%B2%A1%E5%8B%99%E6%8C%87%E6%A8%99)')
+        cols[1].markdown(
+            '- [$下班經濟學-股魚$](https://www.youtube.com/watch?v=ShNI41_rFv4&list=PLySGbWJPNLA8D17qZx0KVkJaXd3qxncGr&index=96&t=1610s&ab_channel=%E9%A2%A8%E5%82%B3%E5%AA%92TheStormMedia)')
+        cols[1].markdown(
+            '- [$Mr. Market市場先生$](https://rich01.com/learn-stock-all/#%E8%B2%A1%E5%A0%B1%E8%88%87%E8%B2%A1%E5%8B%99%E6%8C%87%E6%A8%99)')
         cols[1].markdown('- [$財經AI與資料科學分析平台$](https://www.youtube.com/@findbillion-ai563)')
 
         cols[2].markdown('#### :orange[$專業網站$]')
@@ -1923,7 +1941,8 @@ def fn_st_reference():
 def fn_show_raw(df_all):
     cols = [c for c in df_all.columns if '策略_' not in c]
     df_all = df_all[cols]
-    df_all_show = df_all.style.applymap(fn_color_map, subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
+    df_all_show = df_all.style.applymap(fn_color_map,
+                                        subset=[c for c in df_all.columns if '勝率' in c] + ['篩選', '名稱'])
     fn_st_add_space(3)
     st.markdown(f'#### 📡 {df_all["代碼"].nunique()}檔 台股的 "勝率" 與 "合理價" 分析:')
     st.dataframe(df_all_show, width=None, height=500)
@@ -1942,11 +1961,10 @@ def fn_book():
 
 @st.cache_data
 def fn_read_mops(latest='0322'):
-
     dic_rename = {
         '證券代號': '股票代號',
         '證券名稱': '名稱',
-        }
+    }
 
     df_per = pd.DataFrame()
     for root, dirs, files in os.walk(dic_cfg['per_latest_path']):
@@ -1982,19 +2000,20 @@ def fn_read_mops(latest='0322'):
 
 
 def fn_proj():
-
     fn_st_add_space(2)
     cols = st.columns([1.4, 3])
     cols[1].markdown('### 🗃️ 其它專案:')
     cols[1].markdown(f'#### 📌 $專案:$ 🏠 [$尋找夢想家$](https://taipei-house-price.streamlit.app/)')
-    cols[1].markdown(f'#### 📌 $專案:$ 🌏 [$座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
+    cols[1].markdown(
+        f'#### 📌 $專案:$ 🌏 [$座標查詢行政區$](https://ssp6258-use-conda-env-geopandas-25ytkj.streamlit.app/)')
     cols[1].markdown(f'#### 📌 $專案:$ 🎲 [$離散事件模擬器$](https://ssp6258-des-app-app-qdgbyz.streamlit.app/)')
 
 
 def fn_wef_global_risk():
     fn_st_add_space(1)
     cols = st.columns([0.7, 2, 0.5])
-    cols[1].markdown('#### [$世界經濟論壇$](https://www.weforum.org/) $在2023年1月11日發布了$[:red[$《2023年全球風險報告》$]](https://www.weforum.org/reports/global-risks-report-2023/in-full/1-global-risks-2023-today-s-crisis#1-global-risks-2023-today-s-crisis)')
+    cols[1].markdown(
+        '#### [$世界經濟論壇$](https://www.weforum.org/) $在2023年1月11日發布了$[:red[$《2023年全球風險報告》$]](https://www.weforum.org/reports/global-risks-report-2023/in-full/1-global-risks-2023-today-s-crisis#1-global-risks-2023-today-s-crisis)')
     fn_st_add_space(1)
     st.image(r'https://tccip.ncdr.nat.gov.tw/upload/ckfinder/images/pic_2_chart1a.png',
              caption='摘自: 臺灣氣候變遷推估資訊與調適知識平台(TCCIP) ， https://tccip.ncdr.nat.gov.tw',
@@ -2003,7 +2022,6 @@ def fn_wef_global_risk():
 
 @st.cache_data
 def fn_st_stock_init():
-
     stock_file = dic_cfg['stock_file']
     tdcc_file = os.path.join('TDCC', 'TDCC_OD_1-5.csv')
     if not os.path.exists(stock_file):
@@ -2014,7 +2032,7 @@ def fn_st_stock_init():
     df_tdcc = pd.read_csv(tdcc_file, na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
     df_field = pd.read_csv('stock_field.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_rp = pd.read_csv('Company_Report_link.csv', na_filter=False, encoding='utf_8_sig', index_col=None,
-                                   dtype=str)
+                        dtype=str)
 
     df_month = pd.read_csv('Month.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_yh = pd.read_csv('Yahoo_Health.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
@@ -2023,7 +2041,6 @@ def fn_st_stock_init():
 
 
 def fn_st_stock_main():
-
     df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['Yahoo_Health'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
@@ -2046,7 +2063,8 @@ def fn_st_stock_main():
 
     py_ver = python_version()
     lnk_py = r'https://www.python.org/downloads/'
-    cols[-1].markdown(f'##### $by\ 🐍\ $[:green[$v{py_ver}$]]({lnk_py})$\ with\ $ [:blue[$Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
+    cols[-1].markdown(
+        f'##### $by\ 🐍\ $[:green[$v{py_ver}$]]({lnk_py})$\ with\ $ [:blue[$Streamlit$]]({home}) [:red[$\ v{st.__version__}$]]({ver})')
 
     cols = st.columns([1.7, 0.7, 0.5, 1.5])
     url = r'https://th.bing.com/th/id/OIP.kiUSNjrStSTNTzPRGLFvzwHaE8?w=286&h=190&c=7&r=0&o=5&dpr=1.4&pid=1.7'
@@ -2071,9 +2089,11 @@ def fn_st_stock_main():
     df = fn_st_stock_all(df_all)
     df_rcmd = df[df['Recommend'] == '1']
 
-    dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops['OCF'] = fn_read_mops(latest=dic_mops['per_date'])
+    dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops[
+        'OCF'] = fn_read_mops(latest=dic_mops['per_date'])
 
-    tab_trend, tab_idea, tab_index, tab_pick, tab_basic_idx, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(['全球趨勢', '設計概念', '指標分布', '策略選股', '基本指標', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
+    tab_trend, tab_idea, tab_index, tab_pick, tab_basic_idx, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(
+        ['全球趨勢', '設計概念', '指標分布', '策略選股', '基本指標', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
 
     # with tab_life:
     #     fn_life()
