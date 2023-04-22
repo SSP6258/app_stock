@@ -1447,7 +1447,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 p_cash = df_sid_l['合理價_殖利率']
 
                 color_income, color_eps, color_cash = fn_get_color(p_income, p_eps, p_cash, sid_price)
-                st.markdown(f'[:blue[$價格估算$]]({sid_yh_link})')
+                st.markdown(f'[:blue[$價格推估$]]({sid_yh_link})')
                 st.markdown(f'[:{color_income}[$依營收: {p_income}元$]]({sid_yh_link})')
                 st.markdown(f'[:{color_eps}[$依EPS: {p_eps}元$]]({sid_yh_link})')
                 st.markdown(f'[:{color_cash}[$依殖率: {p_cash}元$]]({sid_yh_link})')
