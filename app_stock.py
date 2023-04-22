@@ -1232,6 +1232,25 @@ def fn_color_roe_year(x):
     return css
 
 
+def fn_get_color(income, eps, cash, th):
+    try:
+        color_income = 'red' if float(income) >= th else 'green'
+    except:
+        color_income = 'blue'
+
+    try:
+        color_eps = 'red' if float(eps) >= th else 'green'
+    except:
+        color_eps = 'blue'
+
+    try:
+        color_cash = 'red' if float(cash) >= th else 'green'
+    except:
+        color_cash = 'blue'
+
+    return color_income, color_eps, color_cash
+
+
 def fn_show_basic_idx(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1284,7 +1303,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
     url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
     url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW{"O" if market=="上櫃" else "" }/health-check'
-# 'https://tw.stock.yahoo.com/quote/3653.TW/health-check'
     df_mop = fn_get_mops(df_mops, sid)
     df_roe = fn_get_mops_fin("ROE", sid)
     df_roa = fn_get_mops_fin("ROA", sid)
@@ -1360,52 +1378,90 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             df_per = dic_mops['per']
             df_yh = dic_df['Yahoo_Health']
             df_yh_sid = df_yh[df_yh['sid'] == sid]
-            if str(sid) in df_per['股票代號'].values:
-                df_per_sid = df_per[df_per['股票代號'] == str(sid)]
-                per = df_per_sid['本益比'].values[0]
-                yr = df_per_sid['殖利率(%)'].values[0]
-                eps = round(sid_price/float(per), 1)
-                date_info = df_per_sid['日期'].values[0]
-                market = df_per_sid["市場別"].values[0]
-                if market == '市':
-                    source = '臺灣證券交易所'
-                    link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
-                else:
-                    source = '證券櫃檯買賣中心'
-                    link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
-
-                fn_st_add_space(1)
-                br = dic_mkd["2sp"]
-                # blue, green, orange, red, violet
-
-                color_per = 'red' if float(per) <= 12 else 'green'
-                color_cash = 'red' if float(yr) >= 5 else 'green'
-                st.markdown(f'##### '
-                            f'[:orange[${sid}\ {sid_name.replace("-", "")}$]]({link}) {br} '
-                            f'[:blue[$股價: {sid_price} 元$]]({link}) {br} '
-                            f'[:blue[$EPS: {eps}$]]({link}) {br} '
-                            f'[:{color_per}[$本益比: {per} 倍$]]({link}) {br}  '
-                            f'[:{color_cash}[$殖利率: {yr}\%$]]({link}) {br} '
-                            f'[:blue[$日期: {date_info}$]]({link})')
-
-                # st.markdown(
-                #     f'###### $資料來源$: [${source}$]({link})  ')
-
-            sid_grow = df_yh_sid['grow'].values[0]
-            sid_stable = df_yh_sid['stable'].values[0]
-            sid_yh_link = df_yh_sid['link'].values[0]
-            try:
-                color_grow = 'red' if float(sid_grow.replace('%', '')) >= 60 else 'green'
-                color_stable = 'red' if float(sid_stable.replace('%', '')) >= 60 else 'green'
-            except:
-                color_grow = 'blue'
-                color_stable = 'blue'
-
-            fn_st_add_space(1)
+            df_sid_l = df_sid_p.iloc[-1, :]
             br = dic_mkd["2sp"]
+
             st.markdown(f'##### '
-                        f'[:{color_grow}[$獲利成長: {sid_grow}\%$]]({sid_yh_link}) {br} '
-                        f'[:{color_stable}[$財務穩健: {sid_stable}\%$]]({sid_yh_link}) {br} ')
+                        f':orange[${sid}\ {sid_name.replace("-", "")}$]{br} '
+                        f':blue[$股價: {sid_price} 元$]')
+
+            cols = st.columns(5)
+
+            with cols[0]:
+
+                if str(sid) in df_per['股票代號'].values:
+                    df_per_sid = df_per[df_per['股票代號'] == str(sid)]
+                    per = df_per_sid['本益比'].values[0]
+                    yr = df_per_sid['殖利率(%)'].values[0]
+                    eps = round(sid_price/float(per), 1)
+                    date_info = df_per_sid['日期'].values[0]
+                    market = df_per_sid["市場別"].values[0]
+                    if market == '市':
+                        link = r'https://www.twse.com.tw/zh/page/trading/exchange/BWIBBU.html'
+                    else:
+                        link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
+
+                    color_per = 'red' if float(per) <= 12 else 'green'
+                    color_cash = 'red' if float(yr) >= 5 else 'green'
+                    color_eps = 'red'
+
+                    st.markdown(f'[:blue[$基本資料$]]({link})')
+                    st.markdown(f'[:{color_per}[$本益比: {per} 倍$]]({link})')
+                    st.markdown(f'[:{color_cash}[$殖利率: {yr}\%$]]({link})')
+                    st.markdown(f'[:{color_eps}[$每股盈餘: {eps}元$]]({link})')
+
+            with cols[1]:
+                sid_grow = df_yh_sid['grow'].values[0].replace('%', '')
+                sid_stable = df_yh_sid['stable'].values[0].replace('%', '')
+                sid_yh_link = df_yh_sid['link'].values[0]
+                try:
+                    color_grow = 'red' if float(sid_grow) >= 60 else 'green'
+                    color_stable = 'red' if float(sid_stable) >= 60 else 'green'
+                except:
+                    color_grow = 'blue'
+                    color_stable = 'blue'
+
+                st.markdown(f'[:blue[$營運健診$]]({link})')
+                st.markdown(f'[:{color_grow}[$獲利成長: {sid_grow}分$]]({sid_yh_link})')
+                st.markdown(f'[:{color_stable}[$財務穩健: {sid_stable}分$]]({sid_yh_link}) ')
+
+            with cols[2]:
+
+                win_income = df_sid_l['勝率(%)_營收']
+                win_eps = df_sid_l['勝率(%)_EPS']
+                win_cash = df_sid_l['勝率(%)_殖利率']
+
+                color_income, color_eps, color_cash = fn_get_color(win_income, win_eps, win_cash, 45)
+
+                st.markdown(f'[:blue[$勝率分析$]]({sid_yh_link})')
+                st.markdown(f'[:{color_income}[$依營收: {win_income}\%$]]({sid_yh_link})')
+                st.markdown(f'[:{color_eps}[$依EPS: {win_eps}\%$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖率: {win_cash}\%$]]({sid_yh_link})')
+
+            with cols[3]:
+
+                p_income = df_sid_l['合理價_營收']
+                p_eps = df_sid_l['合理價_EPS']
+                p_cash = df_sid_l['合理價_殖利率']
+
+                color_income, color_eps, color_cash = fn_get_color(p_income, p_eps, p_cash, sid_price)
+                st.markdown(f'[:blue[$價格估算$]]({sid_yh_link})')
+                st.markdown(f'[:{color_income}[$依營收: {p_income}元$]]({sid_yh_link})')
+                st.markdown(f'[:{color_eps}[$依EPS: {p_eps}元$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖率: {p_cash}元$]]({sid_yh_link})')
+
+            with cols[4]:
+
+                c_income = df_sid_l['相關性_營收'].split(' ')[-1]
+                c_eps = df_sid_l['相關性_EPS'].split(' ')[-1]
+                c_cash = df_sid_l['相關性_殖利率'].split(' ')[-1]
+
+                color_income, color_eps, color_cash = fn_get_color(c_income, c_eps, c_cash, 0.65)
+
+                st.markdown(f'[:blue[$相關性$]]({sid_yh_link})')
+                st.markdown(f'[:{color_income}[$依營收: {c_income}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_eps}[$依EPS: {c_eps}$]]({sid_yh_link})')
+                st.markdown(f'[:{color_cash}[$依殖利率: {c_cash}$]]({sid_yh_link})')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
