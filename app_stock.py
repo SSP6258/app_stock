@@ -1350,9 +1350,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     cols[0].markdown(f'[$法說會:$]({lnk}) {cmp_report}')
     cols[0].markdown(f'$基本面:$ {basic}')
 
-    cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
-    cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
-    cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $(>千張\ at\ {r_date})$')
+    # cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
+    # cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
+    # cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $(>千張\ at\ {r_date})$')
 
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
     cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
@@ -1386,9 +1386,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         f':orange[${sid}\ {sid_name.replace("-", "")}$]{br} '
                         f':blue[$股價: {sid_price} 元$]')
 
-            cols = st.columns(5)
+            cols = st.columns(6)
 
-            with cols[0]:
+            with cols[1]:
 
                 if str(sid) in df_per['股票代號'].values:
                     df_per_sid = df_per[df_per['股票代號'] == str(sid)]
@@ -1406,12 +1406,12 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     color_cash = 'red' if float(yr) >= 5 else 'green'
                     color_eps = 'red'
 
-                    st.markdown(f'[:blue[$基本資料$]]({link})')
-                    st.markdown(f'[:{color_per}[$本益比: {per} 倍$]]({link})')
-                    st.markdown(f'[:{color_cash}[$殖利率: {yr}\%$]]({link})')
-                    st.markdown(f'[:{color_eps}[$每股盈餘: {eps}元$]]({link})')
+                    st.markdown(f'[$基本資料$]({link})')
+                    st.markdown(f'$本益比:$ [:{color_per}[${per} 倍$]]({link})')
+                    st.markdown(f'$EPS:$ {br}{br} [:{color_eps}[${eps}元$]]({link})')
+                    st.markdown(f'$殖利率:$ [:{color_cash}[${yr}\%$]]({link})')
 
-            with cols[1]:
+            with cols[0]:
                 sid_grow = df_yh_sid['grow'].values[0].replace('%', '')
                 sid_stable = df_yh_sid['stable'].values[0].replace('%', '')
                 sid_yh_link = df_yh_sid['link'].values[0]
@@ -1422,9 +1422,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     color_grow = 'blue'
                     color_stable = 'blue'
 
-                st.markdown(f'[:blue[$營運健診$]]({link})')
-                st.markdown(f'[:{color_grow}[$獲利成長: {sid_grow}分$]]({sid_yh_link})')
-                st.markdown(f'[:{color_stable}[$財務穩健: {sid_stable}分$]]({sid_yh_link}) ')
+                st.markdown(f'[$營運健診$]({link})')
+                st.markdown(f'$獲利成長:$ [:{color_grow}[${sid_grow}分$]]({sid_yh_link})')
+                st.markdown(f'$財務穩健:$ [:{color_stable}[${sid_stable}分$]]({sid_yh_link}) ')
 
             with cols[2]:
 
@@ -1435,12 +1435,12 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 color_income, color_eps, color_cash = fn_get_color(win_income, win_eps, win_cash, 45)
 
                 def fn_unit(v):
-                    return v if v == "" else v + '\%'
+                    return "\ " if v == "" else v + '\%'
 
-                st.markdown(f'[:blue[$勝率分析$]]({sid_yh_link})')
-                st.markdown(f'[:{color_income}[$依營收: {fn_unit(win_income)}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_eps}[$依EPS: {fn_unit(win_eps)}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖率: {fn_unit(win_cash)}$]]({sid_yh_link})')
+                st.markdown(f'[$勝率分析$]({sid_yh_link})')
+                st.markdown(f'$依營收:$ [:{color_income}[${fn_unit(win_income)}$]]({sid_yh_link})')
+                st.markdown(f'$依EPS:$ [:{color_eps}[${fn_unit(win_eps)}$]]({sid_yh_link})')
+                st.markdown(f'$依殖率:$ [:{color_cash}[${fn_unit(win_cash)}$]]({sid_yh_link})')
 
             with cols[3]:
 
@@ -1449,13 +1449,13 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 p_cash = df_sid_l['合理價_殖利率']
 
                 def fn_unit(v):
-                    return v if v == "" else v + '元'
+                    return "\ " if v == "" else v + '元'
 
                 color_income, color_eps, color_cash = fn_get_color(p_income, p_eps, p_cash, sid_price)
-                st.markdown(f'[:blue[$價格推估$]]({sid_yh_link})')
-                st.markdown(f'[:{color_income}[$依營收: {fn_unit(p_income)}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_eps}[$依EPS: {fn_unit(p_eps)}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖率: {fn_unit(p_cash)}$]]({sid_yh_link})')
+                st.markdown(f'[$價格推估$]({sid_yh_link})')
+                st.markdown(f'$依營收:$ [:{color_income}[${fn_unit(p_income)}$]]({sid_yh_link})')
+                st.markdown(f'$依EPS:$ [:{color_eps}[${fn_unit(p_eps)}$]]({sid_yh_link})')
+                st.markdown(f'$依殖率:$ [:{color_cash}[${fn_unit(p_cash)}$]]({sid_yh_link})')
 
             with cols[4]:
 
@@ -1465,10 +1465,16 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 color_income, color_eps, color_cash = fn_get_color(c_income, c_eps, c_cash, 0.65)
 
-                st.markdown(f'[:blue[$相關性$]]({sid_yh_link})')
-                st.markdown(f'[:{color_income}[$依營收: {c_income}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_eps}[$依EPS: {c_eps}$]]({sid_yh_link})')
-                st.markdown(f'[:{color_cash}[$依殖率: {c_cash}$]]({sid_yh_link})')
+                st.markdown(f'[$相關性$]({sid_yh_link})')
+                st.markdown(f'$依營收:$ [:{color_income}[${c_income}$]]({sid_yh_link})')
+                st.markdown(f'$依EPS:$ [:{color_eps}[${c_eps}$]]({sid_yh_link})')
+                st.markdown(f'$依殖率:$ [:{color_cash}[${c_cash}$]]({sid_yh_link})')
+
+            with cols[5]:
+                st.markdown(f'[$股權分布$]({lnk_tdcc})$({r_date})$')
+                st.markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
+                st.markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
+                st.markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc})')
 
             df_mop['年度'] = df_mop['year'].apply(lambda x: int(x) + 1911)
             cols = [c for c in df_mop.columns if '-' in c]
