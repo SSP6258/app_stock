@@ -1507,7 +1507,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 Q_last = df_fin_b['年/季'].values[-1].split('<br>')[-1]
 
                 df_mop_b = df_mop.sort_index(ascending=False, ignore_index=True)
-                # df_mop_b['年度'] = df_mop_b['年度'].apply(lambda x: x.replace(' 年', ''))
                 df_mop_b.reset_index(inplace=True, drop=True)
 
                 tab_season, tab_year, tab_income = st.tabs(['季度', '年度', '營收'])
@@ -1532,8 +1531,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                     df_fin_b_q[f].values[-2]) else 'lightgreen'
 
                                 colors = colors[:-1] + [color_last]
-
-
 
                                 fig1 = fn_gen_plotly_bar(df_fin_b, '年/季', f,
                                                          v_h='v',
@@ -1566,7 +1563,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                              },
                                                      )
                                 # st.write(ticktext)
-                                subfig.update_xaxes(ticktext=ticktext, tickvals=tickvals, tickmode='array')
+                                subfig.update_xaxes(ticktext=ticktext, tickvals=tickvals, tickmode='array', tickfont_size=14)
                                 st.plotly_chart(subfig, use_container_width=True)
 
                             else:
@@ -1593,6 +1590,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                   )
 
                                 cols = st.columns([3.5, 1])
+                                subfig.update_xaxes(tickfont_size=14)
                                 cols[0].plotly_chart(fig, use_container_width=True)
 
                 with tab_year:
@@ -1617,6 +1615,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                      'showgrid': False})
 
                             cols = st.columns([1, 1])
+                            fig.update_xaxes(tickfont_size=16)
                             cols[0].plotly_chart(fig, use_container_width=True)
 
                 with tab_income:
