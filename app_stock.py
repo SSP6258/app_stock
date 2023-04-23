@@ -1258,9 +1258,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
     with cols[0].form(key=f'form_{key}'):
 
-        # sid_name = st.selectbox('觀察個股:', options=df['sid_name'], index=0, key=key)
-        # df_sid = df[df["sid_name"] == sid_name]
-
         cols2 = st.columns([2, 0.1, 3, 1.5])
 
         # dft_sid = '2404' if key == 'basic_idx' else df['代碼'].values[0]
@@ -1280,11 +1277,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         cols2[-1].write('')
         cols2[-1].form_submit_button('選擇')
 
-    # sid = sid_name.split(sep)[0]
-    # st.write(sid)
-    # st.write(dic_df['stock_all'])
-
-    # df_sid = df_all[df_all['sid']==sid]
     df_sid_p = df_sid.copy()
 
     if df_sid.shape[0] == 0:
@@ -1352,10 +1344,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     cols[0].markdown(f'[$法說會:$]({lnk}) {cmp_report}')
     cols[0].markdown(f'$基本面:$ {basic}')
 
-    # cols[0].markdown(f'$股票數:$ [:blue[${n_share} 張$]]({lnk_tdcc}) ')
-    # cols[0].markdown(f'$股東數:$ [:blue[${n_owner} 人$]]({lnk_tdcc})')
-    # cols[0].markdown(f'$大戶比:$ [:blue[${r_big} \%$]]({lnk_tdcc}) $(>千張\ at\ {r_date})$')
-
     cols[0].markdown(f'$專業的:$ [$財報狗$]({url_dog})、[$旺得富$]({url_WantRich})、')
     cols[0].markdown(f'{mkd_space}[$玩股網$]({url_Wg})、[$鉅亨網$]({url_Cnyes})、')
     cols[0].markdown(f'{mkd_space}[$CMoney$]({url_CMoney})、[$Yahoo$]({url_Yahoo})、')
@@ -1385,7 +1373,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             fn_st_add_space(1)
 
             cols = st.columns(3)
-            font_size = '#####' if len(sid_name) < 4 else '######'
+            font_size = '#####' if len(sid_name) < 3 else '######'
             cols[1].error(f'{font_size} '
                         f'{dic_mkd["1sp"]}${sid}\ {sid_name}${br}'
                         f'$股價: {sid_price} 元$')
@@ -1535,6 +1523,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                                 colors = colors[:-1] + [color_last]
 
+
+
                                 fig1 = fn_gen_plotly_bar(df_fin_b, '年/季', f,
                                                          v_h='v',
                                                          op=[0.5 for i in range(df_fin_b.shape[0] - 1)] + [1.0],
@@ -1543,6 +1533,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                          showspike=True)
 
                                 fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.3)
+
+                                ticktext = [x if Q_last in x else '' for x in df_month['yr_sn']]
+                                tickvals = list(range(0, len(ticktext)))
 
                                 subfig = make_subplots(specs=[[{'secondary_y': True}]])
                                 subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
@@ -1562,7 +1555,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                              'showgrid': False,
                                                              },
                                                      )
-
+                                # st.write(ticktext)
+                                subfig.update_xaxes(ticktext=ticktext, tickvals=tickvals, tickmode='array')
                                 st.plotly_chart(subfig, use_container_width=True)
 
                             else:
