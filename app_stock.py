@@ -1263,7 +1263,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
         cols2 = st.columns([2, 0.1, 3, 1.5])
 
-        dft_sid = '2404' if key == 'basic_idx' else df['代碼'].values[0]
+        # dft_sid = '2404' if key == 'basic_idx' else df['代碼'].values[0]
+
+        dft_sid = dic_df['df_win']['代碼'].values[0] if key == 'basic_idx' else df['代碼'].values[0]
 
         sid = cols2[0].text_input('股票代碼:', value=dft_sid)
 
@@ -1385,7 +1387,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             cols = st.columns(3)
             font_size = '#####' if len(sid_name) < 4 else '######'
             cols[1].error(f'{font_size} '
-                        f'${sid}\ {sid_name}${br}'
+                        f'{dic_mkd["1sp"]}${sid}\ {sid_name}${br}'
                         f'$股價: {sid_price} 元$')
 
             cols = st.columns(6)
@@ -1830,6 +1832,8 @@ def fn_st_chart_bar(df):
             for c in df_show.columns:
                 if '_' in c or '股價' in c:
                     df_show[c] = df_show[c].apply(lambda x: format(float(x), ".1f"))
+
+            dic_df['df_win'] = df_show
             df_color = df_show.style.applymap(fn_color_df, subset=[c for c in df_show.columns if
                                                                    '勝率' in c or '成長' in c or '穩健' in c])
             st.dataframe(df_color, height=500)
