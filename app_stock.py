@@ -1384,7 +1384,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             cols = st.columns(3)
             cols[1].error(f'##### '
-                        f'{dic_mkd["1sp"]}${sid}\ {sid_name.replace("-", "")}${br}{br} '
+                        f'${sid}\ {sid_name.replace("-", "")}${br}'
                         f'$股價: {sid_price} 元$')
 
             cols = st.columns(6)
@@ -1466,10 +1466,13 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                 color_income, color_eps, color_cash = fn_get_color(c_income, c_eps, c_cash, 0.65)
 
+                def fn_unit(v):
+                    return "\ " if v == "" else v + ''
+
                 st.markdown(f'[$相關性$]({sid_yh_link})')
-                st.markdown(f'$依營收:$ [:{color_income}[${c_income}$]]({sid_yh_link})')
-                st.markdown(f'$依EPS:$ [:{color_eps}[${c_eps}$]]({sid_yh_link})')
-                st.markdown(f'$依殖率:$ [:{color_cash}[${c_cash}$]]({sid_yh_link})')
+                st.markdown(f'$依營收:$ [:{color_income}[${fn_unit(c_income)}$]]({sid_yh_link})')
+                st.markdown(f'$依EPS:$ [:{color_eps}[${fn_unit(c_eps)}$]]({sid_yh_link})')
+                st.markdown(f'$依殖率:$ [:{color_cash}[${fn_unit(c_cash)}$]]({sid_yh_link})')
 
             with cols[5]:
                 st.markdown(f'[$股權分布$]({lnk_tdcc})$({r_date})$')
