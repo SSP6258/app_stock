@@ -1492,6 +1492,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
                                              title=title, op=0.7)
 
+                fig.update_xaxes(tickfont_size=14)
                 st.plotly_chart(fig, use_container_width=True)
 
             with tab_basic:
