@@ -1424,7 +1424,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 win_eps = df_sid_l['勝率(%)_EPS']
                 win_cash = df_sid_l['勝率(%)_殖利率']
 
-                color_income, color_eps, color_cash = fn_get_color(win_income, win_eps, win_cash, 45)
+                color_income, color_eps, color_cash = fn_get_color(win_income, win_eps, win_cash, 50)
 
                 def fn_unit(v):
                     return "\ " if v == "" else v + '\%'
