@@ -1360,17 +1360,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
         df_month['yr_sn'] = df_month['year'] + '<br>' + df_month['season']
         df_month['yr_sn'] = df_month['yr_sn'].apply(lambda x: x.replace(' ', ''))
 
-        tab_basic, tab_tech = cols[2].tabs(['基本面', '技術面'])
-
-        with tab_basic:
-
+        with cols[2]:
             df_per = dic_mops['per']
             df_yh = dic_df['Yahoo_Health']
             df_yh_sid = df_yh[df_yh['sid'] == sid]
             df_sid_l = df_sid_p.iloc[-1, :]
             br = dic_mkd["2sp"]
 
-            fn_st_add_space(1)
+            # fn_st_add_space(1)
 
             cols = st.columns(3)
             font_size = '#####' if len(sid_name) < 3 else '######'
@@ -1481,8 +1478,21 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                 subset=[c for c in df_mop.columns if '權益' in c])
 
             fn_st_add_space(1)
-            tab_basic, tab_raw, tab_src = st.tabs(['指標分析', '詳細數據', '資料來源'])
+            tab_tech, tab_basic, tab_raw, tab_src = st.tabs(['技術指標', '基本指標', '詳細數據', '資料來源'])
             y_fr = datetime.datetime.today().year - 5
+
+            with tab_tech:
+                fn_st_add_space(1)
+                fr = df_sid_p['date'].min()
+                to = df_sid_p['date'].max()
+                mk = df_sid_p['市場別'].values[-1]
+                mk = mk + '-' if len(str(mk)) > 0 else ''
+                indu = df_sid_p['產業別'].values[-1]
+                title = f'{sid} {sid_name} ({mk}{indu})'
+                fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
+                                             title=title, op=0.7)
+
+                st.plotly_chart(fig, use_container_width=True)
 
             with tab_basic:
 
@@ -1660,22 +1670,22 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 st.markdown(f'$月成交資訊:$ [${src1}$]({lnk11})')
                 st.markdown(f'$月成交資訊:$ [${src2}$]({lnk21})')
 
-        with tab_tech:
-            fn_st_add_space(1)
-            # st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 技術面指標:')
-
-            # days_ago = -1 * days[sid_order.index(n_s)]
-            fr = df_sid_p['date'].min()
-            to = df_sid_p['date'].max()
-            # df_p = df_sid[df_sid['sid'] == sid]
-            mk = df_sid_p['市場別'].values[-1]
-            mk = mk + '-' if len(str(mk)) > 0 else ''
-            indu = df_sid_p['產業別'].values[-1]
-            title = f'{sid} {sid_name} ({mk}{indu})'
-            fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
-                                         title=title, op=0.7)
-
-            st.plotly_chart(fig, use_container_width=True)
+        # with tab_tech:
+        #     fn_st_add_space(1)
+        #     # st.markdown(f'##### :red[{sid_name}] {dic_mkd["2sp"]} 技術面指標:')
+        #
+        #     # days_ago = -1 * days[sid_order.index(n_s)]
+        #     fr = df_sid_p['date'].min()
+        #     to = df_sid_p['date'].max()
+        #     # df_p = df_sid[df_sid['sid'] == sid]
+        #     mk = df_sid_p['市場別'].values[-1]
+        #     mk = mk + '-' if len(str(mk)) > 0 else ''
+        #     indu = df_sid_p['產業別'].values[-1]
+        #     title = f'{sid} {sid_name} ({mk}{indu})'
+        #     fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
+        #                                  title=title, op=0.7)
+        #
+        #     st.plotly_chart(fig, use_container_width=True)
 
 
 def fn_get_yh_grow(sid):
