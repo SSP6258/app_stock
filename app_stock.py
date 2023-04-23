@@ -1402,7 +1402,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     else:
                         link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
 
-                    color_per = 'red' if float(per) >= 12 else 'green'
+                    color_per = 'red' if float(per) <= 12 else 'green'
                     color_cash = 'red' if float(yr) >= 5 else 'green'
                     color_eps = 'red'
 
