@@ -1424,7 +1424,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     color_grow = 'blue'
                     color_stable = 'blue'
 
-                st.markdown(f'[$營運健診$]({link})')
+                st.markdown(f'[$營運健診$]({sid_yh_link})')
                 st.markdown(f'$獲利成長:$ [:{color_grow}[${sid_grow}分$]]({sid_yh_link})')
                 st.markdown(f'$財務穩健:$ [:{color_stable}[${sid_stable}分$]]({sid_yh_link}) ')
 
