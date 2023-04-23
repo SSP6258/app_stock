@@ -1402,7 +1402,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     else:
                         link = r'https://www.tpex.org.tw/web/stock/aftertrading/peratio_stk/pera.php?l=zh-tw'
 
-                    color_per = 'red' if float(per) <= 12 else 'green'
+                    color_per = 'red' if float(per) >= 12 else 'green'
                     color_cash = 'red' if float(yr) >= 5 else 'green'
                     color_eps = 'red'
 
@@ -1441,10 +1441,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 st.markdown(f'[:{color_income}[$依營收: {fn_unit(win_income)}$]]({sid_yh_link})')
                 st.markdown(f'[:{color_eps}[$依EPS: {fn_unit(win_eps)}$]]({sid_yh_link})')
                 st.markdown(f'[:{color_cash}[$依殖率: {fn_unit(win_cash)}$]]({sid_yh_link})')
-
-                # st.markdown(f'[:{color_income}[$依營收: {win_income}\%$]]({sid_yh_link})')
-                # st.markdown(f'[:{color_eps}[$依EPS: {win_eps}\%$]]({sid_yh_link})')
-                # st.markdown(f'[:{color_cash}[$依殖率: {win_cash}\%$]]({sid_yh_link})')
 
             with cols[3]:
 
