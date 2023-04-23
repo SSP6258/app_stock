@@ -1382,9 +1382,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             fn_st_add_space(1)
 
-            st.markdown(f'##### '
-                        f':orange[${sid}\ {sid_name.replace("-", "")}$]{br} '
-                        f':blue[$股價: {sid_price} 元$]')
+            cols = st.columns(3)
+            cols[1].error(f'##### '
+                        f'{dic_mkd["1sp"]}${sid}\ {sid_name.replace("-", "")}${br}{br} '
+                        f'$股價: {sid_price} 元$')
 
             cols = st.columns(6)
 
