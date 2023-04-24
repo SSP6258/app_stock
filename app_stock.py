@@ -2107,8 +2107,8 @@ def fn_st_stock_main():
     dic_mops['per'], dic_mops['MOPS'], dic_mops['ROE'], dic_mops['ROA'], dic_mops['OPM'], dic_mops['DR'], dic_mops[
         'OCF'] = fn_read_mops(latest=dic_mops['per_date'])
 
-    tab_trend, tab_idea, tab_index, tab_pick, tab_basic_idx, tab_watch, tab_ref, tab_book, tab_proj = st.tabs(
-        ['全球趨勢', '設計概念', '指標分布', '策略選股', '基本指標', '觀察驗證', '參考資料', '閱讀書單', '其它專案'])
+    tab_trend, tab_index, tab_pick, tab_basic_idx, tab_watch, tab_idea, tab_ref, tab_book, tab_proj = st.tabs(
+        ['全球趨勢', '指標分布', '策略選股', '基本指標', '觀察驗證', '設計概念', '參考資料', '閱讀書單', '其它專案'])
 
     # with tab_life:
     #     fn_life()
