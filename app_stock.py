@@ -1510,7 +1510,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 df_mop_b = df_mop.sort_index(ascending=False, ignore_index=True)
                 df_mop_b.reset_index(inplace=True, drop=True)
 
-                tab_season, tab_year, tab_income = st.tabs(['季度', '年度', '營收'])
+                tab_year, tab_season, tab_income = st.tabs(['年度', '季度', '營收'])
 
                 with tab_season:
 
