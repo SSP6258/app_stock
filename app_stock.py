@@ -1612,12 +1612,12 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                             if '權益報酬率' in f:
                                 fig.add_hline(y=15, line_width=3, line_dash="dash", line_color="red", opacity=0.4,
                                               annotation_text="近3年平均ROE大於15%",
-                                              annotation_font_size=18,
+                                              annotation_font_size=17,
                                               annotation_font_color="red")
 
-                                fig.add_hline(y=8, line_width=3, line_dash="dash", line_color="red", opacity=0.7,
+                                fig.add_hline(y=8, line_width=3, line_dash="dash", line_color="red", opacity=0.6,
                                               annotation_text="歷年ROE維持在8%以上",
-                                              annotation_font_size=18,
+                                              annotation_font_size=17,
                                               annotation_font_color="red")
 
                             fig.update_layout(coloraxis_showscale=False,
