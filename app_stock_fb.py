@@ -958,7 +958,7 @@ def fn_main():
         fn_get_yahoo_health()
         fn_get_company_report()
 
-    fn_get_month_deal_data(is_force=False, years=6)
+    fn_get_month_deal_data(is_force=True, years=6)
     # fn_parse_month_data()
 
     # webs = ['Cnyes']
