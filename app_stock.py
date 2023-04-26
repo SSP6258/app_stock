@@ -1613,12 +1613,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                 fig.add_hline(y=15, line_width=3, line_dash="dash", line_color="red", opacity=0.4,
                                               annotation_text="近3年平均ROE大於15%",
                                               annotation_font_size=17,
-                                              annotation_font_color="red")
+                                              annotation_font_color="red",
+                                              annotation_position="top left")
 
                                 fig.add_hline(y=8, line_width=3, line_dash="dash", line_color="red", opacity=0.6,
                                               annotation_text="歷年ROE維持在8%以上",
                                               annotation_font_size=17,
-                                              annotation_font_color="red")
+                                              annotation_font_color="red",
+                                              annotation_position="top left")
 
                             fig.update_layout(coloraxis_showscale=False,
                                               title_text=title,
