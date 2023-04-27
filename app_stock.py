@@ -1355,10 +1355,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
     if df_sid.shape[0] > 0:
 
-        df_month = dic_df['month']
-        df_month = df_month[df_month['sid'] == sid]
-        df_month['yr_sn'] = df_month['year'] + '<br>' + df_month['season']
-        df_month['yr_sn'] = df_month['yr_sn'].apply(lambda x: x.replace(' ', ''))
+        df_sn = dic_df['season']
+        df_sn = df_sn[df_sn['sid'] == sid]
+        df_sn['yr_sn'] = df_sn['year'] + '<br>' + df_sn['season']
+        df_sn['yr_sn'] = df_sn['yr_sn'].apply(lambda x: x.replace(' ', ''))
 
         with cols[2]:
             df_per = dic_mops['per']
@@ -1478,8 +1478,43 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                 subset=[c for c in df_mop.columns if '權益' in c])
 
             fn_st_add_space(1)
-            tab_tech, tab_basic, tab_raw, tab_src = st.tabs(['技術指標', '基本指標', '詳細數據', '資料來源'])
+            tab_tech, tab_basic, tab_light, tab_raw, tab_src = st.tabs(['技術指標', '基本指標', '景氣循環', '詳細數據', '資料來源'])
             y_fr = datetime.datetime.today().year - 5
+
+            with tab_light:
+                df_lt = dic_df['light']
+                df_m = dic_df['month']
+                df_m = df_m[df_m['sid']==sid]
+                df_m['month'] = df_m['month'].apply(lambda x: '0'+x if len(x)==1 else x)
+                df_m['y-m'] = df_m['year'] + '-' + df_m['month']
+                c_bypass = ['y-m', '景氣對策信號(燈號)']
+                for c in df_lt.columns:
+                    if c not in c_bypass:
+                        fig1 = fn_gen_plotly_line(df_lt, 'y-m', c, op=0.3, color='blue')
+                        fig2 = fn_gen_plotly_line(df_m, 'y-m', 'ave', op=0.3, color='red')
+
+                        subfig = make_subplots(specs=[[{'secondary_y': True}]])
+                        subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
+                        subfig.update_layout(
+                            title_text='🔵 '+c+' v.s. 🔴 股價(元)',
+                            title_font_size=18,
+                            yaxis={'showticklabels': True,
+                                   'showgrid': True,
+                                   'showspikes': True,
+                                   'spikethickness': 1,
+                                   'spikecolor': "grey",
+                                   'spikedash': 'solid',
+                                   'spikemode': "across",
+                                   'spikesnap': "cursor",
+                                   },
+                            yaxis2={'showticklabels': True,
+                                    'showgrid': False,
+                                    },
+                        )
+                        subfig.update_xaxes(tickfont_size=14)
+                        subfig.update_yaxes(tickfont_size=14)
+                        cols = st.columns([5, 1])
+                        cols[0].plotly_chart(subfig, use_container_width=True)
 
             with tab_tech:
                 fn_st_add_space(1)
@@ -1497,7 +1532,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             with tab_basic:
 
-                df_month = df_month[df_month['year'].apply(lambda x: int(x) >= y_fr)]
+                df_month = df_sn[df_sn['year'].apply(lambda x: int(x) >= y_fr)]
 
                 df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
                 df_fin_b = df_fin_b[df_fin_b['年/季'].apply(lambda x: int(x.split('Q')[0]) >= y_fr)]
@@ -2063,13 +2098,16 @@ def fn_st_stock_init():
                         dtype=str)
 
     df_month = pd.read_csv('Month.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
+    df_season = pd.read_csv('Season.csv', na_filter=False, encoding='utf_8_sig', index_col=0, dtype=str)
     df_yh = pd.read_csv('Yahoo_Health.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str)
+    df_light = pd.read_csv('Light.csv', na_filter=False, encoding='utf_8_sig', index_col=None, dtype=str, skiprows=[1])
+    df_light.rename(columns={'Unnamed: 0': 'y-m'}, inplace=True)
 
-    return df_all, df_field, df_rp, df_tdcc, df_month, df_yh
+    return df_all, df_field, df_rp, df_tdcc, df_month, df_season, df_yh, df_light
 
 
 def fn_st_stock_main():
-    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['Yahoo_Health'] = fn_st_stock_init()
+    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['season'], dic_df['Yahoo_Health'], dic_df['light'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
 
