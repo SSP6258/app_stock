@@ -1596,8 +1596,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                             'spikemode': "across",
                                                             'spikesnap': "cursor",
                                                             },
-                                                     yaxis2={'showticklabels': False,
+                                                     yaxis2={'showticklabels': True,
                                                              'showgrid': False,
+                                                             'tickfont_color': 'red',
+                                                             'tickfont_size': 14,
                                                              },
                                                      )
                                 # st.write(ticktext)
