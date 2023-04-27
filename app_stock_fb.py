@@ -865,6 +865,10 @@ def fn_parse_month_data():
 
     df.reset_index(inplace=True, drop=True)
     # print(df.head(15))
+    df_m = df.copy()
+    df_m['ave'] = df_m['price'] / df_m['share']
+    df_m['ave'] = df_m['ave'].apply(lambda x: int(x))
+    df_m.to_csv('Month.csv', encoding='utf_8_sig')
 
     dic_1 = {}
     df_all = pd.DataFrame()
@@ -893,7 +897,7 @@ def fn_parse_month_data():
 
     # print(df_all[df_all['sid'] == '3426'])
 
-    df_all.to_csv('Month.csv', encoding='utf_8_sig')
+    df_all.to_csv('Season.csv', encoding='utf_8_sig')
 
 
 def fn_get_yahoo_health():
