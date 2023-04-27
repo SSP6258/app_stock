@@ -1296,20 +1296,24 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     url_Cnyes = rf'{dic_url["Cnyes"]}{sid}'
     url_dog = rf'{dic_url["dog"]}{sid}/stock-health-check'
     url_Yahoo = rf'{dic_url["Yahoo"]}{sid}.TW{"O" if market == "上櫃" else ""}/health-check'
-    df_mop = fn_get_mops(df_mops, sid)
-    df_roe = fn_get_mops_fin("ROE", sid)
-    df_roa = fn_get_mops_fin("ROA", sid)
-    df_opm = fn_get_mops_fin("OPM", sid)
-    df_dr = fn_get_mops_fin("DR", sid)
-    dr_cf = fn_get_mops_fin("OCF", sid)
-    df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
-    df_fin.reset_index(names='年/季', inplace=True)
-    df_fin['year'] = df_fin['年/季'].apply(lambda x: x.split('Q')[0])
-    df_fin['season'] = df_fin['年/季'].apply(lambda x: x.split('Q')[-1])
-    df_fin.sort_values(by=['year', 'season'], ascending=[False, False], inplace=True, ignore_index=True)
-    del df_fin['year']
-    del df_fin['season']
-    basic = fn_basic_rule(sid, df_mops)
+    try:
+        df_mop = fn_get_mops(df_mops, sid)
+        df_roe = fn_get_mops_fin("ROE", sid)
+        df_roa = fn_get_mops_fin("ROA", sid)
+        df_opm = fn_get_mops_fin("OPM", sid)
+        df_dr = fn_get_mops_fin("DR", sid)
+        dr_cf = fn_get_mops_fin("OCF", sid)
+        df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
+        df_fin.reset_index(names='年/季', inplace=True)
+        df_fin['year'] = df_fin['年/季'].apply(lambda x: x.split('Q')[0])
+        df_fin['season'] = df_fin['年/季'].apply(lambda x: x.split('Q')[-1])
+        df_fin.sort_values(by=['year', 'season'], ascending=[False, False], inplace=True, ignore_index=True)
+        del df_fin['year']
+        del df_fin['season']
+        basic = fn_basic_rule(sid, df_mops)
+    except:
+        df_fin = pd.DataFrame()
+        basic = ''
 
     mkd_space = f'{9 * dic_mkd["2sp"]}'
 
@@ -1534,6 +1538,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             with tab_basic:
 
+                if df_fin.shape[0] == 0:
+                    return
+
                 df_month = df_sn[df_sn['year'].apply(lambda x: int(x) >= y_fr)]
 
                 df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
@@ -1679,6 +1686,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                 f'[:orange[$月營收$]]({link})')
 
             with tab_raw:
+
+                if df_fin.shape[0] == 0:
+                    return
+
                 df_fin_show = df_fin.style.applymap(fn_color_roe_season,
                                                     subset=[c for c in df_fin.columns if '權益' in c])
 
