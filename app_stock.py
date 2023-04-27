@@ -1506,9 +1506,11 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                    'spikedash': 'solid',
                                    'spikemode': "across",
                                    'spikesnap': "cursor",
+                                   'tickfont_color': 'blue',
                                    },
                             yaxis2={'showticklabels': True,
                                     'showgrid': False,
+                                    'tickfont_color': 'red',
                                     },
                         )
                         subfig.update_xaxes(tickfont_size=14)
