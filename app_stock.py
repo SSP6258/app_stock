@@ -1496,7 +1496,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         subfig = make_subplots(specs=[[{'secondary_y': True}]])
                         subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
                         subfig.update_layout(
-                            title_text='🔵 '+c+' v.s. 🔴 股價(元)',
+                            title_text=f'{sid} {sid_name}  🔵 '+c+' v.s. 🔴 股價(元)',
                             title_font_size=18,
                             yaxis={'showticklabels': True,
                                    'showgrid': True,
