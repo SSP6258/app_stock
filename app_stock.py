@@ -681,6 +681,24 @@ def fn_st_stock_sel(df_all):
                 fig = fn_get_stock_price_plt(df, df_p=df_p, days_ago=days_ago, watch=[fr, to], height=150)
                 # st.write(f'{sid} {fr} {to}')
 
+                fig.update_layout(
+                    yaxis={'showticklabels': True,
+                           'showgrid': False,
+                           'showspikes': True,
+                           'spikethickness': 1,
+                           'spikecolor': "grey",
+                           'spikedash': 'solid',
+                           'spikemode': "across",
+                           'spikesnap': "cursor",
+                           'tickfont_color': 'dodgerblue',
+                           },
+                    yaxis2={'showticklabels': True,
+                            'showgrid': True,
+                            'tickfont_color': 'red',
+                            },
+                )
+
+
                 c1, c2, c3, c4 = st.columns([1.3, 5, 1, 1])
                 n = n_s.split(' ')[0].replace("⭐", "").replace('-', '')
                 s = n_s.split(' ')[-1].replace("0050", "")
@@ -1250,6 +1268,25 @@ def fn_get_color(income, eps, cash, th):
     return color_income, color_eps, color_cash
 
 
+def fn_light_color(x):
+    i = int(x)
+
+    if i >= 38:
+        c = 'red'
+    elif i >= 32:
+        c = 'orange'
+    elif i >= 23:
+        c = 'green'
+    elif i >= 17:
+        c = 'yellow'
+    else:
+        c = 'blue'
+
+    return c
+
+
+
+
 def fn_show_basic_idx(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1493,15 +1530,27 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 df_m['y-m'] = df_m['year'] + '-' + df_m['month']
                 c_bypass = ['y-m', '景氣對策信號(燈號)']
                 for c in df_lt.columns:
-                    if c not in c_bypass:
-                        fig1 = fn_gen_plotly_line(df_lt, 'y-m', c, op=0.3, color='blue')
-                        fig2 = fn_gen_plotly_line(df_m, 'y-m', 'ave', op=0.3, color='red')
+                    if c == '景氣對策信號(分)':  # if c not in c_bypass:
+                        cols = st.columns([5, 1])
+                        fig1 = fn_gen_plotly_line(df_lt, 'y-m', c, op=0.8, color='dodgerblue')
+                        fig2 = fn_gen_plotly_line(df_m, 'y-m', 'ave', op=0.6, color='red')
+
+                        if '景氣對策' in c:
+                            cols[-1].write('')
+                            cols[-1].write('')
+                            light_on = cols[-1].radio('$景氣燈號$', ['ON', 'OFF'], index=0, key='light')
+                            if light_on=='ON':
+                                df_lt['color'] = df_lt[c].apply(fn_light_color)
+                                fig1.update_traces(
+                                    marker=dict(size=14, color=df_lt['color'].values, opacity=0.3,
+                                                line=dict(width=1, color='blue')))
 
                         subfig = make_subplots(specs=[[{'secondary_y': True}]])
                         subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
                         subfig.update_layout(
-                            title_text=f'{sid} {sid_name}  🔵 '+c+' v.s. 🔴 股價(元)',
+                            title_text=f'  🔵 國發會 '+c+f' v.s. 🔴 {sid} {sid_name} 股價(元)',
                             title_font_size=18,
+                            xaxis={'showgrid': True},
                             yaxis={'showticklabels': True,
                                    'showgrid': True,
                                    'showspikes': True,
@@ -1510,16 +1559,16 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                    'spikedash': 'solid',
                                    'spikemode': "across",
                                    'spikesnap': "cursor",
-                                   'tickfont_color': 'blue',
+                                   'tickfont_color': 'dodgerblue',
                                    },
                             yaxis2={'showticklabels': True,
                                     'showgrid': False,
                                     'tickfont_color': 'red',
                                     },
                         )
-                        subfig.update_xaxes(tickfont_size=14)
-                        subfig.update_yaxes(tickfont_size=14)
-                        cols = st.columns([5, 1])
+                        subfig.update_xaxes(tickfont_size=16, range=['2015-1', '2024-1'])
+                        subfig.update_yaxes(tickfont_size=16)
+
                         cols[0].plotly_chart(subfig, use_container_width=True)
 
             with tab_tech:
@@ -1533,7 +1582,25 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 fig = fn_get_stock_price_plt(df_sid, df_p=df_sid_p, watch=[fr, to], height=350, showlegend=True,
                                              title=title, op=0.7)
 
-                fig.update_xaxes(tickfont_size=14)
+                fig.update_layout(
+                    title_font_size=18,
+                    yaxis={'showticklabels': True,
+                           'showgrid': False,
+                           'showspikes': True,
+                           'spikethickness': 1,
+                           'spikecolor': "grey",
+                           'spikedash': 'solid',
+                           'spikemode': "across",
+                           'spikesnap': "cursor",
+                           'tickfont_color': 'dodgerblue',
+                           },
+                    yaxis2={'showticklabels': True,
+                            'showgrid': True,
+                            'tickfont_color': 'red',
+                            },
+                )
+                fig.update_xaxes(tickfont_size=15)
+                fig.update_yaxes(tickfont_size=15)
                 st.plotly_chart(fig, use_container_width=True)
 
             with tab_basic:

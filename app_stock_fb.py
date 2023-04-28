@@ -780,7 +780,7 @@ def fn_get_month_deal_data(is_force=False, years=6):
     df_lst = df[df['market'] == '上市']
     df_otc = df[df['market'] == '上櫃']
 
-    sids_lst = df_lst['sid'].unique().tolist()
+    sids_lst = df_lst['sid'].unique().tolist()+['0050']
     sids_otc = df_otc['sid'].unique().tolist()
     to_yr = datetime.datetime.today().year - 1911
     fr_yr = to_yr - years
@@ -962,7 +962,7 @@ def fn_main():
         fn_get_yahoo_health()
         fn_get_company_report()
 
-    fn_get_month_deal_data(is_force=True, years=6)
+    # fn_get_month_deal_data(is_force=False, years=6)
     # fn_parse_month_data()
 
     # webs = ['Cnyes']
