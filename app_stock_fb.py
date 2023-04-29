@@ -769,7 +769,7 @@ def fn_post_proc():
         df_all.to_csv(dic_cfg['stock_file'], encoding='utf_8_sig')
 
 
-def fn_get_month_deal_data(is_force=False, years=6):
+def fn_get_month_deal_data(is_force=False, years=6, to_yr=None):
     try:
         df_month = pd.read_csv('Month.csv', na_filter=False, dtype=str)
         sids_existed = df_month['sid'].unique()
@@ -782,7 +782,7 @@ def fn_get_month_deal_data(is_force=False, years=6):
 
     sids_lst = df_lst['sid'].unique().tolist()+['0050']
     sids_otc = df_otc['sid'].unique().tolist()
-    to_yr = datetime.datetime.today().year - 1911
+    to_yr = datetime.datetime.today().year - 1911 if to_yr is None else to_yr - 1911
     fr_yr = to_yr - years
     years_otc = [str(y) for y in range(fr_yr, to_yr + 1, 1)]
     years_lst = [f'民國 {y} 年' for y in range(fr_yr, to_yr + 1, 1)]
@@ -955,15 +955,15 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    if fn_is_parsing():
-        df = fn_fb_recommend_stock()
-        fn_find_billion(df, dic_cfg["stocks"], is_force=False)
-        fn_post_proc()
-        fn_get_yahoo_health()
-        fn_get_company_report()
+    # if fn_is_parsing():
+    #     df = fn_fb_recommend_stock()
+    #     fn_find_billion(df, dic_cfg["stocks"], is_force=False)
+    #     fn_post_proc()
+    #     fn_get_yahoo_health()
+    #     fn_get_company_report()
 
-    # fn_get_month_deal_data(is_force=False, years=6)
-    # fn_parse_month_data()
+    # fn_get_month_deal_data(is_force=True, years=10, to_yr=2016)
+    fn_parse_month_data()
 
     # webs = ['Cnyes']
     # for w in webs:
