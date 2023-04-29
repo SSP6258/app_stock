@@ -1535,9 +1535,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                         df_lt_1 = df_lt[df_lt['y-m'] >= df_m['y-m'].values[0]]
                         df_m_1 = df_m[df_m['y-m'] <= df_lt_1['y-m'].values[-1]]
-                        # st.write(df_lt_1)
-                        # st.write(df_m_1)
-                        # mi = round(mutual_info_score(df_lt_1[c], df_m_1['ave']), 2)
                         nmi = round(normalized_mutual_info_score(df_lt_1[c], df_m_1['ave']), 2)
 
                         fig1 = fn_gen_plotly_line(df_lt, 'y-m', c, op=0.8, color='dodgerblue')
