@@ -14,6 +14,8 @@ from app_utils import *
 from workalendar.asia import Taiwan
 from streamlit_player import st_player
 from platform import python_version
+from sklearn.metrics import mutual_info_score, normalized_mutual_info_score
+
 
 dic_sel = {
     'pick': []
@@ -698,7 +700,6 @@ def fn_st_stock_sel(df_all):
                             },
                 )
 
-
                 c1, c2, c3, c4 = st.columns([1.3, 5, 1, 1])
                 n = n_s.split(' ')[0].replace("⭐", "").replace('-', '')
                 s = n_s.split(' ')[-1].replace("0050", "")
@@ -1285,8 +1286,6 @@ def fn_light_color(x):
     return c
 
 
-
-
 def fn_show_basic_idx(df, df_mops, key='hist_price'):
     sep = ' '
     df['sid_name'] = df['代碼'] + sep + df['名稱']
@@ -1413,8 +1412,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
             cols = st.columns(3)
             font_size = '#####' if len(sid_name) < 3 else '######'
             cols[1].error(f'{font_size} '
-                        f'{dic_mkd["1sp"]}${sid}\ {sid_name}${br}'
-                        f'$股價: {sid_price} 元$')
+                          f'{dic_mkd["1sp"]}${sid}\ {sid_name}${br}'
+                          f'$股價: {sid_price} 元$')
 
             cols = st.columns(6)
 
@@ -1519,19 +1518,28 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                 subset=[c for c in df_mop.columns if '權益' in c])
 
             fn_st_add_space(1)
-            tab_tech, tab_basic, tab_light, tab_raw, tab_src = st.tabs(['技術指標', '基本指標', '景氣循環', '詳細數據', '資料來源'])
+            tab_tech, tab_basic, tab_light, tab_raw, tab_src = st.tabs(
+                ['技術指標', '基本指標', '景氣循環', '詳細數據', '資料來源'])
             y_fr = datetime.datetime.today().year - 5
 
             with tab_light:
                 df_lt = dic_df['light']
                 df_m = dic_df['month']
-                df_m = df_m[df_m['sid']==sid]
-                df_m['month'] = df_m['month'].apply(lambda x: '0'+x if len(x)==1 else x)
+                df_m = df_m[df_m['sid'] == sid]
+                df_m['month'] = df_m['month'].apply(lambda x: '0' + x if len(x) == 1 else x)
                 df_m['y-m'] = df_m['year'] + '-' + df_m['month']
                 c_bypass = ['y-m', '景氣對策信號(燈號)']
                 for c in df_lt.columns:
                     if c == '景氣對策信號(分)':  # if c not in c_bypass:
                         cols = st.columns([5, 1])
+
+                        df_lt_1 = df_lt[df_lt['y-m'] >= df_m['y-m'].values[0]]
+                        df_m_1 = df_m[df_m['y-m'] <= df_lt_1['y-m'].values[-1]]
+                        # st.write(df_lt_1)
+                        # st.write(df_m_1)
+                        # mi = round(mutual_info_score(df_lt_1[c], df_m_1['ave']), 2)
+                        nmi = round(normalized_mutual_info_score(df_lt_1[c], df_m_1['ave']), 2)
+
                         fig1 = fn_gen_plotly_line(df_lt, 'y-m', c, op=0.8, color='dodgerblue')
                         fig2 = fn_gen_plotly_line(df_m, 'y-m', 'ave', op=0.6, color='red')
 
@@ -1539,7 +1547,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                             cols[-1].write('')
                             cols[-1].write('')
                             light_on = cols[-1].radio('$景氣燈號$', ['ON', 'OFF'], index=0, key='light')
-                            if light_on=='ON':
+                            if light_on == 'ON':
                                 df_lt['color'] = df_lt[c].apply(fn_light_color)
                                 fig1.update_traces(
                                     marker=dict(size=14, color=df_lt['color'].values, opacity=0.3,
@@ -1548,7 +1556,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         subfig = make_subplots(specs=[[{'secondary_y': True}]])
                         subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
                         subfig.update_layout(
-                            title_text=f'  🔵 國發會 '+c+f' v.s. 🔴 {sid} {sid_name} 股價(元)',
+                            title_text=f'  🔵 國發會 ' + c + f' v.s. 🔴 {sid} {sid_name} 股價(元)  MI = {nmi}',
                             title_font_size=18,
                             xaxis={'showgrid': True},
                             yaxis={'showticklabels': True,
@@ -1677,7 +1685,8 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                              },
                                                      )
                                 # st.write(ticktext)
-                                subfig.update_xaxes(ticktext=ticktext, tickvals=tickvals, tickmode='array', tickfont_size=14)
+                                subfig.update_xaxes(ticktext=ticktext, tickvals=tickvals, tickmode='array',
+                                                    tickfont_size=14)
                                 st.plotly_chart(subfig, use_container_width=True)
 
                             else:
@@ -2189,7 +2198,8 @@ def fn_st_stock_init():
 
 
 def fn_st_stock_main():
-    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['season'], dic_df['Yahoo_Health'], dic_df['light'] = fn_st_stock_init()
+    df_all, df_field, dic_df['report'], dic_df['tdcc'], dic_df['month'], dic_df['season'], dic_df['Yahoo_Health'], \
+    dic_df['light'] = fn_st_stock_init()
 
     df_all["篩選"] = 0
 
