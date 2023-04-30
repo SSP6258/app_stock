@@ -358,7 +358,7 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
 
                 try:
                     corr = df_plt['相關性_'+c.split('_')[-1]].values[-1]
-                    visible = 'legendonly' if float(corr.split('相關')[-1]) < 0.7 else None
+                    visible = 'legendonly' if float(corr.split('相關')[-1]) < 0.65 else None
                 except:
                     visible = 'legendonly'
 
