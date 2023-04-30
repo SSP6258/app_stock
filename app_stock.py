@@ -76,11 +76,15 @@ dic_mkd = {
 dic_book_img = {
     '我的職業是股東': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/080/05/0010800551.jpg&v=5baa0e38k&w=348&h=348',
     '大會計師教你從財報數字看懂經營本質': r'https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/082/53/0010825332.jpg&v=5d038542k&w=348&h=348',
+    '掌握市場週期': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/081/02/0010810203.jpg&v=5c235887k&w=348&h=348',
+    '投資最重要的事': r'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/074/49/0010744933.jpg&v=58a6d0d2k&w=348&h=348',
 }
 
 dic_book_lnk = {
     '我的職業是股東': r'https://www.books.com.tw/products/0010800551?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-201809',
     '大會計師教你從財報數字看懂經營本質': r'https://www.books.com.tw/products/0010825332?utm_source=chiay0327&utm_medium=ap-books&utm_content=recommend&utm_campaign=ap-202205',
+    '掌握市場週期': r'https://www.books.com.tw/products/0010810203?sloc=main',
+    '投資最重要的事': r'https://www.books.com.tw/products/0010744933?sloc=main',
 }
 
 dic_book_cmt = {
@@ -90,6 +94,9 @@ dic_book_cmt = {
     '大會計師教你從財報數字看懂經營本質': '''這本書介紹三大財務報表(資產負債表、損益表、現金流量表)的各項指標，  
                                        以及如何由這些指標判斷公司的經營體質。  
                                        個人覺得若非財會背景還是不容易消化，需反芻多次，方可內化成自身武功。''',
+
+    '掌握市場週期': '''順勢而為''',
+    '投資最重要的事': '''巴菲特讀了兩遍''',
 }
 
 dic_colors = {
@@ -1531,7 +1538,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 c_bypass = ['y-m', '景氣對策信號(燈號)']
                 for c in df_lt.columns:
                     if c == '景氣對策信號(分)':  # if c not in c_bypass:
-                        cols = st.columns([5, 1])
+                        cols = st.columns([4, 1])
 
                         df_lt_1 = df_lt[df_lt['y-m'] >= df_m['y-m'].values[0]]
                         df_m_1 = df_m[df_m['y-m'] <= df_lt_1['y-m'].values[-1]]
@@ -1541,14 +1548,27 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         fig2 = fn_gen_plotly_line(df_m, 'y-m', 'ave', op=0.6, color='red')
 
                         if '景氣對策' in c:
-                            cols[-1].write('')
-                            cols[-1].write('')
-                            light_on = cols[-1].radio('$景氣燈號$', ['ON', 'OFF'], index=0, key='light')
-                            if light_on == 'ON':
-                                df_lt['color'] = df_lt[c].apply(fn_light_color)
-                                fig1.update_traces(
-                                    marker=dict(size=14, color=df_lt['color'].values, opacity=0.3,
-                                                line=dict(width=1, color='blue')))
+
+                            with cols[-1]:
+                                fn_st_add_space(3)
+                                b = '掌握市場週期'
+                                st.markdown(f'{dic_mkd["4sp"]}《 [${b}$]({dic_book_lnk[b]}) 》')
+                                st.image(dic_book_img[b], use_column_width=True)
+
+                            df_lt['color'] = df_lt[c].apply(fn_light_color)
+                            fig1.update_traces(
+                                marker=dict(size=14, color=df_lt['color'].values, opacity=0.3,
+                                            line=dict(width=1, color='blue')))
+                            #
+                            # cols[-1].write('')
+                            # cols[-1].write('')
+                            # light_on = cols[-1].radio('$景氣燈號$', ['ON', 'OFF'], index=0, key='light')
+                            # if light_on == 'ON':
+                            #     df_lt['color'] = df_lt[c].apply(fn_light_color)
+                            #     fig1.update_traces(
+                            #         marker=dict(size=14, color=df_lt['color'].values, opacity=0.3,
+                            #                     line=dict(width=1, color='blue')))
+                            #
 
                         subfig = make_subplots(specs=[[{'secondary_y': True}]])
                         subfig.add_traces(fig1.data + fig2.data, secondary_ys=[False, True])
