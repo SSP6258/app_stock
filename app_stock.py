@@ -1676,7 +1676,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                                          textposition='outside', text_auto=True,
                                                          showspike=True)
 
-                                fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.3)
+                                fig2 = fn_gen_plotly_line(df_month, 'yr_sn', 'ave', op=0.4)
 
                                 ticktext = [x if Q_last in x else '' for x in df_month['yr_sn']]
                                 tickvals = list(range(0, len(ticktext)))
