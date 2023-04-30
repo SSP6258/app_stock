@@ -350,14 +350,21 @@ def fn_get_stock_price_plt(df, df_p=None, days_ago=None, watch=None, height=120,
     if df_p is None:
         pass
     else:
-        df1 = df_p[[c for c in df_p.columns if 'date' in c or '合理價_' in c or 'sid' in c or '股價' in c]]
+        df1 = df_p[[c for c in df_p.columns if 'date' in c or '合理價_' in c or 'sid' in c or '股價' in c or '相關' in c]]
 
         for c in df1.columns:
             if '合理價_' in c:
                 df_plt = df1[df1[c].apply(lambda x: len(str(x)) > 0)]
+
+                try:
+                    corr = df_plt['相關性_'+c.split('_')[-1]].values[-1]
+                    visible = 'legendonly' if float(corr.split('相關')[-1]) < 0.7 else None
+                except:
+                    visible = 'legendonly'
+
                 fig.add_trace(go.Scatter(x=df_plt['date'], y=df_plt[c],
                                          mode='lines+markers', name=c,
-                                         opacity=op),
+                                         opacity=op, visible=visible),
                               secondary_y=True)
 
     if title is None:
@@ -429,7 +436,7 @@ def fn_st_stock_sel(df_all):
         fn_st_add_space(1)
         sels = st.columns([1, 1, 1, 0.1, 0.45, 0.45, 0.45])
 
-        sid_2_watch = sels[0].text_input('手動篩選:', value='3093, 4562, 3426', key='sid_2_watch')
+        sid_2_watch = sels[0].text_input('手動篩選:', value='3093, 4562, 3426, 5871, 2330', key='sid_2_watch')
         dic_cfg["sel_rat"] = sels[1].slider('勝率門檻(%)', min_value=40, max_value=100, value=50)
         dic_cfg["sel_corr"] = sels[2].slider('相關性門檻', min_value=0.5, max_value=1.0, value=0.9)
         # dic_cfg["sel_price"] = sels[2].slider('股價上限', min_value=0, max_value=500, value=500)
