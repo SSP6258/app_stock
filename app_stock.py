@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 from app_stock_fb import *
 from app_utils import *
 from workalendar.asia import Taiwan
-from streamlit_player import st_player
+# from streamlit_player import st_player
 from platform import python_version
 from sklearn.metrics import mutual_info_score, normalized_mutual_info_score
 
@@ -1889,14 +1889,14 @@ def fn_st_chart_bar(df):
     kpis = ['績效(%)', '天數'] + [c for c in df_sids.columns if '勝率' in c or '合理' in c or '相關性' in c]
     with cs[0].form(key='Form1'):
         st.session_state['kpi'] = st.multiselect(f'策略指標:', options=kpis,
-                                                 default=['績效(%)', '營收_勝率', '營收_合理價差'],
+                                                 default=['天數', '績效(%)'],
                                                  key='kpixxx')
         fn_st_add_space(1)
         submit = st.form_submit_button('選擇')
 
     if len(st.session_state['kpi']) > 0:
         st.session_state['order_typ'] = cs[1].selectbox(f'排序方向:', options=['大 --> 小', '小 --> 大'], index=0)
-        st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=0)
+        st.session_state['order'] = cs[1].selectbox(f'排序指標:', options=st.session_state['kpi'], index=1)
         st.session_state['bar'] = cs[2].selectbox(f'柱狀圖方向:', options=['水平', '垂直'], index=0)
         v_h = 'v' if '垂直' in st.session_state['bar'] else 'h'
         st.session_state['kpi'] = [st.session_state['order']] + [k for k in st.session_state['kpi'] if
@@ -1912,22 +1912,29 @@ def fn_st_chart_bar(df):
         fn_st_add_space(2)
 
         df_sids = df_sids[df_sids['代碼'] != '6411']
-        df_p = df_sids[df_sids['績效(%)'].apply(lambda x: 1 < x < 5)]
-        df_p5 = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 5)]
-        df_n = df_sids[df_sids['績效(%)'].apply(lambda x: -5 < x < -1)]
-        df_n5 = df_sids[df_sids['績效(%)'].apply(lambda x: x <= -5)]
-        df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
+        # df_p = df_sids[df_sids['績效(%)'].apply(lambda x: 1 < x < 5)]
+        df_p = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 0)]
+        # df_p5 = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 5)]
+        # df_n = df_sids[df_sids['績效(%)'].apply(lambda x: -5 < x < -1)]
+        df_n = df_sids[df_sids['績效(%)'].apply(lambda x: x < 0)]
+        # df_n5 = df_sids[df_sids['績效(%)'].apply(lambda x: x <= -5)]
+        # df_e = df_sids[df_sids['績效(%)'].apply(lambda x: -1 <= x <= 1)]
 
         df_sids = df_sids[[c for c in df_sids.columns if '合理價_' not in c]]
         kpis = [k for k in kpis if '合理價_' not in k]
 
         fig, watch = fn_kpi_plt(kpis, df_sids)
 
-        tab_w, tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
-            ['勝率分析', f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔',
-             f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
-             f'負報酬( -1% ~ -5% ): {df_n.shape[0]}檔', f'負報酬( < -5% ): {df_n5.shape[0]}檔',
-             f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+        # tab_w, tab_d, tab_p5, tab_p, tab_n, tab_n5, tab_e = st.tabs(
+        #     ['勝率分析', f'指標分布{watch}', f'正報酬( > 5% ): {df_p5.shape[0]}檔',
+        #      f'正報酬( 1% ~ 5% ): {df_p.shape[0]}檔',
+        #      f'負報酬( -1% ~ -5% ): {df_n.shape[0]}檔', f'負報酬( < -5% ): {df_n5.shape[0]}檔',
+        #      f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
+
+        tab_w, tab_d, tab_p, tab_n = st.tabs(
+            ['勝率分析', f'指標分布{watch}',
+             f'正報酬: {df_p.shape[0]}檔',
+             f'負報酬: {df_n.shape[0]}檔'])
 
         with tab_w:
 
@@ -2015,21 +2022,21 @@ def fn_st_chart_bar(df):
             fn_st_add_space(1)
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
 
-        with tab_p5:
-            fn_st_add_space(1)
-            fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
+        # with tab_p5:
+        #     fn_st_add_space(1)
+        #     fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
 
         with tab_n:
             fn_st_add_space(1)
             fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
 
-        with tab_n5:
-            fn_st_add_space(1)
-            fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
+        # with tab_n5:
+        #     fn_st_add_space(1)
+        #     fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
 
-        with tab_e:
-            fn_st_add_space(1)
-            fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
+        # with tab_e:
+        #     fn_st_add_space(1)
+        #     fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
 
 def fn_st_stock_all(df_all):
