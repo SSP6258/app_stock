@@ -1932,7 +1932,8 @@ def fn_st_chart_bar(df):
         #      f'持平( -1% ~ 1% ): {df_e.shape[0]}檔'])
 
         tab_w, tab_d, tab_p, tab_n = st.tabs(
-            ['勝率分析', f'指標分布{watch}',
+            ['勝率分析',
+             f'指標分布{watch}',
              f'正報酬: {df_p.shape[0]}檔',
              f'負報酬: {df_n.shape[0]}檔'])
 
