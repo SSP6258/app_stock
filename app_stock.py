@@ -743,15 +743,15 @@ def fn_st_stock_sel(df_all):
 
 
 def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True,
-                  text=None):
+                  text=None, tick_color=None):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
-    width_full = 1200
+    width_full = 1000
     width_max = 600
-    height = 650
-    bars = 18
-
+    height = 500
     col_max = 3
+
+    bars = math.ceil(df.shape[0] / col_max)
     col_end = math.ceil(df.shape[0] / bars)
     width = min(int(width_full / col_max), width_max)
     cs = st.columns(col_max)
@@ -778,8 +778,12 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
                 fr = to + 1
 
                 fig = fn_gen_plotly_bar(df_c, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                        lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', width=width, height=height,
+                                        lg_pos=lg_pos, lg_x=0.8, lg_title='', width=width, height=height,
                                         title=title, x_range=x_range, showtick_y=showtick_y, txt_col=text)
+
+                fig.update_xaxes(tickfont_size=16)
+                fig.update_yaxes(tickfont_size=16, tickfont_color=tick_color)
+
                 if col_end - c - 1 < col_max:
                     cs[col_end - c - 1].plotly_chart(fig, use_container_width=True)
                 else:
@@ -793,7 +797,7 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True):
+def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True, tick_color=None):
     if v_h == 'v':
         if col is None:
             st.bar_chart(data=df, x=x, y=y,
@@ -806,7 +810,7 @@ def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_p
                           use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text, tick_color=tick_color)
 
 
 def fn_stock_filter(df, stra, col, fr=''):
@@ -2021,7 +2025,7 @@ def fn_st_chart_bar(df):
 
         with tab_p:
             fn_st_add_space(1)
-            fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h)
+            fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h, tick_color='red')
 
         # with tab_p5:
         #     fn_st_add_space(1)
@@ -2029,7 +2033,7 @@ def fn_st_chart_bar(df):
 
         with tab_n:
             fn_st_add_space(1)
-            fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h)
+            fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h, tick_color='green')
 
         # with tab_n5:
         #     fn_st_add_space(1)
