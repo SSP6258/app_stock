@@ -42,23 +42,15 @@ def fn_gen_plotly_bar(df, x_col, y_col,
                       showlegend=legend,
                       coloraxis_showscale=showscale,
                       barmode=barmode,
-                      font=dict(
-                          # family="Courier New, monospace",
-                          size=14,
-                          ),
-                      # legend=dict(
-                      #     title=lg_title,
-                      #     orientation=lg_pos,
-                      #     yanchor="bottom",
-                      #     y=1.02,
-                      #     xanchor="right",
-                      #     x=lg_x),
+                      font=dict(size=14),
+                      legend=dict(font_size=14,
+                                  title=lg_title),
                       )
 
     if lg_top:
 
         fig.update_layout(legend=dict(
-                              font_size=16,
+                              font_size=14,
                               title=lg_title,
                               orientation=lg_pos,
                               yanchor="bottom",

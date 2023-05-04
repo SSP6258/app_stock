@@ -955,15 +955,15 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=False)
-    #     fn_post_proc()
-    #     fn_get_yahoo_health()
-    #     fn_get_company_report()
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=False)
+        fn_post_proc()
+        fn_get_yahoo_health()
+        fn_get_company_report()
 
     # fn_get_month_deal_data(is_force=True, years=10, to_yr=2016)
-    fn_parse_month_data()
+    # fn_parse_month_data()
 
     # webs = ['Cnyes']
     # for w in webs:

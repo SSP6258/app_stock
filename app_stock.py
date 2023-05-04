@@ -57,7 +57,7 @@ dic_field_id = {
     '電子零組件': '23075',
 }
 
-dic_mops = {'per_date': '0421'}
+dic_mops = {'per_date': '0504'}
 
 dic_fin_name = {
     'ROE': '權益報酬率',
@@ -743,12 +743,11 @@ def fn_st_stock_sel(df_all):
 
 
 def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h', margin=None, showtick_y=True,
-                  text=None, tick_color=None):
+                  text=None, tick_color=None, height=500):
     margin = {'t': 40, 'b': 0, 'l': 0, 'r': 0} if margin is None else margin
 
     width_full = 1000
     width_max = 600
-    height = 500
     col_max = 3
 
     bars = math.ceil(df.shape[0] / col_max)
@@ -791,13 +790,15 @@ def fn_show_bar_h(df, x, y, title=None, barmode='relative', col=None, lg_pos='h'
 
     else:
         fig = fn_gen_plotly_bar(df, x_col=y, y_col=x, v_h='h', margin=margin, op=0.9, barmode=barmode,
-                                lg_pos=lg_pos, lg_x=0.8, lg_title='指標:', lg_top=False, width=width, height=height,
+                                lg_pos=lg_pos, lg_x=0.8, lg_title='', lg_top=False, width=width, height=height,
                                 title=title, x_range=x_range, showtick_y=showtick_y, txt_col=text)
 
+        fig.update_xaxes(tickfont_size=16)
+        fig.update_yaxes(tickfont_size=16)
         col.plotly_chart(fig, use_container_width=True)
 
 
-def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True, tick_color=None):
+def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_pos='h', margin=None, showtick_y=True, tick_color=None, height=500):
     if v_h == 'v':
         if col is None:
             st.bar_chart(data=df, x=x, y=y,
@@ -810,7 +811,7 @@ def fn_show_bar(df, x='策略選股', y=None, text=None, v_h='h', col=None, lg_p
                           use_container_width=True)
     else:
         df = df.loc[::-1].reset_index(drop=True)
-        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text, tick_color=tick_color)
+        fn_show_bar_h(df, x, y, col=col, lg_pos=lg_pos, margin=margin, showtick_y=showtick_y, text=text, tick_color=tick_color, height=height)
 
 
 def fn_stock_filter(df, stra, col, fr=''):
@@ -983,7 +984,7 @@ def fn_pick_stock(df, df_mops):
         if df.shape[0] > 0:
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin, height=650)
             # fn_show_hist_price(df, df_mops, key='income')
         else:
             cols[1].write('')
@@ -995,7 +996,7 @@ def fn_pick_stock(df, df_mops):
         if df.shape[0] > 0:
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin, height=650)
             # fn_show_hist_price(df, df_mops, key='eps')
         else:
             cols[1].write('')
@@ -1007,7 +1008,7 @@ def fn_pick_stock(df, df_mops):
         if df.shape[0] > 0:
             cols[2].write('')
             df, y = fn_stock_basic(df.copy(), df_mops, y.copy(), cols[2])
-            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin)
+            fn_show_bar(df, y=y, text='basic', col=cols[1], margin=margin, height=650)
             # fn_show_hist_price(df, df_mops, key='cash')
         else:
             cols[1].write('')
@@ -2027,21 +2028,10 @@ def fn_st_chart_bar(df):
             fn_st_add_space(1)
             fn_show_bar(df_p, y=st.session_state['kpi'], v_h=v_h, tick_color='red')
 
-        # with tab_p5:
-        #     fn_st_add_space(1)
-        #     fn_show_bar(df_p5, y=st.session_state['kpi'], v_h=v_h)
-
         with tab_n:
             fn_st_add_space(1)
             fn_show_bar(df_n, y=st.session_state['kpi'], v_h=v_h, tick_color='green')
 
-        # with tab_n5:
-        #     fn_st_add_space(1)
-        #     fn_show_bar(df_n5, y=st.session_state['kpi'], v_h=v_h)
-
-        # with tab_e:
-        #     fn_st_add_space(1)
-        #     fn_show_bar(df_e, y=st.session_state['kpi'], v_h=v_h)
 
 
 def fn_st_stock_all(df_all):
