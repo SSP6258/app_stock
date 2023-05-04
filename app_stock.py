@@ -1455,7 +1455,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     color_cash = 'red' if float(yr) >= 5 else 'green'
                     color_eps = 'red'
 
-                    st.markdown(f'[$基本資料$]({link})({dic_mops["per_date"]})')
+                    st.markdown(f'[$基本資料$]({link})$({dic_mops["per_date"]})$')
                     st.markdown(f'$本益比:$ [:{color_per}[${per} 倍$]]({link})')
                     st.markdown(f'$EPS:$ {br}{br} [:{color_eps}[${eps}元$]]({link})')
                     st.markdown(f'$殖利率:$ [:{color_cash}[${yr}\%$]]({link})')
