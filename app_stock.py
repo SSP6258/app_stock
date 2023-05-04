@@ -1542,7 +1542,6 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                 ['技術指標', '基本指標', '景氣循環', '詳細數據', '資料來源'])
             y_fr = datetime.datetime.today().year - 5
 
-
             with tab_light:
                 df_lt = dic_df['light']
                 df_m = dic_df['month']
