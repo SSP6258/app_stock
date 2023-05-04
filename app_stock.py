@@ -1539,7 +1539,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
             fn_st_add_space(1)
             tab_tech, tab_basic, tab_light, tab_raw, tab_src = st.tabs(
-                ['技術指標', '基本指標', '景氣循環', '詳細數據', '$資料來源$'])
+                ['技術指標', '基本指標', '景氣循環', '詳細數據', '資料來源'])
             y_fr = datetime.datetime.today().year - 5
 
 
