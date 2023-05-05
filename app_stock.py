@@ -1904,7 +1904,7 @@ def fn_st_chart_bar(df):
         df_sids['index'] = df_sids['index'].apply(fn_add_digit)
         df_sids['策略選股'] = df_sids['index'] + ' ' + df_sids['名稱'] + ' ' + df_sids['代碼']
         df_sids['策略選股'] = df_sids['策略選股'].apply(lambda x: x + '⭐' if x.split(' ')[1] in dic_sel['pick'] else x)
-        fn_st_add_space(1)
+        # fn_st_add_space(1)
 
         df_sids = df_sids[df_sids['代碼'] != '6411']
         df_p = df_sids[df_sids['績效(%)'].apply(lambda x: x >= 0)]
