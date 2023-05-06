@@ -1355,11 +1355,13 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     try:
         df_mop = fn_get_mops(df_mops, sid)
         df_roe = fn_get_mops_fin("ROE", sid)
+        # st.write(df_roe)
         df_roa = fn_get_mops_fin("ROA", sid)
         df_opm = fn_get_mops_fin("OPM", sid)
         df_dr = fn_get_mops_fin("DR", sid)
         dr_cf = fn_get_mops_fin("OCF", sid)
         df_fin = pd.concat([df_roe, df_roa, df_opm, df_dr, dr_cf], axis=1)
+        # st.write(df_fin)
         df_fin.reset_index(names='年/季', inplace=True)
         df_fin['year'] = df_fin['年/季'].apply(lambda x: x.split('Q')[0])
         df_fin['season'] = df_fin['年/季'].apply(lambda x: x.split('Q')[-1])
@@ -1647,11 +1649,14 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                     return
 
                 df_month = df_sn[df_sn['year'].apply(lambda x: int(x) >= y_fr)]
-
+                # st.write(df_fin)
                 df_fin_b = df_fin.sort_index(ascending=False, ignore_index=True)
                 df_fin_b = df_fin_b[df_fin_b['年/季'].apply(lambda x: int(x.split('Q')[0]) >= y_fr)]
                 df_fin_b['color'] = df_fin_b['年/季'].apply(lambda x: 2 if int(x.split('Q')[0]) % 2 == 1 else 1)
                 df_fin_b['年/季'] = df_fin_b['年/季'].apply(lambda x: str(x).replace('Q', '<br>Q'))
+
+                df_fin_b = df_fin_b[df_fin_b['權益報酬率(ROE)'].apply(lambda x: len(str(x)) > 0)]
+
                 df_fin_b.reset_index(inplace=True, drop=True)
 
                 Q_last = df_fin_b['年/季'].values[-1].split('<br>')[-1]
@@ -1747,6 +1752,9 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                                 cols[0].plotly_chart(fig, use_container_width=True)
 
                 with tab_year:
+
+                    # st.write(df_mop_b)
+
                     for f in df_mop_b.columns:
                         if f == '年度':
                             pass
