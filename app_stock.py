@@ -279,7 +279,7 @@ def fn_stock_sel(df_all):
                 df_all.at[idx, "篩選"] = 1
 
     df_sel = df_all[df_all["篩選"] == 1]
-    df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
+    # df_sel = df_sel[df_sel["股價"].apply(lambda x: float(x) < dic_cfg["sel_price"] if x != '' else True)]
     # df_sel = df_sel[[c for c in df_sel.columns if '篩選' not in c and
     #                  '耗時' not in c and
     #                  '合理價差' not in c]]
