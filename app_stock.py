@@ -1385,7 +1385,11 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     report_date = 'NA' if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
     report_date = f'$中文簡報-{report_date}$'
 
-    cmp_report = '$NA$' if report_lnk == 'NA' else f'[:blue[{report_date}]]({report_lnk})'
+    color = 'blue'
+    if datetime.datetime.today().year == report_date[:4]:
+        color = 'red'
+
+    cmp_report = '$NA$' if report_lnk == 'NA' else f'[:{color}[{report_date}]]({report_lnk})'
 
     df_tdcc = dic_df['tdcc']
     df_tdcc_sid = df_tdcc[df_tdcc['證券代號'] == sid]
