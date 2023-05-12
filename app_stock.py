@@ -1387,6 +1387,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
     color = 'blue'
     today = datetime.datetime.today()
+    cols[0].write(f'{today.year} {report_date[:4]} {report_date[:4] == today.year}')
     if today.year == report_date[:4]:
         color = 'red'
 
