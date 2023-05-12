@@ -1383,14 +1383,16 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     df_report = dic_df['report']
     report_lnk = 'NA' if sid not in df_report['sid'].values else df_report[df_report['sid'] == sid]['report'].values[0]
     report_date = 'NA' if report_lnk == 'NA' else report_lnk.split('M00')[0].split(sid)[-1]
-    report_date = f'$中文簡報-{report_date}$'
 
-    color = 'blue'
     today = datetime.datetime.today()
-    cols[0].write(f'{today.year} {report_date[:4]} {report_date[:4] == today.year}')
-    if today.year == report_date[:4]:
-        color = 'red'
+    color = 'blue'
+    try:
+        if int(today.year) == int(report_date[:4]) and int(today.month) == int(report_date[4:6]):
+            color = 'red'
+    except:
+        pass
 
+    report_date = f'$中文簡報-{report_date}$'
     cmp_report = '$NA$' if report_lnk == 'NA' else f'[:{color}[{report_date}]]({report_lnk})'
 
     df_tdcc = dic_df['tdcc']
