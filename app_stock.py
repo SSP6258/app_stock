@@ -1769,7 +1769,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
                         else:
                             colors = [dic_colors["c1"] for _ in df_mop_b['年度']]
                             colors = colors[:-1] + ["orange"]
-                            title = f'{" "*8}{sid}{sid} {sid_name}   {f.split("-")[-1]}'
+                            title = f'{" "*8}{sid} {sid_name}   {f.split("-")[-1]}'
 
                             fig = fn_gen_plotly_bar(df_mop_b, '年度', f, title=title,
                                                     v_h='v', op=[0.5 for i in range(df_mop_b.shape[0] - 1)] + [1.0],
