@@ -2106,7 +2106,7 @@ def fn_st_reference():
     fn_st_add_space(1)
     st.markdown('### 📚 參考資料:')
     with st.form(key='ref'):
-        cols = st.columns([1, 1, 1, 1, 0.1])
+        cols = st.columns([1, 1, 1, 1, 0.01])
         cols[0].markdown('#### :orange[$數據來源$]')
         cols[0].markdown('- [$FindBillion$](https://www.findbillion.com/)')
         cols[0].markdown('- [$財務比較e點通$](https://mopsfin.twse.com.tw)')
