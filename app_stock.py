@@ -2127,6 +2127,9 @@ def fn_st_reference():
         cols[2].markdown('#### :orange[$專業網站$]')
         cols[2].markdown('- [$財報狗$](https://statementdog.com/)')
 
+        cols[3].markdown('#### :orange[$研究報告$]')
+        cols[3].markdown('- [$當前經濟情勢簡報$](https://www.ndc.gov.tw/News.aspx?n=8E8FA34452E8DBC2&sms=40C8FF59B01AC562)')
+
         cols[-1].form_submit_button('')
 
 
