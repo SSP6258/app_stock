@@ -1314,7 +1314,7 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
     with cols[0].form(key=f'form_{key}'):
 
-        cols2 = st.columns([2, 0.1, 3, 1.5])
+        cols2 = st.columns([2, 0.1, 3, 1.6])
 
         # dft_sid = '2404' if key == 'basic_idx' else df['代碼'].values[0]
 
