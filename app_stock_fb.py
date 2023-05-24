@@ -24,7 +24,7 @@ dic_cfg = {
         "X-Requested-With": "XMLHttpRequest",
     },
     'mops_path': 'mops',
-    'mops_fin_path': 'mops_fin_0506',
+    'mops_fin_path': 'mops_fin_0514',
     'month_path': 'Month',
     'per_latest_path': r'./PER/PER_Latest',
     'per_history_path': r'./PER/PER_History',
@@ -238,7 +238,7 @@ dic_url = {
 }
 
 
-def fn_get_stock_info(sid, url, webs, is_headless=True):
+def fn_get_stock_info(sid, url, webs, is_headless=True, date_force=None):
     df = pd.DataFrame()
     df['sid'] = [sid]
 
@@ -283,7 +283,7 @@ def fn_get_stock_info(sid, url, webs, is_headless=True):
 
         driver.close()
 
-    df['date'] = [datetime.date.today()]
+    df['date'] = [datetime.date.today()] if date_force is None else [date_force]
     return df
 
 
@@ -342,7 +342,7 @@ def fn_fb_recommend_stock():
     return df_smry
 
 
-def fn_find_billion(df, stocks=None, is_force=False):
+def fn_find_billion(df, stocks=None, is_force=False, date_force=None):
     df['sid'] = df['公司名稱'].apply(lambda x: str(x.split(" ")[0]))
     # stock_ids = list(df['公司名稱'].apply(lambda x: str(x.split(" ")[0])))
 
@@ -383,7 +383,7 @@ def fn_find_billion(df, stocks=None, is_force=False):
 
                 url = rf'https://www.findbillion.com/twstock/'
                 webs = [dic_fb_main, dic_fb_revenue, dic_fb_eps, dic_fb_cash_dividend]
-                df_sid = fn_get_stock_info(sid, url, webs)
+                df_sid = fn_get_stock_info(sid, url, webs, date_force=date_force)
 
                 # df_sid = fn_get_stock_info(sid)
                 df_sid['耗時(秒)'] = int(time.time() - t)
@@ -955,26 +955,28 @@ def fn_main():
     # fn_gen_stock_field_info()
     # fn_mops_twse_parser()
 
-    # if fn_is_parsing():
-    #     df = fn_fb_recommend_stock()
-    #     fn_find_billion(df, dic_cfg["stocks"], is_force=False)
-    #     fn_post_proc()
-    #     fn_get_yahoo_health()
-    #     fn_get_company_report()
+    if fn_is_parsing():
+        df = fn_fb_recommend_stock()
+        date_force = datetime.date.today()
+        fn_find_billion(df, dic_cfg["stocks"], is_force=False, date_force=date_force)
+        fn_post_proc()
+        fn_get_yahoo_health()
+        fn_get_company_report()
 
-    # fn_get_month_deal_data(is_force=True, years=10, to_yr=2016)
+    # this_yr = datetime.datetime.today().year
+    # fn_get_month_deal_data(is_force=True, years=0, to_yr=this_yr)
     # fn_parse_month_data()
 
     # webs = ['Cnyes']
     # for w in webs:
     #     fn_get_web_info('2929', w)
 
-    is_new_season = True
+    # is_new_season = True
     # fn_mops_fin(is_new_season=is_new_season)
     # 手動步驟 fn_move_file_TBD() Move download excl files to D:\02_Project\proj_python\proj_findbillion\mops_fin_0106
     # fn_mops_file_move()
-    for fin in dic_fin.keys():
-        fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
+    # for fin in dic_fin.keys():
+    #     fn_mops_fin_excl_2_csv(fin, is_new_season=is_new_season)
 
     dur = int(time.time() - t)
     h = int(dur / 3600)
