@@ -1690,10 +1690,15 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
 
                                 df_fin_b_q = df_fin_b[df_fin_b['年/季'].apply(lambda x: Q_last in x)]
 
-                                color_last = 'pink' if float(df_fin_b_q[f].values[-1]) >= float(
-                                    df_fin_b_q[f].values[-2]) else 'lightgreen'
+                                # st.write(df_fin_b_q)
+                                try:
+                                    color_last = 'pink' if float(df_fin_b_q[f].values[-1]) >= float(
+                                        df_fin_b_q[f].values[-2]) else 'lightgreen'
 
-                                colors = colors[:-1] + [color_last]
+                                    colors = colors[:-1] + [color_last]
+                                except:
+                                    st.write(df_fin_b_q)
+                                    continue
 
                                 fig1 = fn_gen_plotly_bar(df_fin_b, '年/季', f,
                                                          v_h='v',
