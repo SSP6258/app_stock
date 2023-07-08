@@ -1421,9 +1421,10 @@ def fn_show_basic_idx(df, df_mops, key='hist_price'):
     cols[0].markdown(f'{mkd_space}[$PChome$]({url_PC})、')
 
     df_sid = fn_get_stock_price(sid, days=200)
-    sid_price = round(df_sid['Close'].values[-1], 1)
+    # sid_price = round(df_sid['Close'].values[-1], 1)
 
     if df_sid.shape[0] > 0:
+        sid_price = round(df_sid['Close'].values[-1], 1)
 
         df_sn = dic_df['season']
         df_sn = df_sn[df_sn['sid'] == sid]
